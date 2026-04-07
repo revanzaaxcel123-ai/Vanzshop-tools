@@ -1,0 +1,1553 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vanzshop Tools</title>
+
+  <!-- Font Awesome (white icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#070708;
+      --bg2:#0b0b0f;
+      --text:#f5f5f5;
+      --muted:rgba(245,245,245,.70);
+      --gold:#f6c945;
+      --gold2:#ffdd6a;
+      --danger:#ef4444;
+      --shadow: 0 18px 45px rgba(0,0,0,.45);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(900px 600px at 15% 10%, rgba(246,201,69,.12), transparent 60%),
+        radial-gradient(900px 600px at 85% 35%, rgba(246,201,69,.08), transparent 55%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* background grid + planets */
+    .gridbg{
+      position:fixed; inset:-30px; z-index:-3; pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(246,201,69,.06), transparent 55%),
+        radial-gradient(circle at 80% 30%, rgba(246,201,69,.05), transparent 50%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 48px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 48px);
+      filter: blur(.2px);
+      opacity:.22;
+      transform: perspective(900px) rotateX(58deg) translateY(-160px);
+      transform-origin: top;
+      mask-image: radial-gradient(circle at 50% 30%, rgba(0,0,0,.95) 0 55%, transparent 78%);
+    }
+    .space{position:fixed; inset:0; pointer-events:none; z-index:-2; overflow:hidden;}
+    .planet{position:absolute; border-radius:999px; opacity:.7; mix-blend-mode: screen; animation: floaty 18s ease-in-out infinite;}
+    .planet.p1{width:420px;height:420px;left:-120px;top:55%;
+      background: radial-gradient(circle at 30% 25%, rgba(255,222,120,.23), rgba(246,201,69,.06) 55%, transparent 70%);
+      animation-duration:22s;}
+    .planet.p2{width:520px;height:520px;right:-160px;top:20%;
+      background: radial-gradient(circle at 35% 30%, rgba(255,222,120,.18), rgba(246,201,69,.05) 55%, transparent 72%);
+      animation-duration:26s; animation-delay:-6s;}
+    .planet.p3{width:260px;height:260px;left:64%;top:72%;
+      background: radial-gradient(circle at 30% 20%, rgba(255,222,120,.16), rgba(246,201,69,.04) 60%, transparent 74%);
+      animation-duration:20s; animation-delay:-10s;}
+    @keyframes floaty{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(18px,-16px,0)}}
+
+    .container{max-width:1180px; margin:0 auto; padding:22px 18px 70px;}
+
+    /* Header (square icon + title) */
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .brandMark{
+      width:46px;height:46px;
+      flex:0 0 auto;
+      display:grid; place-items:center;
+      border-radius:14px;
+      background: rgba(0,0,0,.20);
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 18px 40px rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+    }
+    .brandMark i{
+      font-size: 18px;
+      color: rgba(255,255,255,.92);
+    }
+    .brandTitle{
+      margin:0;
+      font-size:28px;
+      line-height:46px;
+      font-weight:1000;
+      letter-spacing:.2px;
+      color: rgba(255,255,255,.95);
+      text-shadow: 0 0 22px rgba(246,201,69,.18);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:16px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.045));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+    .card-header{
+      padding:14px 16px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background: rgba(0,0,0,.16);
+    }
+    .card-header h3,.card-header h2{
+      margin:0;
+      font-size:13px;
+      letter-spacing:.32px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.90);
+    }
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:12px;padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.14);
+      color:rgba(255,255,255,.86);
+      font-weight:900;
+      user-select:none;
+    }
+    .card-body{ padding:16px; }
+
+    /* Sidebar nav */
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding:12px;
+    }
+    .nav button{
+      all:unset;
+      cursor:pointer;
+      padding:13px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color: rgba(255,255,255,.92);
+      background: rgba(0,0,0,.16);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
+      user-select:none;
+      font-weight:950;
+    }
+    .nav button:hover{
+      transform: translateY(-1px);
+      border-color: rgba(246,201,69,.35);
+      background: rgba(246,201,69,.08);
+      box-shadow: 0 18px 45px rgba(0,0,0,.25);
+    }
+    .nav button.active{
+      border-color: rgba(246,201,69,.65);
+      background: rgba(246,201,69,.12);
+      box-shadow: 0 18px 45px rgba(0,0,0,.28), inset 0 0 0 1px rgba(246,201,69,.10);
+    }
+    .nav .ico{
+      width:20px;
+      display:grid;
+      place-items:center;
+      color: rgba(255,255,255,.92); /* white icons */
+      opacity:.95;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
+    }
+    .nav .ico i{ font-size:14px; }
+
+    /* Forms */
+    .section-title{margin:0 0 10px;font-size:20px;font-weight:950;letter-spacing:.2px;}
+    .muted{color:var(--muted);}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media (max-width:760px){ .row{grid-template-columns:1fr} }
+
+    label{display:block;font-size:12px;color:rgba(255,255,255,.88);margin:0 0 6px;font-weight:900;}
+    input,textarea,select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline:none;
+    }
+    input:focus,textarea:focus,select:focus{ border-color: rgba(246,201,69,.7); background: rgba(0,0,0,.28); }
+
+    textarea{
+      min-height:180px;
+      resize:vertical;
+      font-family: var(--mono);
+      line-height:1.35;
+    }
+    textarea::placeholder{
+      color: rgba(245,245,245,.35);
+      white-space: pre;
+      font-family: var(--mono);
+    }
+
+    .divider{height:1px;background:rgba(255,255,255,.10);margin:14px 0;}
+    .inline{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+    .btn{
+      cursor:pointer;border:none;border-radius:999px;padding:11px 14px;font-weight:950;color:#0b0b0f;
+      background: linear-gradient(135deg, rgba(246,201,69,1), rgba(255,222,120,1));
+      box-shadow: 0 14px 30px rgba(0,0,0,.30);
+      display:inline-flex;align-items:center;gap:10px;user-select:none;
+    }
+    .btn.secondary{background: rgba(255,255,255,.08);color: rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.14);box-shadow:none;}
+    .btn.danger{background: rgba(239,68,68,.14);border:1px solid rgba(239,68,68,.35);color: rgba(255,255,255,.92);box-shadow:none;}
+    .btn:disabled{opacity:.55;cursor:not-allowed;}
+
+    .checkbox{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      font-weight:900;
+      color: rgba(255,255,255,.88);
+    }
+    .checkbox input{width:auto;}
+
+    .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media (max-width:960px){ .result-grid{grid-template-columns:1fr} }
+    .result-card{border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);border-radius:16px;padding:14px;}
+    .result-card h4{margin:0 0 10px;font-size:13px;letter-spacing:.22px;text-transform:uppercase;opacity:.95;}
+    .small{font-size:12px;color:var(--muted);}
+    .code{
+      font-family:var(--mono);
+      font-size:12px;
+      padding:10px 12px;
+      border-radius:14px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.12);
+      overflow:auto;
+      white-space:pre;
+      max-height:260px;
+    }
+
+    /* Chart */
+    .chart{
+      display:flex;gap:12px;align-items:flex-end;height:110px;padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);
+    }
+    .barWrap{flex:1;display:flex;flex-direction:column;gap:8px;}
+    .barLabel{font-size:12px;font-weight:950;display:flex;justify-content:space-between;color:rgba(255,255,255,.90);}
+    .bar{height:78px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);overflow:hidden;position:relative;}
+    .bar>div{position:absolute;left:0;bottom:0;width:100%;height:0%;background:linear-gradient(180deg, rgba(246,201,69,1), rgba(255,222,120,1));transition:height .35s ease;}
+    .bar.invalid>div{background:linear-gradient(180deg, rgba(239,68,68,1), rgba(245,158,11,1));}
+
+    /* Toast */
+    .toast{
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+      padding: 12px 14px; border-radius: 999px;
+      background: rgba(0,0,0,.72);
+      border:1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.92);
+      box-shadow: var(--shadow);
+      display:none; gap:10px; align-items:center;
+      max-width:min(820px, 92vw);
+      z-index:9999;
+      backdrop-filter: blur(10px);
+      font-weight: 900;
+    }
+    .toast.show{display:flex;}
+    .toast .dot{width:10px;height:10px;border-radius:999px;background:var(--gold);}
+    .toast.error .dot{background:var(--danger);}
+    .hidden{display:none !important;}
+
+    /* Refund progress bar */
+    .progressWrap{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .progressTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .progressLabel{
+      font-weight: 1000;
+      letter-spacing:.2px;
+      color: rgba(255,255,255,.92);
+    }
+    .progressPct{
+      font-family: var(--mono);
+      font-weight: 1000;
+      color: rgba(255,255,255,.92);
+    }
+    .progressBar{
+      width:100%;
+      height:14px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .progressFill{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(246,201,69,1), rgba(255,222,120,1));
+      transition: width .35s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="gridbg"></div>
+  <div class="space" aria-hidden="true">
+    <div class="planet p1"></div>
+    <div class="planet p2"></div>
+    <div class="planet p3"></div>
+  </div>
+
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brandMark" aria-hidden="true">
+          <i class="fa-regular fa-cube"></i>
+        </div>
+        <h1 class="brandTitle">Vanzshop Tools</h1>
+      </div>
+      <div style="width:46px;"></div>
+    </div>
+
+    <div class="grid">
+      <!-- Sidebar -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Menu</h3>
+          <span class="chip"><i class="fa-solid fa-code"></i> v7</span>
+        </div>
+
+        <div class="nav">
+          <!-- Generator Email: paling atas -->
+          <button id="nav-emailgen" onclick="showTool('emailgen')">
+            <span class="ico"><i class="fa-regular fa-envelope"></i></span>
+            Email Generator
+          </button>
+
+          <button id="nav-refund" class="active" onclick="showTool('refund')">
+            <span class="ico"><i class="fa-solid fa-sack-dollar"></i></span>
+            Kalkulator Refund
+          </button>
+
+          <button id="nav-validator" onclick="showTool('validator')">
+            <span class="ico"><i class="fa-solid fa-shield-halved"></i></span>
+            Validator
+          </button>
+
+          <button id="nav-duplicate" onclick="showTool('duplicate')">
+            <span class="ico"><i class="fa-solid fa-clone"></i></span>
+            Duplicate Remover
+          </button>
+
+          <button id="nav-domain" onclick="showTool('domain')">
+            <span class="ico"><i class="fa-solid fa-globe"></i></span>
+            Domain Analyzer
+          </button>
+
+          <button id="nav-formatter" onclick="showTool('formatter')">
+            <span class="ico"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+            Formatter
+          </button>
+
+          <button id="nav-splitter" onclick="showTool('splitter')">
+            <span class="ico"><i class="fa-solid fa-scissors"></i></span>
+            Splitter
+          </button>
+
+          <button id="nav-gsuite" onclick="showTool('gsuite')">
+            <span class="ico"><i class="fa-solid fa-users"></i></span>
+            GSuite Creator
+          </button>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <div class="card">
+        <div class="card-header">
+          <h2 id="toolTitle">Kalkulator Refund</h2>
+          <span class="chip" id="toolHint"><i class="fa-solid fa-circle-info"></i> isi input → hitung</span>
+        </div>
+
+        <div class="card-body">
+
+          <!-- Email Generator -->
+          <section id="tool-emailgen" class="hidden">
+            <h3 class="section-title">Email Generator</h3>
+            <p class="muted" style="margin-top:-6px;">Domain + optional subdomain + jumlah + panjang random.</p>
+
+            <div class="row">
+              <div>
+                <label for="egDomain">Domain</label>
+                <input id="egDomain" placeholder="Contoh: vanzshop.com" />
+              </div>
+              <div>
+                <label for="egCount">Jumlah email</label>
+                <input id="egCount" type="number" min="1" max="200000" placeholder="10" />
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <div>
+                <label for="egSub">Subdomain (optional)</label>
+                <input id="egSub" placeholder="Contoh: api (jadi api.vanzshop.com)" />
+              </div>
+              <div>
+                <label for="egLen">Panjang random</label>
+                <input id="egLen" type="number" min="3" max="32" placeholder="10" />
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <div>
+                <label for="egMode">Random</label>
+                <select id="egMode">
+                  <option value="alnum">Huruf + Angka</option>
+                  <option value="alpha">Huruf saja</option>
+                  <option value="num">Angka saja</option>
+                </select>
+              </div>
+              <div class="checkbox" style="align-self:end;">
+                <input type="checkbox" id="egUnique" checked />
+                <label for="egUnique" style="margin:0;">Unik di sesi ini</label>
+              </div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn" onclick="egGenerate()"><i class="fa-solid fa-play"></i> Generate</button>
+              <button class="btn secondary" id="egCopyBtn" onclick="egCopy()" disabled><i class="fa-solid fa-copy"></i> Copy</button>
+              <button class="btn secondary" id="egDlBtn" onclick="egDownload()" disabled><i class="fa-solid fa-download"></i> Download</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="result-card">
+              <h4>Output</h4>
+              <textarea id="egOutput" readonly style="min-height:300px;"></textarea>
+            </div>
+          </section>
+
+          <!-- Refund -->
+          <section id="tool-refund">
+            <h3 class="section-title">Kalkulator Refund</h3>
+            <p class="muted" style="margin-top:-6px;">Isi dulu inputnya, lalu hitung. Ringkasan rapi + progress bar.</p>
+
+            <div class="row">
+              <div>
+                <label for="rfProduct">Produk</label>
+                <input id="rfProduct" placeholder="Contoh: Ai Perplexity" />
+              </div>
+              <div>
+                <label for="rfRate">Rate Refund (%)</label>
+                <input id="rfRate" type="number" min="0" max="100" step="1" placeholder="100" />
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <div>
+                <label for="rfPrice">Harga Beli (Rp)</label>
+                <input id="rfPrice" type="number" min="0" placeholder="30000" />
+              </div>
+              <div>
+                <label for="rfDiscount">Diskon Tambahan (%) (optional)</label>
+                <input id="rfDiscount" type="number" min="0" max="100" step="0.1" placeholder="0" />
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <div>
+                <label for="rfRemaining">Sisa Masa Aktif (Hari)</label>
+                <input id="rfRemaining" type="number" min="0" placeholder="20" />
+              </div>
+              <div>
+                <label for="rfTotal">Total Durasi (Hari)</label>
+                <input id="rfTotal" type="number" min="1" placeholder="30" />
+              </div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn" onclick="rfCalc()"><i class="fa-solid fa-calculator"></i> Hitung</button>
+              <button class="btn secondary" onclick="rfCopy()"><i class="fa-solid fa-copy"></i> Copy Ringkasan</button>
+              <button class="btn secondary" onclick="rfReset()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="progressWrap">
+              <div class="progressTop">
+                <div class="progressLabel">Sisa Durasi</div>
+                <div class="progressPct" id="rfPctText">—%</div>
+              </div>
+              <div class="progressBar"><div class="progressFill" id="rfPctFill"></div></div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="result-grid">
+              <div class="result-card">
+                <h4>Total</h4>
+                <div style="font-size:34px;font-weight:950;" id="rfResult">Rp 0</div>
+                <div class="small" id="rfExplain" style="margin-top:8px; white-space:pre-line;"></div>
+              </div>
+              <div class="result-card">
+                <h4>Ringkasan</h4>
+                <div class="code" id="rfSummary">-</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Validator -->
+          <section id="tool-validator" class="hidden">
+            <h3 class="section-title">Validator</h3>
+            <p class="muted" style="margin-top:-6px;">Pisah valid/invalid + filter domain + chart.</p>
+
+            <div class="row">
+              <div>
+                <label for="valFile">Upload (.txt)</label>
+                <input id="valFile" type="file" accept=".txt,text/plain" />
+                <div class="small" id="valFileInfo" style="margin-top:8px;"></div>
+              </div>
+              <div>
+                <label for="valDomains">Filter domain (optional)</label>
+                <input id="valDomains" placeholder="Contoh: gmail.com,vanzshop.com" />
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <label for="valInput">Input</label>
+              <textarea id="valInput" placeholder="input email disini . . . .
+
+Contoh:
+user@gmail.com
+user@yahoo.com|123
+user@outlook.com:abc"></textarea>
+
+              <div class="inline" style="margin-top:10px;">
+                <span class="chip" id="valCount"><i class="fa-solid fa-list"></i> 0</span>
+                <button class="btn danger" onclick="valClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <div class="checkbox"><input type="checkbox" id="valTrim" checked /><label for="valTrim" style="margin:0;">Trim</label></div>
+              <div class="checkbox"><input type="checkbox" id="valExtractEmailOnly" checked /><label for="valExtractEmailOnly" style="margin:0;">Extract email dari combo</label></div>
+              <div class="checkbox"><input type="checkbox" id="valBlockDisposable" /><label for="valBlockDisposable" style="margin:0;">Block disposable</label></div>
+              <div class="checkbox"><input type="checkbox" id="valCaseInsensitive" checked /><label for="valCaseInsensitive" style="margin:0;">Case-insensitive</label></div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn" onclick="valProcess()"><i class="fa-solid fa-shield-halved"></i> Validate</button>
+              <button class="btn secondary" id="valDlValid" onclick="valDownload('valid')" disabled><i class="fa-solid fa-download"></i> Valid</button>
+              <button class="btn secondary" id="valDlInvalid" onclick="valDownload('invalid')" disabled><i class="fa-solid fa-download"></i> Invalid</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="chart">
+              <div class="barWrap">
+                <div class="barLabel"><span>Valid</span><span id="valValidCount">0</span></div>
+                <div class="bar"><div id="barValid"></div></div>
+              </div>
+              <div class="barWrap">
+                <div class="barLabel"><span>Invalid</span><span id="valInvalidCount">0</span></div>
+                <div class="bar invalid"><div id="barInvalid"></div></div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="result-grid">
+              <div class="result-card">
+                <h4>Valid</h4>
+                <textarea id="valValidOut" readonly style="min-height:220px;"></textarea>
+              </div>
+              <div class="result-card">
+                <h4>Invalid</h4>
+                <textarea id="valInvalidOut" readonly style="min-height:220px;"></textarea>
+              </div>
+            </div>
+          </section>
+
+          <!-- Duplicate -->
+          <section id="tool-duplicate" class="hidden">
+            <h3 class="section-title">Duplicate Remover</h3>
+
+            <label for="dupInput">Input</label>
+            <textarea id="dupInput" placeholder="input email disini . . . .
+
+Contoh:
+user@gmail.com
+user@yahoo.com|123
+user@outlook.com:abc"></textarea>
+
+            <div class="inline" style="margin-top:10px;">
+              <span class="chip" id="dupCount"><i class="fa-solid fa-list"></i> 0</span>
+              <button class="btn danger" onclick="dupClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <div class="checkbox"><input type="checkbox" id="dupCaseSensitive" /><label for="dupCaseSensitive" style="margin:0;">Case Sensitive</label></div>
+              <div class="checkbox"><input type="checkbox" id="dupTrim" checked /><label for="dupTrim" style="margin:0;">Trim</label></div>
+              <div class="checkbox"><input type="checkbox" id="dupExtractEmailOnly" /><label for="dupExtractEmailOnly" style="margin:0;">Extract email saja</label></div>
+              <div class="checkbox"><input type="checkbox" id="dupKeepFirst" checked /><label for="dupKeepFirst" style="margin:0;">Keep yang pertama</label></div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn" onclick="dupProcess()"><i class="fa-solid fa-filter"></i> Proses</button>
+              <button class="btn secondary" id="dupCopyBtn" onclick="dupCopy()" disabled><i class="fa-solid fa-copy"></i> Copy</button>
+              <button class="btn secondary" id="dupDownloadBtn" onclick="dupDownload()" disabled><i class="fa-solid fa-download"></i> Download</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="result-card">
+              <h4>Output</h4>
+              <textarea id="dupOutput" readonly style="min-height:260px;"></textarea>
+            </div>
+          </section>
+
+          <!-- Domain Analyzer -->
+          <section id="tool-domain" class="hidden">
+            <h3 class="section-title">Domain Analyzer</h3>
+
+            <div class="row">
+              <div>
+                <label for="daFile">Upload (.txt)</label>
+                <input id="daFile" type="file" accept=".txt,text/plain" />
+                <div class="small" id="daFileInfo" style="margin-top:8px;"></div>
+              </div>
+              <div>
+                <label for="daTop">Top (N)</label>
+                <input id="daTop" type="number" min="3" max="200" value="30" />
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <label for="daInput">Input</label>
+              <textarea id="daInput" placeholder="input email disini . . . .
+
+Contoh:
+user@gmail.com
+user@yahoo.com|123
+user@outlook.com:abc"></textarea>
+              <div class="inline" style="margin-top:10px;">
+                <span class="chip" id="daCount"><i class="fa-solid fa-list"></i> 0</span>
+                <button class="btn danger" onclick="daClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <div class="checkbox"><input type="checkbox" id="daTrim" checked /><label for="daTrim" style="margin:0;">Trim</label></div>
+              <div class="checkbox"><input type="checkbox" id="daExtract" checked /><label for="daExtract" style="margin:0;">Extract email dari combo</label></div>
+              <div class="checkbox"><input type="checkbox" id="daLower" checked /><label for="daLower" style="margin:0;">Lowercase</label></div>
+              <div class="checkbox"><input type="checkbox" id="daOnlyValid" checked /><label for="daOnlyValid" style="margin:0;">Hitung hanya email valid</label></div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn" onclick="daAnalyze()"><i class="fa-solid fa-chart-simple"></i> Analyze</button>
+              <button class="btn secondary" id="daCopyBtn" onclick="daCopy()" disabled><i class="fa-solid fa-copy"></i> Copy</button>
+              <button class="btn secondary" id="daDlBtn" onclick="daDownload()" disabled><i class="fa-solid fa-download"></i> Download</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="result-grid">
+              <div class="result-card">
+                <h4>Top Domains</h4>
+                <div class="code" id="daOutput">-</div>
+              </div>
+              <div class="result-card">
+                <h4>Stats</h4>
+                <div class="small" id="daStats" style="white-space:pre-line;">-</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Formatter -->
+          <section id="tool-formatter" class="hidden">
+            <h3 class="section-title">Formatter</h3>
+
+            <div class="row">
+              <div>
+                <label for="fmtFile">Upload (.txt)</label>
+                <input id="fmtFile" type="file" accept=".txt,text/plain" />
+                <div class="small" id="fmtFileInfo" style="margin-top:8px;"></div>
+              </div>
+              <div>
+                <label for="fmtOutputType">Output</label>
+                <select id="fmtOutputType">
+                  <option value="pipe">email|pass</option>
+                  <option value="colon">email:pass</option>
+                  <option value="email">email saja</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <div>
+                <label for="fmtSetPass">Set password (optional)</label>
+                <input id="fmtSetPass" placeholder="Contoh: Premium123" />
+              </div>
+              <div class="checkbox" style="align-self:end;">
+                <input type="checkbox" id="fmtForcePass" />
+                <label for="fmtForcePass" style="margin:0;">Force override password</label>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <label for="fmtInput">Input</label>
+              <textarea id="fmtInput" placeholder="input email disini . . . .
+
+Contoh:
+user@gmail.com
+user@yahoo.com|123
+user@outlook.com:abc"></textarea>
+              <div class="inline" style="margin-top:10px;">
+                <span class="chip" id="fmtCount"><i class="fa-solid fa-list"></i> 0</span>
+                <button class="btn danger" onclick="fmtClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <div class="checkbox"><input type="checkbox" id="fmtTrim" checked /><label for="fmtTrim" style="margin:0;">Trim</label></div>
+              <div class="checkbox"><input type="checkbox" id="fmtRemoveEmpty" checked /><label for="fmtRemoveEmpty" style="margin:0;">Remove empty lines</label></div>
+              <div class="checkbox"><input type="checkbox" id="fmtRemoveNonAscii" /><label for="fmtRemoveNonAscii" style="margin:0;">Remove non-ASCII</label></div>
+              <div class="checkbox"><input type="checkbox" id="fmtKeepOriginalPass" checked /><label for="fmtKeepOriginalPass" style="margin:0;">Ambil pass dari input</label></div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn" onclick="fmtProcess()"><i class="fa-solid fa-wand-magic-sparkles"></i> Process</button>
+              <button class="btn secondary" id="fmtCopyBtn" onclick="fmtCopy()" disabled><i class="fa-solid fa-copy"></i> Copy</button>
+              <button class="btn secondary" id="fmtDlBtn" onclick="fmtDownload()" disabled><i class="fa-solid fa-download"></i> Download</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="result-card">
+              <h4>Output</h4>
+              <textarea id="fmtOutput" readonly style="min-height:260px;"></textarea>
+            </div>
+          </section>
+
+          <!-- Splitter -->
+          <section id="tool-splitter" class="hidden">
+            <h3 class="section-title">Splitter</h3>
+
+            <div class="row">
+              <div>
+                <label for="splitFileInput">Upload (.txt)</label>
+                <input id="splitFileInput" type="file" accept=".txt,text/plain" />
+                <div class="small" id="splitFileInfo" style="margin-top:8px;"></div>
+              </div>
+              <div>
+                <label for="splitSize">Bagi per (X) baris</label>
+                <input id="splitSize" type="number" min="1" placeholder="10" />
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <label for="splitInput">Input</label>
+              <textarea id="splitInput" placeholder="input email disini . . . .
+
+Contoh:
+user@gmail.com|123
+user@yahoo.com|123
+user@outlook.com|abc"></textarea>
+              <div class="inline" style="margin-top:10px;">
+                <span class="chip" id="splitCount"><i class="fa-solid fa-list"></i> 0</span>
+                <button class="btn danger" onclick="splitClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+              </div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn" id="splitDoBtn" onclick="splitProcess()" disabled><i class="fa-solid fa-scissors"></i> Split</button>
+              <button class="btn secondary" id="splitZipBtn" onclick="splitDownloadAllZip()" disabled><i class="fa-solid fa-file-archive"></i> Download ZIP</button>
+            </div>
+
+            <div class="divider"></div>
+            <div id="splitResults"></div>
+          </section>
+
+          <!-- GSuite -->
+          <section id="tool-gsuite" class="hidden">
+            <h3 class="section-title">GSuite Creator</h3>
+
+            <div class="row">
+              <div><label for="gsFirst">First Name</label><input id="gsFirst" placeholder="Apps"/></div>
+              <div><label for="gsLast">Last Name</label><input id="gsLast" placeholder="Vanzshop"/></div>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <div><label for="gsDomain">Domain</label><input id="gsDomain" placeholder="vanzshop.com"/></div>
+              <div><label for="gsQty">Jumlah</label><input id="gsQty" type="number" min="1" max="100000" placeholder="100"/></div>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <div><label for="gsAlphabetLen">Panjang username random</label><input id="gsAlphabetLen" type="number" min="5" max="24" placeholder="8"/></div>
+              <div><label for="gsPass">Password</label><input id="gsPass" placeholder="Premium123"/></div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn" id="gsGenerateBtn" onclick="gsGenerate()" disabled><i class="fa-solid fa-wand-magic-sparkles"></i> Generate</button>
+              <button class="btn secondary" id="gsCopyBtn" onclick="gsCopy()" disabled><i class="fa-solid fa-copy"></i> Copy</button>
+              <button class="btn secondary" id="gsCsvBtn" onclick="gsDownloadCSV()" disabled><i class="fa-solid fa-download"></i> CSV</button>
+            </div>
+
+            <div class="divider"></div>
+            <div class="result-card">
+              <h4>Output (email|pass)</h4>
+              <textarea id="gsOutput" readonly style="min-height:300px;"></textarea>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"><span class="dot"></span><span id="toastText"></span></div>
+
+  <script>
+    // ===== Download filename watermark =====
+    const VANZ_WATERMARK = "Vanzshop";
+    function withWatermarkFilename(name){
+      const safe = (name || "file.txt").replace(/[/\\?%*:|"<>]/g, "-");
+      if (safe.toLowerCase().includes("vanzshop")) return safe;
+      const dot = safe.lastIndexOf(".");
+      if (dot === -1) return `${VANZ_WATERMARK}-${safe}`;
+      return `${safe.slice(0, dot)}-${VANZ_WATERMARK}${safe.slice(dot)}`;
+    }
+
+    function toast(msg, type="ok"){
+      const el = document.getElementById("toast");
+      el.classList.remove("error");
+      if(type==="error") el.classList.add("error");
+      document.getElementById("toastText").textContent = msg;
+      el.classList.add("show");
+      clearTimeout(window.__toastT);
+      window.__toastT = setTimeout(()=>el.classList.remove("show"), 2400);
+    }
+
+    function downloadText(filename, text){
+      const blob = new Blob([text], {type:"text/plain"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = withWatermarkFilename(filename);
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function sanitizeLines(text){
+      return (text || "").split("\n").map(x => x.replace(/\r/g,"").trim()).filter(Boolean);
+    }
+    function removeNonAscii(s){ return (s||"").replace(/[^\x00-\x7F]/g, ""); }
+    function splitCombo(line){
+      const raw = (line || "").trim();
+      if(!raw) return {email:"", pass:""};
+      const seps = [":", "|", "\t"];
+      for(const sep of seps){
+        const idx = raw.indexOf(sep);
+        if(idx !== -1) return { email: raw.slice(0, idx).trim(), pass: raw.slice(idx+1).trim() };
+      }
+      const m = raw.match(/^(\S+)\s+(.+)$/);
+      if(m) return { email: (m[1]||"").trim(), pass: (m[2]||"").trim() };
+      return { email: raw.trim(), pass: "" };
+    }
+    function extractEmailFromLine(line){
+      const {email} = splitCombo(line);
+      return (email||"").trim();
+    }
+    function isValidEmail(email){
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+    }
+    function formatIDR(num){
+      const n = Number(num || 0);
+      return new Intl.NumberFormat("id-ID", { style:"currency", currency:"IDR", maximumFractionDigits:0 }).format(n);
+    }
+    function randFrom(chars, len){
+      let s=""; for(let i=0;i<len;i++) s += chars[Math.floor(Math.random()*chars.length)];
+      return s;
+    }
+
+    // ===== Navigation =====
+    const tools = ["emailgen","refund","validator","duplicate","domain","formatter","splitter","gsuite"];
+    function showTool(name){
+      const title = {
+        emailgen:"Email Generator",
+        refund:"Kalkulator Refund",
+        validator:"Validator",
+        duplicate:"Duplicate Remover",
+        domain:"Domain Analyzer",
+        formatter:"Formatter",
+        splitter:"Splitter",
+        gsuite:"GSuite Creator"
+      }[name] || "Tools";
+      document.getElementById("toolTitle").textContent = title;
+
+      const hint = {
+        emailgen:"domain → generate",
+        refund:"isi input → hitung",
+        validator:"upload/paste → validate",
+        duplicate:"paste → remove dup",
+        domain:"paste → analyze domain",
+        formatter:"normalize + set pass",
+        splitter:"split + zip",
+        gsuite:"generate csv"
+      }[name] || "";
+
+      document.getElementById("toolHint").innerHTML = `<i class="fa-solid fa-circle-info"></i> ${hint}`;
+
+      tools.forEach(t=>{
+        document.getElementById("tool-"+t).classList.toggle("hidden", t!==name);
+        document.getElementById("nav-"+t).classList.toggle("active", t===name);
+      });
+    }
+    window.showTool = showTool;
+
+    // ===== Email Generator =====
+    let egOut = [];
+    function egGenerate(){
+      const domain = (document.getElementById("egDomain").value || "").trim().toLowerCase();
+      const sub = (document.getElementById("egSub").value || "").trim().toLowerCase();
+      const countRaw = (document.getElementById("egCount").value || "").trim();
+      const lenRaw = (document.getElementById("egLen").value || "").trim();
+      const count = Math.max(1, Math.min(200000, Number(countRaw || 10)));
+      const len = Math.max(3, Math.min(32, Number(lenRaw || 10)));
+      const mode = document.getElementById("egMode").value;
+      const unique = document.getElementById("egUnique").checked;
+
+      if(!domain || !domain.includes(".")){ toast("Isi domain yang valid", "error"); return; }
+      const fullDomain = sub ? `${sub}.${domain}` : domain;
+
+      const chars =
+        mode === "alpha" ? "abcdefghijklmnopqrstuvwxyz" :
+        mode === "num" ? "0123456789" :
+        "abcdefghijklmnopqrstuvwxyz0123456789";
+
+      const seen = new Set();
+      egOut = [];
+      let guard = 0;
+
+      while(egOut.length < count){
+        const user = randFrom(chars, len);
+        if(unique){
+          if(seen.has(user)){
+            if(++guard > count * 20) break;
+            continue;
+          }
+          seen.add(user);
+        }
+        egOut.push(`${user}@${fullDomain}`);
+      }
+
+      document.getElementById("egOutput").value = egOut.join("\n");
+      document.getElementById("egCopyBtn").disabled = egOut.length===0;
+      document.getElementById("egDlBtn").disabled = egOut.length===0;
+      toast(`OK (${egOut.length})`);
+    }
+    function egCopy(){
+      if(!egOut.length) return;
+      navigator.clipboard.writeText(egOut.join("\n")).then(()=>toast("Copied"));
+    }
+    function egDownload(){
+      if(!egOut.length) return;
+      downloadText("email-generator.txt", egOut.join("\n"));
+      toast("Downloaded");
+    }
+    window.egGenerate = egGenerate; window.egCopy = egCopy; window.egDownload = egDownload;
+
+    // ===== Refund (aligned summary) =====
+    function rfResetUI(){
+      document.getElementById("rfResult").textContent = "Rp 0";
+      document.getElementById("rfExplain").textContent = "";
+      document.getElementById("rfSummary").textContent = "-";
+      document.getElementById("rfPctText").textContent = "—%";
+      document.getElementById("rfPctFill").style.width = "0%";
+    }
+    function rfReset(){
+      document.getElementById("rfProduct").value = "";
+      document.getElementById("rfRate").value = "";
+      document.getElementById("rfPrice").value = "";
+      document.getElementById("rfDiscount").value = "";
+      document.getElementById("rfRemaining").value = "";
+      document.getElementById("rfTotal").value = "";
+      rfResetUI();
+      toast("Reset");
+    }
+    function rfProgressBar(pct){
+      const p = Math.max(0, Math.min(100, pct));
+      const blocks = 25;
+      const filled = Math.round((p/100) * blocks);
+      const bar = "█".repeat(filled) + "░".repeat(blocks - filled);
+      return { p, bar };
+    }
+    function padLabel(label, width){
+      const s = String(label);
+      return s + " ".repeat(Math.max(0, width - s.length));
+    }
+    function rfCalc(){
+      const product = (document.getElementById("rfProduct").value || "").trim();
+      const price = Number(document.getElementById("rfPrice").value || 0);
+      const remaining = Number(document.getElementById("rfRemaining").value || 0);
+      const total = Number(document.getElementById("rfTotal").value || 0);
+
+      const rateRaw = (document.getElementById("rfRate").value || "").trim();
+      const rate = rateRaw === "" ? 100 : Math.max(0, Math.min(100, Number(rateRaw)));
+
+      const discountRaw = (document.getElementById("rfDiscount").value || "").trim();
+      const hasDiscount = discountRaw !== "" && Number(discountRaw) > 0;
+      const discount = discountRaw === "" ? 0 : Math.max(0, Math.min(100, Number(discountRaw)));
+
+      if(!product){ toast("Isi produk dulu", "error"); return; }
+      if(price <= 0){ toast("Isi harga beli (Rp)", "error"); return; }
+      if(total <= 0){ toast("Isi total durasi (hari)", "error"); return; }
+      if(remaining < 0){ toast("Sisa hari tidak boleh negatif", "error"); return; }
+      if(remaining > total){ toast("Sisa hari tidak boleh > total", "error"); return; }
+
+      const used = Math.max(0, total - remaining);
+      const ratio = Math.max(0, Math.min(1, remaining / total));
+      const pctRemain = ratio * 100;
+
+      let refundBase = price * ratio;
+      refundBase = refundBase * (rate / 100);
+      const refundFinal = refundBase * (1 - (discount/100));
+      const resultRounded = Math.max(0, Math.round(refundFinal));
+
+      document.getElementById("rfResult").textContent = formatIDR(resultRounded);
+
+      const {p, bar} = rfProgressBar(pctRemain);
+      document.getElementById("rfPctText").textContent = `${p.toFixed(0)}%`;
+      document.getElementById("rfPctFill").style.width = `${p}%`;
+
+      document.getElementById("rfExplain").textContent =
+        `Durasi: ${remaining} / ${total} hari\n`+
+        `Terpakai: ${used} hari`;
+
+      // aligned summary (label col width = 11, match your screenshot)
+      const L = 11;
+      const lines = [];
+      lines.push("💰 VANZSHOP REFUND");
+      lines.push("");
+      // bar line: keep two spaces before percentage like your sample
+      lines.push(`${bar}  ${p.toFixed(0)}%`);
+      lines.push("");
+      lines.push(`${padLabel("Produk", L)} ${product}`);
+      lines.push(`${padLabel("Harga", L)} ${formatIDR(price)}`);
+      lines.push(`${padLabel("Durasi", L)} ${remaining} / ${total} hari`);
+      lines.push(`${padLabel("Terpakai", L)} ${used} hari`);
+      if(hasDiscount) lines.push(`${padLabel("Diskon", L)} ${discount}%`);
+      lines.push(`${padLabel("Rate", L)} ${rate}%`);
+      lines.push("");
+      lines.push(`${padLabel("TOTAL", L)} ${formatIDR(resultRounded)}`);
+
+      document.getElementById("rfSummary").textContent = lines.join("\n");
+      toast("OK");
+    }
+    function rfCopy(){
+      const text = document.getElementById("rfSummary").textContent || "";
+      if(!text || text.trim()==="-"){ toast("Belum ada ringkasan", "error"); return; }
+      navigator.clipboard.writeText(text).then(()=>toast("Copied"));
+    }
+    window.rfCalc = rfCalc; window.rfCopy = rfCopy; window.rfReset = rfReset;
+    window.addEventListener("DOMContentLoaded", ()=>{
+      rfResetUI();
+      document.getElementById("rfProduct").value = "";
+      document.getElementById("rfRate").value = "";
+      document.getElementById("rfPrice").value = "";
+      document.getElementById("rfDiscount").value = "";
+      document.getElementById("rfRemaining").value = "";
+      document.getElementById("rfTotal").value = "";
+    });
+
+    // ===== Validator =====
+    let valValid = [], valInvalid = [];
+    const disposableDomains = new Set(["tempmail.com","10minutemail.com","guerrillamail.com","mailinator.com","yopmail.com","getnada.com","trashmail.com","temp-mail.org"]);
+    function normalizeDomainList(str){
+      return (str||"").split(",").map(s=>s.trim().toLowerCase()).filter(Boolean).map(s=>s.replace(/^@/,""));
+    }
+    const valInput = document.getElementById("valInput");
+    valInput.addEventListener("input", ()=>{
+      document.getElementById("valCount").innerHTML = `<i class="fa-solid fa-list"></i> ${sanitizeLines(valInput.value).length}`;
+    });
+    document.getElementById("valFile").addEventListener("change", async (e)=>{
+      const f = e.target.files && e.target.files[0];
+      if(!f) return;
+      if(f.size > 5*1024*1024){ toast("File terlalu besar", "error"); return; }
+      if(!(f.name||"").toLowerCase().endsWith(".txt")){ toast("Harus .txt", "error"); return; }
+      const text = await f.text();
+      valInput.value = text;
+      document.getElementById("valFileInfo").textContent = `${f.name} (${f.size} bytes)`;
+      document.getElementById("valCount").innerHTML = `<i class="fa-solid fa-list"></i> ${sanitizeLines(text).length}`;
+      toast("Loaded");
+    });
+    function valClear(){
+      document.getElementById("valFile").value = "";
+      document.getElementById("valFileInfo").textContent = "";
+      valInput.value = "";
+      valValid = []; valInvalid = [];
+      document.getElementById("valValidOut").value = "";
+      document.getElementById("valInvalidOut").value = "";
+      document.getElementById("valValidCount").textContent = "0";
+      document.getElementById("valInvalidCount").textContent = "0";
+      document.getElementById("barValid").style.height = "0%";
+      document.getElementById("barInvalid").style.height = "0%";
+      document.getElementById("valDlValid").disabled = true;
+      document.getElementById("valDlInvalid").disabled = true;
+      document.getElementById("valCount").innerHTML = `<i class="fa-solid fa-list"></i> 0`;
+      toast("Clear");
+    }
+    function valProcess(){
+      const trim = document.getElementById("valTrim").checked;
+      const extract = document.getElementById("valExtractEmailOnly").checked;
+      const blockDisp = document.getElementById("valBlockDisposable").checked;
+      const caseIns = document.getElementById("valCaseInsensitive").checked;
+      const allowDomains = normalizeDomainList(document.getElementById("valDomains").value);
+
+      let lines = (valInput.value || "").split("\n").map(x=>x.replace(/\r/g,""));
+      if(trim) lines = lines.map(x=>x.trim());
+      lines = lines.filter(x=>x && x.trim() !== "");
+
+      valValid = []; valInvalid = [];
+      for(const line of lines){
+        const emailRaw = extract ? extractEmailFromLine(line) : line;
+        const emailNorm = caseIns ? (emailRaw||"").toLowerCase() : (emailRaw||"");
+        const e = (emailNorm||"").trim();
+
+        if(!isValidEmail(e)){ valInvalid.push(line); continue; }
+        const domain = e.split("@")[1]?.toLowerCase() || "";
+        if(allowDomains.length && !allowDomains.includes(domain)){ valInvalid.push(line); continue; }
+        if(blockDisp && disposableDomains.has(domain)){ valInvalid.push(line); continue; }
+        valValid.push(line);
+      }
+
+      document.getElementById("valValidOut").value = valValid.join("\n");
+      document.getElementById("valInvalidOut").value = valInvalid.join("\n");
+      document.getElementById("valValidCount").textContent = String(valValid.length);
+      document.getElementById("valInvalidCount").textContent = String(valInvalid.length);
+
+      const total = Math.max(1, valValid.length + valInvalid.length);
+      document.getElementById("barValid").style.height = `${(valValid.length/total)*100}%`;
+      document.getElementById("barInvalid").style.height = `${(valInvalid.length/total)*100}%`;
+
+      document.getElementById("valDlValid").disabled = valValid.length===0;
+      document.getElementById("valDlInvalid").disabled = valInvalid.length===0;
+
+      toast(`Valid ${valValid.length} / Invalid ${valInvalid.length}`);
+    }
+    function valDownload(which){
+      if(which==="valid"){
+        if(!valValid.length) return;
+        downloadText("valid.txt", valValid.join("\n"));
+      } else {
+        if(!valInvalid.length) return;
+        downloadText("invalid.txt", valInvalid.join("\n"));
+      }
+      toast("Downloaded");
+    }
+    window.valProcess = valProcess; window.valClear = valClear; window.valDownload = valDownload;
+
+    // ===== Duplicate =====
+    let dupCleaned = [];
+    const dupInput = document.getElementById("dupInput");
+    dupInput.addEventListener("input", ()=>{
+      document.getElementById("dupCount").innerHTML = `<i class="fa-solid fa-list"></i> ${sanitizeLines(dupInput.value).length}`;
+    });
+    function dupClear(){
+      dupInput.value = "";
+      dupCleaned = [];
+      document.getElementById("dupOutput").value = "";
+      document.getElementById("dupCount").innerHTML = `<i class="fa-solid fa-list"></i> 0`;
+      document.getElementById("dupCopyBtn").disabled = true;
+      document.getElementById("dupDownloadBtn").disabled = true;
+      toast("Clear");
+    }
+    function dupProcess(){
+      const linesRaw = (dupInput.value||"").split("\n").map(x=>x.replace(/\r/g,""));
+      const caseSensitive = document.getElementById("dupCaseSensitive").checked;
+      const trim = document.getElementById("dupTrim").checked;
+      const extractEmailOnly = document.getElementById("dupExtractEmailOnly").checked;
+      const keepFirst = document.getElementById("dupKeepFirst").checked;
+
+      let lines = linesRaw;
+      if(trim) lines = lines.map(x=>x.trim());
+      lines = lines.filter(x=>x && x.trim() !== "");
+
+      const seen = new Set();
+      const out = [];
+      for(const line of lines){
+        let processed = line;
+        if(extractEmailOnly) processed = extractEmailFromLine(processed);
+        const key = caseSensitive ? processed : processed.toLowerCase();
+        if(!seen.has(key)){
+          seen.add(key);
+          out.push(keepFirst ? line : processed);
+        }
+      }
+      dupCleaned = out;
+      document.getElementById("dupOutput").value = dupCleaned.join("\n");
+      document.getElementById("dupCopyBtn").disabled = dupCleaned.length===0;
+      document.getElementById("dupDownloadBtn").disabled = dupCleaned.length===0;
+      toast(`OK (${dupCleaned.length})`);
+    }
+    function dupCopy(){
+      if(!dupCleaned.length) return;
+      navigator.clipboard.writeText(dupCleaned.join("\n")).then(()=>toast("Copied"));
+    }
+    function dupDownload(){
+      if(!dupCleaned.length) return;
+      downloadText("dedup.txt", dupCleaned.join("\n"));
+      toast("Downloaded");
+    }
+    window.dupProcess = dupProcess; window.dupClear = dupClear; window.dupCopy = dupCopy; window.dupDownload = dupDownload;
+
+    // ===== Domain Analyzer =====
+    let daLastText = "";
+    const daInput = document.getElementById("daInput");
+    daInput.addEventListener("input", ()=>{
+      document.getElementById("daCount").innerHTML = `<i class="fa-solid fa-list"></i> ${sanitizeLines(daInput.value).length}`;
+    });
+    document.getElementById("daFile").addEventListener("change", async (e)=>{
+      const f = e.target.files && e.target.files[0];
+      if(!f) return;
+      if(f.size > 5*1024*1024){ toast("File terlalu besar", "error"); return; }
+      if(!(f.name||"").toLowerCase().endsWith(".txt")){ toast("Harus .txt", "error"); return; }
+      const text = await f.text();
+      daInput.value = text;
+      document.getElementById("daFileInfo").textContent = `${f.name} (${f.size} bytes)`;
+      document.getElementById("daCount").innerHTML = `<i class="fa-solid fa-list"></i> ${sanitizeLines(text).length}`;
+      toast("Loaded");
+    });
+    function daClear(){
+      document.getElementById("daFile").value = "";
+      document.getElementById("daFileInfo").textContent = "";
+      daInput.value = "";
+      daLastText = "";
+      document.getElementById("daOutput").textContent = "-";
+      document.getElementById("daStats").textContent = "-";
+      document.getElementById("daCopyBtn").disabled = true;
+      document.getElementById("daDlBtn").disabled = true;
+      document.getElementById("daCount").innerHTML = `<i class="fa-solid fa-list"></i> 0`;
+      toast("Clear");
+    }
+    function daAnalyze(){
+      const topN = Math.max(3, Math.min(200, Number(document.getElementById("daTop").value || 30)));
+      const trim = document.getElementById("daTrim").checked;
+      const extract = document.getElementById("daExtract").checked;
+      const lower = document.getElementById("daLower").checked;
+      const onlyValid = document.getElementById("daOnlyValid").checked;
+
+      let lines = (daInput.value || "").split("\n").map(x=>x.replace(/\r/g,""));
+      if(trim) lines = lines.map(x=>x.trim());
+      lines = lines.filter(x=>x && x.trim() !== "");
+
+      const counts = new Map();
+      let validEmails = 0;
+      let invalidEmails = 0;
+
+      for(const line of lines){
+        let email = extract ? extractEmailFromLine(line) : line.trim();
+        if(lower) email = (email||"").toLowerCase();
+        if(!email.includes("@")){ invalidEmails++; continue; }
+        if(onlyValid && !isValidEmail(email)){ invalidEmails++; continue; }
+        if(isValidEmail(email)) validEmails++; else invalidEmails++;
+
+        const domain = email.split("@")[1]?.trim() || "";
+        if(!domain) continue;
+        counts.set(domain, (counts.get(domain) || 0) + 1);
+      }
+
+      const sorted = [...counts.entries()].sort((a,b)=>b[1]-a[1]).slice(0, topN);
+      const out = sorted.map(([d,c], i)=> `${String(i+1).padStart(2,"0")}. ${d}  (${c})`).join("\n");
+      daLastText = out;
+
+      document.getElementById("daOutput").textContent = out || "-";
+      document.getElementById("daStats").textContent =
+        `Total lines: ${lines.length}\n`+
+        `Valid emails: ${validEmails}\n`+
+        `Invalid emails: ${invalidEmails}\n`+
+        `Unique domains: ${counts.size}\n`+
+        `Top shown: ${sorted.length}`;
+
+      document.getElementById("daCopyBtn").disabled = !out;
+      document.getElementById("daDlBtn").disabled = !out;
+
+      toast("Done");
+    }
+    function daCopy(){
+      if(!daLastText) return;
+      navigator.clipboard.writeText(daLastText).then(()=>toast("Copied"));
+    }
+    function daDownload(){
+      if(!daLastText) return;
+      downloadText("domain-analyzer.txt", daLastText);
+      toast("Downloaded");
+    }
+    window.daAnalyze = daAnalyze; window.daClear = daClear; window.daCopy = daCopy; window.daDownload = daDownload;
+
+    // ===== Formatter =====
+    let fmtOutLines = [];
+    const fmtInput = document.getElementById("fmtInput");
+    fmtInput.addEventListener("input", ()=>{
+      document.getElementById("fmtCount").innerHTML = `<i class="fa-solid fa-list"></i> ${sanitizeLines(fmtInput.value).length}`;
+      document.getElementById("fmtCopyBtn").disabled = true;
+      document.getElementById("fmtDlBtn").disabled = true;
+    });
+    document.getElementById("fmtFile").addEventListener("change", async (e)=>{
+      const f = e.target.files && e.target.files[0];
+      if(!f) return;
+      if(f.size > 5*1024*1024){ toast("File terlalu besar", "error"); return; }
+      if(!(f.name||"").toLowerCase().endsWith(".txt")){ toast("Harus .txt", "error"); return; }
+      const text = await f.text();
+      fmtInput.value = text;
+      document.getElementById("fmtFileInfo").textContent = `${f.name} (${f.size} bytes)`;
+      document.getElementById("fmtCount").innerHTML = `<i class="fa-solid fa-list"></i> ${sanitizeLines(text).length}`;
+      toast("Loaded");
+    });
+    function fmtClear(){
+      document.getElementById("fmtFile").value = "";
+      document.getElementById("fmtFileInfo").textContent = "";
+      fmtInput.value = "";
+      fmtOutLines = [];
+      document.getElementById("fmtOutput").value = "";
+      document.getElementById("fmtCount").innerHTML = `<i class="fa-solid fa-list"></i> 0`;
+      document.getElementById("fmtCopyBtn").disabled = true;
+      document.getElementById("fmtDlBtn").disabled = true;
+      toast("Clear");
+    }
+    function fmtProcess(){
+      const outputType = document.getElementById("fmtOutputType").value;
+      const setPass = (document.getElementById("fmtSetPass").value || "").trim();
+      const forcePass = document.getElementById("fmtForcePass").checked;
+      const trim = document.getElementById("fmtTrim").checked;
+      const removeEmpty = document.getElementById("fmtRemoveEmpty").checked;
+      const removeNA = document.getElementById("fmtRemoveNonAscii").checked;
+      const keepPass = document.getElementById("fmtKeepOriginalPass").checked;
+
+      let lines = (fmtInput.value || "").split("\n").map(x => x.replace(/\r/g,""));
+      if(trim) lines = lines.map(x => x.trim());
+      if(removeNA) lines = lines.map(removeNonAscii);
+      if(removeEmpty) lines = lines.filter(x => x && x.trim() !== "");
+
+      fmtOutLines = lines.map(line=>{
+        const {email, pass} = splitCombo(line);
+        const e = (email||"").trim();
+        const pIn = (pass||"").trim();
+        if(!e) return "";
+        if(outputType === "email") return e;
+
+        let finalPass = "";
+        if(forcePass) finalPass = setPass || pIn;
+        else finalPass = (keepPass && pIn) ? pIn : (setPass || pIn);
+
+        if(outputType === "pipe") return finalPass ? `${e}|${finalPass}` : e;
+        if(outputType === "colon") return finalPass ? `${e}:${finalPass}` : e;
+        return e;
+      }).filter(Boolean);
+
+      document.getElementById("fmtOutput").value = fmtOutLines.join("\n");
+      document.getElementById("fmtCopyBtn").disabled = fmtOutLines.length===0;
+      document.getElementById("fmtDlBtn").disabled = fmtOutLines.length===0;
+      toast(`OK (${fmtOutLines.length})`);
+    }
+    function fmtCopy(){
+      if(!fmtOutLines.length) return;
+      navigator.clipboard.writeText(fmtOutLines.join("\n")).then(()=>toast("Copied"));
+    }
+    function fmtDownload(){
+      if(!fmtOutLines.length) return;
+      downloadText("formatted.txt", fmtOutLines.join("\n"));
+      toast("Downloaded");
+    }
+    window.fmtProcess = fmtProcess; window.fmtClear = fmtClear; window.fmtCopy = fmtCopy; window.fmtDownload = fmtDownload;
+
+    // ===== Splitter =====
+    let splitLines = [];
+    let splitGroups = [];
+    const splitInput = document.getElementById("splitInput");
+    splitInput.addEventListener("input", ()=>{
+      splitLines = sanitizeLines(splitInput.value);
+      document.getElementById("splitCount").innerHTML = `<i class="fa-solid fa-list"></i> ${splitLines.length}`;
+      document.getElementById("splitDoBtn").disabled = splitLines.length===0;
+      document.getElementById("splitZipBtn").disabled = true;
+    });
+    document.getElementById("splitFileInput").addEventListener("change", async (e)=>{
+      const f = e.target.files && e.target.files[0];
+      if(!f) return;
+      if(f.size > 5*1024*1024){ toast("File terlalu besar", "error"); return; }
+      if(!(f.name||"").toLowerCase().endsWith(".txt")){ toast("Harus .txt", "error"); return; }
+      const text = await f.text();
+      splitInput.value = text;
+      splitLines = sanitizeLines(text);
+      document.getElementById("splitFileInfo").textContent = `${f.name} (${f.size} bytes)`;
+      document.getElementById("splitCount").innerHTML = `<i class="fa-solid fa-list"></i> ${splitLines.length}`;
+      document.getElementById("splitDoBtn").disabled = splitLines.length===0;
+      document.getElementById("splitZipBtn").disabled = true;
+      toast("Loaded");
+    });
+    function splitClear(){
+      document.getElementById("splitFileInput").value = "";
+      document.getElementById("splitFileInfo").textContent = "";
+      splitInput.value = "";
+      splitLines = []; splitGroups = [];
+      document.getElementById("splitResults").innerHTML = "";
+      document.getElementById("splitCount").innerHTML = `<i class="fa-solid fa-list"></i> 0`;
+      document.getElementById("splitDoBtn").disabled = true;
+      document.getElementById("splitZipBtn").disabled = true;
+      toast("Clear");
+    }
+    function splitProcess(){
+      const sizeRaw = (document.getElementById("splitSize").value || "").trim();
+      const size = Math.max(1, Number(sizeRaw || 10));
+      splitLines = sanitizeLines(splitInput.value);
+      if(!splitLines.length){ toast("Input kosong", "error"); return; }
+      splitGroups = [];
+      for(let i=0;i<splitLines.length;i+=size) splitGroups.push(splitLines.slice(i, i+size));
+      document.getElementById("splitZipBtn").disabled = splitGroups.length===0;
+
+      const el = document.getElementById("splitResults");
+      el.innerHTML = "";
+      splitGroups.forEach((g, idx)=>{
+        const card = document.createElement("div");
+        card.className = "result-card";
+        card.innerHTML = `<h4>Grup ${idx+1} (${g.length})</h4><textarea readonly style="min-height:180px;">${g.join("\n")}</textarea>`;
+        el.appendChild(card);
+      });
+      toast(`OK (${splitGroups.length} grup)`);
+    }
+    async function splitDownloadAllZip(){
+      if(!splitGroups.length) return;
+      const zip = new JSZip();
+      splitGroups.forEach((g, idx)=> zip.file(`batch-${idx+1}.txt`, g.join("\n")));
+      const blob = await zip.generateAsync({type:"blob"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = withWatermarkFilename("split.zip");
+      a.click();
+      URL.revokeObjectURL(url);
+      toast("Downloaded");
+    }
+    window.splitProcess = splitProcess; window.splitClear = splitClear; window.splitDownloadAllZip = splitDownloadAllZip;
+
+    // ===== GSuite =====
+    let gsData = [];
+    ["gsFirst","gsLast","gsDomain","gsQty","gsAlphabetLen","gsPass"].forEach(id=>{
+      document.getElementById(id).addEventListener("input", gsValidate);
+      document.getElementById(id).addEventListener("change", gsValidate);
+    });
+    function gsValidate(){
+      const first = (document.getElementById("gsFirst").value||"").trim();
+      const last = (document.getElementById("gsLast").value||"").trim();
+      const dom = (document.getElementById("gsDomain").value||"").trim();
+      const qty = Number((document.getElementById("gsQty").value||"").trim() || 0);
+      const len = Number((document.getElementById("gsAlphabetLen").value||"").trim() || 0);
+      const pass = (document.getElementById("gsPass").value||"").trim();
+      document.getElementById("gsGenerateBtn").disabled = !(first && last && dom && qty>0 && len>=5 && pass);
+    }
+    gsValidate();
+    function randAlpha(len){
+      const chars = "abcdefghijklmnopqrstuvwxyz";
+      let s=""; for(let i=0;i<len;i++) s += chars[Math.floor(Math.random()*chars.length)];
+      return s;
+    }
+    function gsGenerate(){
+      const first = (document.getElementById("gsFirst").value||"").trim();
+      const last = (document.getElementById("gsLast").value||"").trim();
+      const dom = (document.getElementById("gsDomain").value||"").trim();
+      const qty = Math.max(1, Math.min(100000, Number((document.getElementById("gsQty").value||"").trim() || 100)));
+      const len = Math.max(5, Math.min(24, Number((document.getElementById("gsAlphabetLen").value||"").trim() || 8)));
+      const pass = (document.getElementById("gsPass").value||"").trim();
+
+      const used = new Set();
+      gsData = [];
+      for(let i=0;i<qty;i++){
+        let user = randAlpha(len), guard=0;
+        while(used.has(user) && guard++<5000) user = randAlpha(len);
+        used.add(user);
+        gsData.push({first,last,email:`${user}@${dom}`,password:pass});
+      }
+      document.getElementById("gsOutput").value = gsData.map(d => `${d.email}|${d.password}`).join("\n");
+      document.getElementById("gsCopyBtn").disabled = gsData.length===0;
+      document.getElementById("gsCsvBtn").disabled = gsData.length===0;
+      toast(`OK (${gsData.length})`);
+    }
+    function gsCopy(){
+      if(!gsData.length) return;
+      navigator.clipboard.writeText(gsData.map(d => `${d.email}|${d.password}`).join("\n")).then(()=>toast("Copied"));
+    }
+    function gsCsvContent(){
+      const headers = [
+        'First Name [Required]','Last Name [Required]','Email Address [Required]','Password [Required]',
+        'Password Hash Function [UPLOAD ONLY]','Org Unit Path [Required]','New Primary Email [UPLOAD ONLY]',
+        'Recovery Email','Home Secondary Email','Work Secondary Email','Recovery Phone [MUST BE IN THE E.164 FORMAT]',
+        'Work Phone','Home Phone','Mobile Phone','Work Address','Home Address','Employee ID','Employee Type',
+        'Employee Title','Manager Email','Department','Cost Center','Building ID','Floor Name','Floor Section',
+        'Change Password at Next Sign-In','New Status [UPLOAD ONLY]','Advanced Protection Program enrollment'
+      ];
+      const rows = [headers.join(",")];
+      for(const d of gsData){
+        const row = [d.first,d.last,d.email,d.password,'','/','','','','','','','','','','','','','','','','','','','','','FALSE','',''];
+        rows.push(row.join(","));
+      }
+      return rows.join("\n");
+    }
+    function gsDownloadCSV(){
+      if(!gsData.length) return;
+      downloadText(`gsuite-${new Date().toISOString().slice(0,10)}.csv`, gsCsvContent());
+      toast("Downloaded");
+    }
+    window.gsGenerate = gsGenerate; window.gsCopy = gsCopy; window.gsDownloadCSV = gsDownloadCSV;
+
+    // Default view
+    showTool("refund");
+  </script>
+</body>
+</html>
