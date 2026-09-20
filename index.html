@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Vanzshop Tools</title>
 
-  <!-- Font Awesome (white icons) -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+  <!-- OTPAuth Library (RFC 6238 Standard) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.1.3/otpauth.umd.min.js"></script>
 
   <style>
     :root{
@@ -36,7 +38,6 @@
       overflow-x:hidden;
     }
 
-    /* background grid + planets */
     .gridbg{
       position:fixed; inset:-30px; z-index:-3; pointer-events:none;
       background:
@@ -65,7 +66,6 @@
 
     .container{max-width:1180px; margin:0 auto; padding:22px 18px 70px;}
 
-    /* Header (square icon + title) */
     .topbar{
       display:flex;
       align-items:flex-start;
@@ -145,7 +145,6 @@
     }
     .card-body{ padding:16px; }
 
-    /* Sidebar nav */
     .nav{
       display:flex;
       flex-direction:column;
@@ -182,13 +181,12 @@
       width:20px;
       display:grid;
       place-items:center;
-      color: rgba(255,255,255,.92); /* white icons */
+      color: rgba(255,255,255,.92);
       opacity:.95;
       filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
     }
     .nav .ico i{ font-size:14px; }
 
-    /* Forms */
     .section-title{margin:0 0 10px;font-size:20px;font-weight:950;letter-spacing:.2px;}
     .muted{color:var(--muted);}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -207,7 +205,7 @@
     input:focus,textarea:focus,select:focus{ border-color: rgba(246,201,69,.7); background: rgba(0,0,0,.28); }
 
     textarea{
-      min-height:180px;
+      min-height:160px;
       resize:vertical;
       font-family: var(--mono);
       line-height:1.35;
@@ -260,7 +258,6 @@
       max-height:260px;
     }
 
-    /* Chart */
     .chart{
       display:flex;gap:12px;align-items:flex-end;height:110px;padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);
     }
@@ -270,7 +267,6 @@
     .bar>div{position:absolute;left:0;bottom:0;width:100%;height:0%;background:linear-gradient(180deg, rgba(246,201,69,1), rgba(255,222,120,1));transition:height .35s ease;}
     .bar.invalid>div{background:linear-gradient(180deg, rgba(239,68,68,1), rgba(245,158,11,1));}
 
-    /* Toast */
     .toast{
       position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
       padding: 12px 14px; border-radius: 999px;
@@ -289,7 +285,6 @@
     .toast.error .dot{background:var(--danger);}
     .hidden{display:none !important;}
 
-    /* Refund progress bar */
     .progressWrap{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.18);
@@ -327,6 +322,102 @@
       background: linear-gradient(90deg, rgba(246,201,69,1), rgba(255,222,120,1));
       transition: width .35s ease;
     }
+
+    .otpBigDisplay{
+      font-family: var(--mono);
+      font-size: 40px;
+      font-weight: 1000;
+      letter-spacing: 6px;
+      text-align: center;
+      padding: 18px;
+      color: var(--gold);
+      text-shadow: 0 0 25px rgba(246,201,69,.35);
+      user-select: all;
+      cursor: pointer;
+      background: rgba(0,0,0,.25);
+      border-radius: 14px;
+      border: 1px dashed rgba(246,201,69,.35);
+      margin: 12px 0;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .otpBigDisplay:hover{
+      background: rgba(246,201,69,.06);
+      transform: scale(1.01);
+    }
+
+    /* PREMIUMISME STYLE OUTLOOK TABLE */
+    .tableContainer{
+      width:100%;
+      overflow-x:auto;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.25);
+    }
+    table.inboxTable{
+      width:100%;
+      border-collapse:collapse;
+      text-align:left;
+      font-size:12px;
+    }
+    table.inboxTable th{
+      padding:12px 14px;
+      background:rgba(255,255,255,.04);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      color:rgba(255,255,255,.65);
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.3px;
+    }
+    table.inboxTable td{
+      padding:14px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      vertical-align:top;
+    }
+    table.inboxTable tr:hover td{
+      background:rgba(246,201,69,.04);
+    }
+    .tdSender{font-weight:950; color:#fff; width:140px;}
+    .tdSubject{font-weight:950; color:#fff; margin-bottom:4px;}
+    .tdPreview{color:var(--muted); font-size:11px; line-height:1.4;}
+    .tdDate{color:rgba(255,255,255,.6); font-size:11px; white-space:nowrap; text-align:right; width:120px; font-family:var(--mono);}
+    .otpBadgeInline{
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(246,201,69,.15);
+      border:1px solid rgba(246,201,69,.4);
+      color:var(--gold);
+      padding:3px 7px;
+      border-radius:6px;
+      font-weight:950;
+      font-family:var(--mono);
+      font-size:11px;
+      cursor:pointer;
+      margin-top:6px;
+    }
+    .otpBadgeInline:hover{
+      background:var(--gold);
+      color:#000;
+    }
+    .toggleGroup{
+      display:inline-flex;
+      background:rgba(0,0,0,.35);
+      padding:3px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .toggleBtn{
+      padding:5px 12px;
+      font-size:11px;
+      font-weight:950;
+      border-radius:7px;
+      cursor:pointer;
+      color:rgba(255,255,255,.6);
+      user-select:none;
+      transition:all .15s ease;
+    }
+    .toggleBtn.active{
+      background:var(--gold);
+      color:#0b0b0f;
+    }
   </style>
 </head>
 
@@ -350,18 +441,27 @@
     </div>
 
     <div class="grid">
-      <!-- Sidebar -->
+      <!-- Sidebar Nav -->
       <div class="card">
         <div class="card-header">
           <h3>Menu</h3>
-          <span class="chip"><i class="fa-solid fa-code"></i> v7</span>
+          <span class="chip"><i class="fa-solid fa-code"></i> v9.1</span>
         </div>
 
         <div class="nav">
-          <!-- Generator Email: paling atas -->
           <button id="nav-emailgen" onclick="showTool('emailgen')">
             <span class="ico"><i class="fa-regular fa-envelope"></i></span>
             Email Generator
+          </button>
+
+          <button id="nav-authenticator" onclick="showTool('authenticator')">
+            <span class="ico"><i class="fa-solid fa-key"></i></span>
+            2FA Authenticator
+          </button>
+
+          <button id="nav-outlook" onclick="showTool('outlook')">
+            <span class="ico"><i class="fa-solid fa-inbox"></i></span>
+            Outlook Live Reader
           </button>
 
           <button id="nav-refund" class="active" onclick="showTool('refund')">
@@ -401,7 +501,7 @@
         </div>
       </div>
 
-      <!-- Main -->
+      <!-- Main Content Card -->
       <div class="card">
         <div class="card-header">
           <h2 id="toolTitle">Kalkulator Refund</h2>
@@ -409,6 +509,115 @@
         </div>
 
         <div class="card-body">
+
+          <!-- TOOL: 2FA AUTHENTICATOR -->
+          <section id="tool-authenticator" class="hidden">
+            <h3 class="section-title">2FA Authenticator</h3>
+            <p class="muted" style="margin-top:-6px;">Masukkan Secret Key (Base32) atau link otpauth:// lalu tekan tombol untuk menghasilkan kode.</p>
+
+            <div>
+              <label for="authSecret">Secret Key (Base32) / otpauth URL</label>
+              <input id="authSecret" placeholder="Contoh: JBSWY3DPEHPK3PXP atau otpauth://totp/..." value="" />
+            </div>
+
+            <div class="btnrow" style="margin-top:14px;">
+              <button class="btn" onclick="authGenerate()"><i class="fa-solid fa-key"></i> Dapatkan Kode OTP</button>
+              <button class="btn secondary" id="authCopyBtn" onclick="authCopyCode()" disabled><i class="fa-solid fa-copy"></i> Salin Kode</button>
+              <button class="btn danger" onclick="authClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="progressWrap" id="authProgressWrap" style="opacity: 0.45;">
+              <div class="progressTop">
+                <div class="progressLabel">Siklus Detik (30s Period)</div>
+                <div class="progressPct" id="authPctText">—s</div>
+              </div>
+              <div class="progressBar"><div class="progressFill" id="authPctFill" style="width: 0%;"></div></div>
+            </div>
+
+            <div class="otpBigDisplay" id="authOtpCode" onclick="authCopyCode()" title="Klik untuk salin kode">
+              ------
+            </div>
+
+            <div class="result-card">
+              <h4>Status Layanan</h4>
+              <div class="small" id="authStatusText">
+                Silakan masukkan Secret Key di atas lalu klik "Dapatkan Kode OTP" untuk memulai.
+              </div>
+            </div>
+          </section>
+
+          <!-- TOOL: OUTLOOK LIVE READER (PERSIS PREMIUMISME.CO/TOOLS/OUTLOOK) -->
+          <section id="tool-outlook" class="hidden">
+            <div class="inline" style="margin-bottom:8px;">
+              <h3 class="section-title" style="margin:0;">Outlook Reader</h3>
+              <div class="toggleGroup">
+                <div class="toggleBtn active" id="modeOAuth2" onclick="setOutlookAuthMode('oauth2')">OAuth2</div>
+                <div class="toggleBtn" id="modeGraph" onclick="setOutlookAuthMode('graph')">Graph API</div>
+              </div>
+            </div>
+            <p class="muted" style="margin-top:0px;">Tempelkan kredensial akun Outlook format <code>email|pass|refresh_token|client_id</code> atau <code>refresh_token</code> saja.</p>
+
+            <div>
+              <label for="olCombo">Masukkan Email / Token</label>
+              <textarea id="olCombo" placeholder="Contoh:
+BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|9e5f94bc-e8a4-4e73-b8be-63364c29d753" style="min-height:90px;"></textarea>
+            </div>
+
+            <div class="inline" style="margin-top:10px;">
+              <div class="inline" style="gap:8px;">
+                <span class="chip" id="olAccountBadge"><i class="fa-solid fa-user"></i> <span id="olDetectedEmail">1 Akun</span></span>
+                <div class="checkbox" style="padding:6px 12px; border-radius:999px;">
+                  <input type="checkbox" id="olUseProxy" checked />
+                  <label for="olUseProxy" style="margin:0; font-size:11px;">Bypass CORS</label>
+                </div>
+              </div>
+
+              <div class="btnrow" style="margin:0;">
+                <button class="btn secondary" onclick="olClearReader()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
+                <button class="btn" id="olFetchBtn" onclick="olFetchInbox()"><i class="fa-solid fa-envelope-open-text"></i> Read Inbox</button>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- INBOX RESULT AREA (PREMIUMISME STYLE) -->
+            <div id="olInboxResultArea">
+              <div class="inline" style="margin-bottom:10px;">
+                <div class="inline" style="gap:8px;">
+                  <span class="chip" style="background:rgba(246,201,69,.12); border-color:rgba(246,201,69,.4); color:var(--gold);" id="olActiveAccountChip">
+                    <span id="olActiveAccountName">Belum ada akun</span> (<span id="olMsgCount">0</span>)
+                  </span>
+                </div>
+                <div class="inline" style="gap:6px;">
+                  <input id="olSearchInput" placeholder="Cari email / subjek..." oninput="olFilterTable()" style="padding:7px 12px; font-size:12px; width:180px; border-radius:999px;" />
+                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olFetchInbox()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olExportData('csv')">CSV</button>
+                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olExportData('json')">JSON</button>
+                </div>
+              </div>
+
+              <div class="tableContainer">
+                <table class="inboxTable">
+                  <thead>
+                    <tr>
+                      <th>Pengirim</th>
+                      <th>Subjek & Preview</th>
+                      <th style="text-align:right;">Tanggal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="olTableBody">
+                    <tr>
+                      <td colspan="3" style="text-align:center; padding:35px; color:var(--muted);">
+                        Belum ada pesan yang dibaca. Klik "Read Inbox" di atas.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
 
           <!-- Email Generator -->
           <section id="tool-emailgen" class="hidden">
@@ -855,7 +1064,6 @@ user@outlook.com|abc"></textarea>
   <div id="toast" class="toast"><span class="dot"></span><span id="toastText"></span></div>
 
   <script>
-    // ===== Download filename watermark =====
     const VANZ_WATERMARK = "Vanzshop";
     function withWatermarkFilename(name){
       const safe = (name || "file.txt").replace(/[/\\?%*:|"<>]/g, "-");
@@ -918,10 +1126,12 @@ user@outlook.com|abc"></textarea>
     }
 
     // ===== Navigation =====
-    const tools = ["emailgen","refund","validator","duplicate","domain","formatter","splitter","gsuite"];
+    const tools = ["emailgen","authenticator","outlook","refund","validator","duplicate","domain","formatter","splitter","gsuite"];
     function showTool(name){
       const title = {
         emailgen:"Email Generator",
+        authenticator:"2FA Authenticator",
+        outlook:"Outlook Reader",
         refund:"Kalkulator Refund",
         validator:"Validator",
         duplicate:"Duplicate Remover",
@@ -934,6 +1144,8 @@ user@outlook.com|abc"></textarea>
 
       const hint = {
         emailgen:"domain → generate",
+        authenticator:"masukkan key → klik dapatkan OTP",
+        outlook:"refresh token → read inbox",
         refund:"isi input → hitung",
         validator:"upload/paste → validate",
         duplicate:"paste → remove dup",
@@ -946,11 +1158,385 @@ user@outlook.com|abc"></textarea>
       document.getElementById("toolHint").innerHTML = `<i class="fa-solid fa-circle-info"></i> ${hint}`;
 
       tools.forEach(t=>{
-        document.getElementById("tool-"+t).classList.toggle("hidden", t!==name);
-        document.getElementById("nav-"+t).classList.toggle("active", t===name);
+        const el = document.getElementById("tool-"+t);
+        const nav = document.getElementById("nav-"+t);
+        if(el) el.classList.toggle("hidden", t!==name);
+        if(nav) nav.classList.toggle("active", t===name);
       });
     }
     window.showTool = showTool;
+
+    // ============================================================
+    // ===== TOOL: 2FA AUTHENTICATOR (CONTROLLED FLOW) ============
+    // ============================================================
+    let isAuthActive = false;
+    let activeSecretKey = "";
+
+    function cleanGoogleSecret(input) {
+      if (!input) return "";
+      let str = input.trim();
+      if (str.startsWith("otpauth://")) {
+        const urlMatch = str.match(/[?&]secret=([A-Z2-7=]+)/i);
+        if (urlMatch && urlMatch[1]) str = urlMatch[1];
+      }
+      return str.replace(/[\s\-_=]/g, '').toUpperCase();
+    }
+
+    function authGenerate() {
+      const raw = document.getElementById("authSecret").value;
+      const clean = cleanGoogleSecret(raw);
+
+      if (!clean) {
+        toast("Harap masukkan Secret Key terlebih dahulu!", "error");
+        return;
+      }
+
+      try {
+        const totp = new OTPAuth.TOTP({
+          algorithm: 'SHA1',
+          digits: 6,
+          period: 30,
+          secret: OTPAuth.Secret.fromBase32(clean)
+        });
+        const token = totp.generate();
+        
+        isAuthActive = true;
+        activeSecretKey = clean;
+
+        document.getElementById("authOtpCode").textContent = `${token.substring(0, 3)} ${token.substring(3, 6)}`;
+        document.getElementById("authCopyBtn").disabled = false;
+        document.getElementById("authProgressWrap").style.opacity = "1";
+        document.getElementById("authStatusText").innerHTML = `<b style="color:var(--gold);">Status: AKTIF</b> &bull; Sinkronisasi otomatis setiap 30 detik.`;
+
+        updateAuthVisuals();
+        toast("Kode OTP berhasil dibuat!");
+      } catch (err) {
+        isAuthActive = false;
+        document.getElementById("authOtpCode").textContent = "KEY-ERR";
+        document.getElementById("authCopyBtn").disabled = true;
+        toast("Secret Key tidak valid (harus format Base32)!", "error");
+      }
+    }
+
+    function updateAuthVisuals() {
+      if (!isAuthActive || !activeSecretKey) return;
+
+      const epoch = Math.floor(Date.now() / 1000);
+      const remaining = 30 - (epoch % 30);
+      const pct = (remaining / 30) * 100;
+
+      const pText = document.getElementById("authPctText");
+      const pFill = document.getElementById("authPctFill");
+
+      if (pText && pFill) {
+        pText.textContent = `${remaining}s`;
+        pFill.style.width = `${pct}%`;
+        if (remaining <= 5) {
+          pFill.style.background = "linear-gradient(90deg, #ef4444, #f59e0b)";
+        } else {
+          pFill.style.background = "linear-gradient(90deg, rgba(246,201,69,1), rgba(255,222,120,1))";
+        }
+      }
+
+      if (remaining === 30 || remaining === 1) {
+        try {
+          const totp = new OTPAuth.TOTP({
+            algorithm: 'SHA1',
+            digits: 6,
+            period: 30,
+            secret: OTPAuth.Secret.fromBase32(activeSecretKey)
+          });
+          const token = totp.generate();
+          document.getElementById("authOtpCode").textContent = `${token.substring(0, 3)} ${token.substring(3, 6)}`;
+        } catch (e) {}
+      }
+    }
+
+    function authCopyCode() {
+      const code = document.getElementById("authOtpCode").textContent.replace(/\s+/g, "");
+      if (!isAuthActive || !code || code.includes("-") || code.includes("ERR")) {
+        toast("Belum ada kode OTP yang aktif", "error");
+        return;
+      }
+      navigator.clipboard.writeText(code).then(() => toast(`Kode [${code}] berhasil disalin!`));
+    }
+
+    function authClear() {
+      isAuthActive = false;
+      activeSecretKey = "";
+      document.getElementById("authSecret").value = "";
+      document.getElementById("authOtpCode").textContent = "------";
+      document.getElementById("authCopyBtn").disabled = true;
+      document.getElementById("authPctText").textContent = "—s";
+      document.getElementById("authPctFill").style.width = "0%";
+      document.getElementById("authProgressWrap").style.opacity = "0.45";
+      document.getElementById("authStatusText").textContent = "Silakan masukkan Secret Key di atas lalu klik \"Dapatkan Kode OTP\" untuk memulai.";
+      toast("2FA di-reset");
+    }
+
+    setInterval(() => {
+      const authSection = document.getElementById("tool-authenticator");
+      if (authSection && !authSection.classList.contains("hidden") && isAuthActive) {
+        updateAuthVisuals();
+      }
+    }, 1000);
+
+    window.authGenerate = authGenerate;
+    window.authCopyCode = authCopyCode;
+    window.authClear = authClear;
+
+    // ============================================================
+    // ===== TOOL: OUTLOOK READER (AUTO PARSER & PROXY) ============
+    // ============================================================
+    let olAuthMode = "oauth2";
+    let olCurrentMessages = [];
+
+    function setOutlookAuthMode(mode){
+      olAuthMode = mode;
+      document.getElementById("modeOAuth2").classList.toggle("active", mode==="oauth2");
+      document.getElementById("modeGraph").classList.toggle("active", mode==="graph");
+      toast(`Mode: ${mode.toUpperCase()}`);
+    }
+
+    function parseOutlookString(raw){
+      const line = raw.trim().split("\n")[0].trim();
+      // Split pemisah pipa |, titik dua :, koma, atau tab
+      const parts = line.split(/[|:,\t]+/).map(s=>s.trim()).filter(Boolean);
+
+      let email = "";
+      let refreshToken = "";
+      let clientId = "000000004017045b"; // default client id
+
+      for(const p of parts){
+        if(p.includes("@")){
+          email = p;
+        } else if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(p) || /^[0-9a-f]{16}$/i.test(p)){
+          clientId = p;
+        } else if(p.length > 50){
+          refreshToken = p;
+        }
+      }
+
+      // fallback jika token tanpa separator
+      if(!refreshToken && parts.length === 1){
+        refreshToken = parts[0];
+      }
+
+      return { email, refreshToken, clientId };
+    }
+
+    function extractCodeFromText(text){
+      if(!text) return null;
+      const m = text.match(/\b\d{4,8}\b/);
+      return m ? m[0] : null;
+    }
+
+    async function proxiedFetch(url, options = {}) {
+      const useProxy = document.getElementById("olUseProxy").checked;
+      if (!useProxy) {
+        return fetch(url, options);
+      }
+
+      // Daftar proxy publik
+      const proxies = [
+        u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+        u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`
+      ];
+
+      for (let i = 0; i < proxies.length; i++) {
+        try {
+          const proxyUrl = proxies[i](url);
+          const res = await fetch(proxyUrl, options);
+          if (res.ok || res.status === 400 || res.status === 401) {
+            return res;
+          }
+        } catch (e) {
+          if (i === proxies.length - 1) throw e;
+        }
+      }
+      return fetch(url, options);
+    }
+
+    async function olFetchInbox(){
+      const raw = document.getElementById("olCombo").value.trim();
+      if(!raw){
+        toast("Masukkan email / token terlebih dahulu!", "error");
+        return;
+      }
+
+      const creds = parseOutlookString(raw);
+      if(!creds.refreshToken){
+        toast("Refresh token tidak ditemukan di teks input!", "error");
+        return;
+      }
+
+      if(creds.email){
+        document.getElementById("olDetectedEmail").textContent = creds.email;
+        document.getElementById("olActiveAccountName").textContent = creds.email;
+      }
+
+      const btn = document.getElementById("olFetchBtn");
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Membaca...`;
+      toast("Meminta token akses Microsoft...");
+
+      try {
+        // Step 1: Tukar Refresh Token menjadi Access Token
+        // Support token live.com / msa consumer (M.C547...) maupun Azure AD
+        let isConsumerMsa = creds.refreshToken.startsWith("M.C") || creds.refreshToken.startsWith("M.R");
+        let tokenUrl = isConsumerMsa
+          ? "https://login.live.com/oauth20_token.srf"
+          : "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+
+        const params = new URLSearchParams();
+        params.append("client_id", creds.clientId);
+        params.append("grant_type", "refresh_token");
+        params.append("refresh_token", creds.refreshToken);
+
+        if(!isConsumerMsa){
+          params.append("scope", "https://graph.microsoft.com/.default offline_access");
+        }
+
+        const tokenRes = await proxiedFetch(tokenUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params.toString()
+        });
+
+        const tokenData = await tokenRes.json().catch(()=>({}));
+        if(!tokenRes.ok || !tokenData.access_token){
+          const desc = tokenData.error_description || tokenData.error || `HTTP ${tokenRes.status}`;
+          throw new Error(`Gagal Login: ${desc}`);
+        }
+
+        const accessToken = tokenData.access_token;
+        toast("Membaca inbox dari Microsoft Graph...");
+
+        // Step 2: Ambil Daftar Email
+        const graphUrl = "https://graph.microsoft.com/v1.0/me/messages?$top=20&$orderby=receivedDateTime%20desc&$select=id,subject,from,receivedDateTime,bodyPreview";
+        const mailRes = await proxiedFetch(graphUrl, {
+          headers: { "Authorization": `Bearer ${accessToken}` }
+        });
+
+        const mailData = await mailRes.json().catch(()=>({}));
+        if(!mailRes.ok){
+          throw new Error(mailData.error?.message || "Gagal mengambil pesan dari Graph API");
+        }
+
+        olCurrentMessages = mailData.value || [];
+        document.getElementById("olMsgCount").textContent = olCurrentMessages.length;
+        renderOutlookTable(olCurrentMessages);
+        toast(`Selesai! ${olCurrentMessages.length} pesan terbaca.`);
+      } catch (err) {
+        document.getElementById("olTableBody").innerHTML = `
+          <tr>
+            <td colspan="3" style="text-align:center; padding:35px; color:var(--danger);">
+              <i class="fa-solid fa-circle-exclamation" style="font-size:22px; margin-bottom:8px;"></i><br/>
+              <b>${err.message}</b><br/>
+              <span class="small">Pastikan refresh token masih aktif dan opsi "Bypass CORS" tercentang.</span>
+            </td>
+          </tr>
+        `;
+        toast(err.message, "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-envelope-open-text"></i> Read Inbox`;
+      }
+    }
+
+    function renderOutlookTable(messages){
+      const tbody = document.getElementById("olTableBody");
+      tbody.innerHTML = "";
+
+      if(!messages.length){
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:35px; color:var(--muted);">Kotak masuk kosong.</td></tr>`;
+        return;
+      }
+
+      messages.forEach(msg => {
+        const sender = (msg.from && msg.from.emailAddress)
+          ? (msg.from.emailAddress.name || msg.from.emailAddress.address)
+          : "Unknown";
+
+        const d = new Date(msg.receivedDateTime);
+        const dateStr = d.toLocaleDateString("id-ID", { day:"numeric", month:"short" }) + ", " + d.toLocaleTimeString("id-ID", { hour:"2-digit", minute:"2-digit" });
+
+        const otp = extractCodeFromText((msg.subject || "") + " " + (msg.bodyPreview || ""));
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="tdSender">${escapeHtml(sender)}</td>
+          <td>
+            <div class="tdSubject">${escapeHtml(msg.subject || "(Tanpa Subjek)")}</div>
+            <div class="tdPreview">${escapeHtml(msg.bodyPreview || "")}</div>
+            ${otp ? `<div class="otpBadgeInline" onclick="navigator.clipboard.writeText('${otp}').then(()=>toast('OTP [${otp}] disalin!'))"><i class="fa-solid fa-shield-halved"></i> OTP: ${otp} (Salin)</div>` : ''}
+          </td>
+          <td class="tdDate">${dateStr}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function olFilterTable(){
+      const q = (document.getElementById("olSearchInput").value || "").toLowerCase();
+      const filtered = olCurrentMessages.filter(m => {
+        const subj = (m.subject || "").toLowerCase();
+        const prev = (m.bodyPreview || "").toLowerCase();
+        const send = (m.from?.emailAddress?.name || m.from?.emailAddress?.address || "").toLowerCase();
+        return subj.includes(q) || prev.includes(q) || send.includes(q);
+      });
+      renderOutlookTable(filtered);
+    }
+
+    function olExportData(type){
+      if(!olCurrentMessages.length){
+        toast("Tidak ada data untuk diekspor", "error");
+        return;
+      }
+
+      if(type === "json"){
+        downloadText("outlook-inbox.json", JSON.stringify(olCurrentMessages, null, 2));
+      } else {
+        const header = ["Tanggal","Pengirim","Email Pengirim","Subjek","Preview"];
+        const rows = olCurrentMessages.map(m => [
+          `"${m.receivedDateTime}"`,
+          `"${(m.from?.emailAddress?.name || '').replace(/"/g, '""')}"`,
+          `"${(m.from?.emailAddress?.address || '').replace(/"/g, '""')}"`,
+          `"${(m.subject || '').replace(/"/g, '""')}"`,
+          `"${(m.bodyPreview || '').replace(/"/g, '""')}"`
+        ]);
+        const csvContent = [header.join(","), ...rows.map(r => r.join(","))].join("\n");
+        downloadText("outlook-inbox.csv", csvContent);
+      }
+      toast(`Export ${type.toUpperCase()} selesai!`);
+    }
+
+    function olClearReader(){
+      document.getElementById("olCombo").value = "";
+      document.getElementById("olSearchInput").value = "";
+      document.getElementById("olDetectedEmail").textContent = "1 Akun";
+      document.getElementById("olActiveAccountName").textContent = "Belum ada akun";
+      document.getElementById("olMsgCount").textContent = "0";
+      olCurrentMessages = [];
+      document.getElementById("olTableBody").innerHTML = `
+        <tr>
+          <td colspan="3" style="text-align:center; padding:35px; color:var(--muted);">
+            Belum ada pesan yang dibaca. Klik "Read Inbox" di atas.
+          </td>
+        </tr>
+      `;
+      toast("Reader dibersihkan");
+    }
+
+    function escapeHtml(str){
+      return String(str||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    }
+
+    window.setOutlookAuthMode = setOutlookAuthMode;
+    window.olFetchInbox = olFetchInbox;
+    window.olFilterTable = olFilterTable;
+    window.olExportData = olExportData;
+    window.olClearReader = olClearReader;
 
     // ===== Email Generator =====
     let egOut = [];
@@ -1004,7 +1590,7 @@ user@outlook.com|abc"></textarea>
     }
     window.egGenerate = egGenerate; window.egCopy = egCopy; window.egDownload = egDownload;
 
-    // ===== Refund (aligned summary) =====
+    // ===== Refund =====
     function rfResetUI(){
       document.getElementById("rfResult").textContent = "Rp 0";
       document.getElementById("rfExplain").textContent = "";
@@ -1071,12 +1657,10 @@ user@outlook.com|abc"></textarea>
         `Durasi: ${remaining} / ${total} hari\n`+
         `Terpakai: ${used} hari`;
 
-      // aligned summary (label col width = 11, match your screenshot)
       const L = 11;
       const lines = [];
       lines.push("💰 VANZSHOP REFUND");
       lines.push("");
-      // bar line: keep two spaces before percentage like your sample
       lines.push(`${bar}  ${p.toFixed(0)}%`);
       lines.push("");
       lines.push(`${padLabel("Produk", L)} ${product}`);
