@@ -92,6 +92,21 @@
       font-size: 18px;
       color: rgba(255,255,255,.92);
     }
+    .profile{
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      overflow:hidden;
+      border:1px solid rgba(246,201,69,.5);
+      box-shadow:0 10px 30px rgba(0,0,0,.4);
+    }
+
+    .profile img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
     .brandTitle{
       margin:0;
       font-size:28px;
@@ -437,7 +452,9 @@
         </div>
         <h1 class="brandTitle">Vanzshop Tools</h1>
       </div>
-      <div style="width:46px;"></div>
+      <div class="profile">
+        <img src="profile.png" alt="Profile">
+      </div>
     </div>
 
     <div class="grid">
@@ -474,9 +491,9 @@
             Validator
           </button>
 
-          <button id="nav-duplicate" onclick="showTool('duplicate')">
-            <span class="ico"><i class="fa-solid fa-clone"></i></span>
-            Duplicate Remover
+          <button id="nav-currency" onclick="showTool('currency')">
+            <span class="ico"><i class="fa-solid fa-money-bill-transfer"></i></span>
+            Currency Converter
           </button>
 
           <button id="nav-domain" onclick="showTool('domain')">
@@ -818,43 +835,32 @@ user@outlook.com:abc"></textarea>
             </div>
           </section>
 
-          <!-- Duplicate -->
-          <section id="tool-duplicate" class="hidden">
-            <h3 class="section-title">Duplicate Remover</h3>
 
-            <label for="dupInput">Input</label>
-            <textarea id="dupInput" placeholder="input email disini . . . .
+          <!-- Currency Converter -->
+          <section id="tool-currency" class="hidden">
+            <h3 class="section-title">Currency Converter</h3>
+            <p class="muted" style="margin-top:-6px;">Konversi IDR ↔ USD dengan tampilan sederhana.</p>
 
-Contoh:
-user@gmail.com
-user@yahoo.com|123
-user@outlook.com:abc"></textarea>
-
-            <div class="inline" style="margin-top:10px;">
-              <span class="chip" id="dupCount"><i class="fa-solid fa-list"></i> 0</span>
-              <button class="btn danger" onclick="dupClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+            <div class="toggleGroup" style="margin-bottom:14px;">
+              <div class="toggleBtn active" id="curIDRUSD" onclick="setCurrencyMode('idr')">IDR → USD</div>
+              <div class="toggleBtn" id="curUSDIDR" onclick="setCurrencyMode('usd')">USD → IDR</div>
             </div>
 
-            <div class="divider"></div>
-
-            <div class="row">
-              <div class="checkbox"><input type="checkbox" id="dupCaseSensitive" /><label for="dupCaseSensitive" style="margin:0;">Case Sensitive</label></div>
-              <div class="checkbox"><input type="checkbox" id="dupTrim" checked /><label for="dupTrim" style="margin:0;">Trim</label></div>
-              <div class="checkbox"><input type="checkbox" id="dupExtractEmailOnly" /><label for="dupExtractEmailOnly" style="margin:0;">Extract email saja</label></div>
-              <div class="checkbox"><input type="checkbox" id="dupKeepFirst" checked /><label for="dupKeepFirst" style="margin:0;">Keep yang pertama</label></div>
-            </div>
+            <label>Jumlah</label>
+            <input id="currencyInput" type="number" placeholder="Masukkan nominal">
 
             <div class="btnrow">
-              <button class="btn" onclick="dupProcess()"><i class="fa-solid fa-filter"></i> Proses</button>
-              <button class="btn secondary" id="dupCopyBtn" onclick="dupCopy()" disabled><i class="fa-solid fa-copy"></i> Copy</button>
-              <button class="btn secondary" id="dupDownloadBtn" onclick="dupDownload()" disabled><i class="fa-solid fa-download"></i> Download</button>
+              <button class="btn" onclick="convertCurrency()">
+                <i class="fa-solid fa-right-left"></i> Convert
+              </button>
             </div>
 
             <div class="divider"></div>
 
             <div class="result-card">
-              <h4>Output</h4>
-              <textarea id="dupOutput" readonly style="min-height:260px;"></textarea>
+              <h4>Hasil</h4>
+              <div id="currencyResult" style="font-size:34px;font-weight:950;">-</div>
+              <div class="small" id="currencyRate">Rate: -</div>
             </div>
           </section>
 
@@ -1126,7 +1132,7 @@ user@outlook.com|abc"></textarea>
     }
 
     // ===== Navigation =====
-    const tools = ["emailgen","authenticator","outlook","refund","validator","duplicate","domain","formatter","splitter","gsuite"];
+    const tools = ["emailgen","authenticator","outlook","refund","validator","currency","domain","formatter","splitter","gsuite"];
     function showTool(name){
       const title = {
         emailgen:"Email Generator",
@@ -1167,6 +1173,39 @@ user@outlook.com|abc"></textarea>
     window.showTool = showTool;
 
     // ============================================================
+    
+    let currencyMode="idr";
+
+    function setCurrencyMode(mode){
+      currencyMode=mode;
+      document.getElementById("curIDRUSD").classList.toggle("active", mode==="idr");
+      document.getElementById("curUSDIDR").classList.toggle("active", mode==="usd");
+    }
+
+    function convertCurrency(){
+      let value = Number(document.getElementById("currencyInput").value);
+      if(!value){
+        toast("Masukkan nominal dulu","error");
+        return;
+      }
+
+      const rate = 16500;
+      let result;
+
+      if(currencyMode==="idr"){
+        result = value / rate;
+        document.getElementById("currencyResult").innerHTML =
+          "$ " + result.toFixed(2);
+      }else{
+        result = value * rate;
+        document.getElementById("currencyResult").innerHTML =
+          "Rp " + new Intl.NumberFormat("id-ID").format(result);
+      }
+
+      document.getElementById("currencyRate").innerHTML =
+        "Rate: 1 USD ≈ Rp " + rate.toLocaleString("id-ID");
+    }
+
     // ===== TOOL: 2FA AUTHENTICATOR (CONTROLLED FLOW) ============
     // ============================================================
     let isAuthActive = false;
