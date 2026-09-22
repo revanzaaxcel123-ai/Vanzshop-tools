@@ -434,6 +434,32 @@
       color:#0b0b0f;
     }
   </style>
+
+<script>
+/* ================================
+   VANZSHOP TOOLS ENV CONFIG
+   Edit freely
+================================ */
+const VANZ_ENV = {
+  APP_NAME: "Vanzshop Tools",
+  PROFILE_IMAGE: "profile.png",
+
+  THEME: {
+    GOLD: "#f6c945",
+    GOLD_GLOW: "rgba(246,201,69,.45)",
+    CARD_RADIUS: "22px"
+  },
+
+  CURRENCY: {
+    DEFAULT_FROM: "IDR",
+    DEFAULT_TO: "USD",
+    USD_RATE: 16500,
+    SYMBOL_IDR: "Rp",
+    SYMBOL_USD: "$"
+  }
+};
+</script>
+
 </head>
 
 <body>
@@ -453,7 +479,7 @@
         <h1 class="brandTitle">Vanzshop Tools</h1>
       </div>
       <div class="profile">
-        <img src="profile.png" alt="Profile">
+        <img src="profile.png" alt="Profile" onerror="this.src=VANZ_ENV.PROFILE_IMAGE">
       </div>
     </div>
 
@@ -1189,7 +1215,7 @@ user@outlook.com|abc"></textarea>
         return;
       }
 
-      const rate = 16500;
+      const rate = VANZ_ENV.CURRENCY.USD_RATE;
       let result;
 
       if(currencyMode==="idr"){
@@ -2174,3 +2200,70 @@ user@outlook.com|abc"></textarea>
   </script>
 </body>
 </html>
+
+<style>
+.brandTitle{
+ color:#f6c945 !important;
+ text-shadow:
+ 0 0 8px rgba(246,201,69,.8),
+ 0 0 25px rgba(246,201,69,.45),
+ 0 0 45px rgba(246,201,69,.25);
+ letter-spacing:.5px;
+}
+
+.brandMark{
+ border-color:rgba(246,201,69,.45)!important;
+ box-shadow:
+ 0 0 25px rgba(246,201,69,.25),
+ inset 0 0 20px rgba(246,201,69,.1);
+}
+
+.profile{
+ position:relative;
+}
+
+.profile:after{
+ content:"";
+ position:absolute;
+ inset:-5px;
+ border-radius:50%;
+ box-shadow:0 0 30px rgba(246,201,69,.55);
+ z-index:-1;
+}
+
+.nav button,
+.card{
+ transition:.25s ease;
+}
+
+.nav button:hover{
+ transform:translateX(6px);
+ border-color:rgba(246,201,69,.65)!important;
+ box-shadow:
+ 0 0 25px rgba(246,201,69,.18),
+ inset 0 0 20px rgba(246,201,69,.08);
+}
+
+.btn{
+ background:
+ linear-gradient(135deg,#f6c945,#ffe78a)!important;
+ color:#090909!important;
+ box-shadow:
+ 0 8px 30px rgba(246,201,69,.25);
+}
+
+.result-card{
+ background:
+ linear-gradient(
+ 145deg,
+ rgba(246,201,69,.08),
+ rgba(255,255,255,.04)
+ );
+}
+
+#currencyResult{
+ color:#f6c945;
+ text-shadow:
+ 0 0 20px rgba(246,201,69,.5);
+}
+</style>
