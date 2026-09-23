@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Vanzshop Tools</title>
+  <title>VanzShop Tools — Professional Utility Workspace</title>
+  <meta name="description" content="VanzShop Tools — workspace utilitas dengan UI premium untuk workflow harian.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -433,6 +437,24 @@
       background:var(--gold);
       color:#0b0b0f;
     }
+  
+/* ===== VANZSHOP 2.0 VISUAL SYSTEM ===== */
+:root{--vs-bg:#050509;--vs-bg2:#0b0b12;--vs-panel:rgba(15,15,24,.78);--vs-line:rgba(255,255,255,.08);--vs-accent:#f7d46a;--vs-accent2:#ffe89a;--vs-text:#f7f7fb;--vs-muted:#9e9eaf;--vs-grid:rgba(255,255,255,.045)}
+[data-vs-theme="light"]{--vs-bg:#fbf8fb;--vs-bg2:#fff;--vs-panel:rgba(255,255,255,.78);--vs-line:rgba(42,24,42,.10);--vs-accent:#d9468c;--vs-accent2:#f59e0b;--vs-text:#211927;--vs-muted:#706777;--vs-grid:rgba(110,45,100,.075)}
+body{background:radial-gradient(900px 650px at 82% 18%,color-mix(in srgb,var(--vs-accent) 15%,transparent),transparent 60%),radial-gradient(700px 500px at 8% 78%,color-mix(in srgb,var(--vs-accent) 8%,transparent),transparent 60%),linear-gradient(180deg,var(--vs-bg),var(--vs-bg2));color:var(--vs-text);transition:background .55s ease,color .35s ease}
+.gridbg{background:linear-gradient(90deg,var(--vs-grid) 1px,transparent 1px),linear-gradient(var(--vs-grid) 1px,transparent 1px);background-size:64px 64px;opacity:.75;transform:perspective(900px) rotateX(58deg) translateY(-150px)}
+[data-vs-theme="light"] .gridbg{opacity:.55}
+.space{z-index:-1}.planet{filter:blur(.2px);mix-blend-mode:screen}.planet.p1{background:radial-gradient(circle at 35% 28%,rgba(255,240,170,.28),rgba(247,212,106,.09) 42%,transparent 70%);box-shadow:0 0 100px rgba(247,212,106,.08)}.planet.p2{background:radial-gradient(circle at 35% 30%,rgba(255,230,150,.22),rgba(247,212,106,.07) 48%,transparent 73%);box-shadow:0 0 120px rgba(247,212,106,.07)}.planet.p3{background:radial-gradient(circle at 35% 25%,rgba(255,230,150,.2),rgba(247,212,106,.05) 55%,transparent 75%)}
+[data-vs-theme="light"] .space{opacity:.42}.themeToggle{width:42px;height:42px;border-radius:13px;border:1px solid var(--vs-line);background:var(--vs-panel);color:var(--vs-text);display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(14px);box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.topbarRight{display:flex;align-items:center;gap:9px}.workspaceBadge{padding:8px 11px;border:1px solid var(--vs-line);border-radius:999px;background:var(--vs-panel);font-size:11px;font-weight:900;color:var(--vs-muted);backdrop-filter:blur(14px)}
+.workspaceBadge i{color:var(--vs-accent);margin-right:5px}.toolSearchWrap{margin:0 12px 8px;position:relative}.toolSearchWrap input{padding-left:38px;padding-right:48px;background:rgba(0,0,0,.2)}.toolSearchWrap>i{position:absolute;left:14px;top:14px;color:var(--vs-muted);z-index:2}.toolSearchWrap kbd{position:absolute;right:10px;top:9px;border:1px solid var(--vs-line);border-radius:7px;padding:4px 7px;font:10px var(--mono);color:var(--vs-muted)}
+.navText{display:flex;flex-direction:column;gap:2px;min-width:0}.navText b{font-size:12px}.navText small{font-size:10px;color:var(--vs-muted);font-weight:700}.nav button{background:rgba(0,0,0,.13)}[data-vs-theme="light"] .nav button{background:rgba(255,255,255,.58)}
+.toolHeader{align-items:flex-start}.toolHeading{min-width:0}.toolHeading .card-kicker,.card-kicker{font-size:9px;letter-spacing:.16em;color:var(--vs-accent);font-weight:900;margin-bottom:4px}.toolHeading h2{font-size:20px!important;text-transform:none!important;letter-spacing:-.02em!important}.toolHeading p{margin:5px 0 0;font-size:11px;color:var(--vs-muted)}
+.btn{background:linear-gradient(135deg,var(--vs-accent),var(--vs-accent2));}.card,.result-card,.progressWrap,.tableContainer{border-color:var(--vs-line)}
+.themeHint{font-size:10px;color:var(--vs-muted);margin-top:8px;text-align:center}
+.toolHero{padding:14px;border:1px solid var(--vs-line);border-radius:18px;background:linear-gradient(135deg,rgba(247,212,106,.08),rgba(255,255,255,.02));margin-bottom:14px}.toolHero b{font-size:13px}.toolHero p{margin:5px 0 0;font-size:11px;color:var(--vs-muted);line-height:1.5}
+@media(max-width:760px){.topbarRight .workspaceBadge{display:none}.container{padding:16px 12px 50px}.brandTitle{font-size:22px}.grid{gap:10px}.toolHeader{display:block}.toolHint{margin-top:10px}}
+
   </style>
 
 <script>
@@ -441,7 +463,7 @@
    Edit freely
 ================================ */
 const VANZ_ENV = {
-  APP_NAME: "Vanzshop Tools",
+  APP_NAME: "VanzShop Tools",
   PROFILE_IMAGE: "profile.png",
 
   THEME: {
@@ -460,6 +482,472 @@ const VANZ_ENV = {
 };
 </script>
 
+
+  <style>
+    /* =========================================================
+       VANZSHOP UI SYSTEM — premium utility workspace
+       Visual language aligned with VanzShop.com: dark luxury,
+       gold accent, glass surfaces, tight typography, responsive.
+       ========================================================= */
+    :root{
+      --bg:#050509;
+      --bg-deep:#08080d;
+      --surface:rgba(14,14,21,.76);
+      --surface-2:rgba(255,255,255,.035);
+      --surface-3:rgba(255,255,255,.055);
+      --edge:rgba(255,255,255,.075);
+      --edge-strong:rgba(255,255,255,.12);
+      --accent:#f7d46a;
+      --accent-2:#ffdf7a;
+      --accent-rgb:247,212,106;
+      --text:#f6f6f8;
+      --text-2:#b7b7c7;
+      --text-3:#77778a;
+      --danger:#ff6b6b;
+      --success:#4ade80;
+      --font:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+      --ease:cubic-bezier(.2,.7,.2,1);
+      --spring:cubic-bezier(.34,1.56,.64,1);
+      --shadow:0 40px 100px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.045);
+      --shadow-soft:0 18px 50px rgba(0,0,0,.35);
+      --radius:24px;
+    }
+
+    html{background:var(--bg)}
+    body{
+      font-family:var(--font)!important;
+      color:var(--text);
+      background:
+        radial-gradient(800px 520px at 82% 8%,rgba(var(--accent-rgb),.105),transparent 62%),
+        radial-gradient(700px 520px at 8% 86%,rgba(var(--accent-rgb),.055),transparent 62%),
+        linear-gradient(180deg,#050509 0%,#08080d 48%,#050509 100%)!important;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;inset:0;z-index:-4;pointer-events:none;
+      background-image:
+        linear-gradient(to right,rgba(255,255,255,.028) 1px,transparent 1px),
+        linear-gradient(to bottom,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:64px 64px;
+      mask-image:radial-gradient(ellipse 110% 90% at 50% 28%,#000 38%,transparent 100%);
+      opacity:.55;
+    }
+
+    .container{
+      max-width:1320px!important;
+      padding:28px 22px 76px!important;
+    }
+
+    .topbar{
+      align-items:center!important;
+      margin-bottom:22px!important;
+      padding:4px 2px;
+    }
+    .brand{gap:14px!important}
+    .brandMark{
+      width:52px!important;height:52px!important;border-radius:17px!important;
+      background:
+        radial-gradient(circle at 30% 15%,rgba(255,255,255,.22),transparent 42%),
+        linear-gradient(145deg,rgba(var(--accent-rgb),.23),rgba(255,255,255,.035))!important;
+      border:1px solid rgba(var(--accent-rgb),.28)!important;
+      box-shadow:0 16px 42px rgba(0,0,0,.4),0 0 45px rgba(var(--accent-rgb),.09)!important;
+    }
+    .brandMark i{color:var(--accent)!important;font-size:20px!important}
+    .brandCopy{min-width:0}
+    .brandOverline{
+      display:flex;align-items:center;gap:7px;
+      margin-bottom:2px;
+      font-size:10px;font-weight:800;letter-spacing:.18em;
+      color:var(--text-3);
+    }
+    .liveDot{
+      width:6px;height:6px;border-radius:50%;background:var(--success);
+      box-shadow:0 0 0 4px rgba(74,222,128,.08),0 0 14px rgba(74,222,128,.5);
+    }
+    .brandTitle{
+      margin:0!important;line-height:1.05!important;
+      font-size:27px!important;font-weight:800!important;
+      letter-spacing:-.04em!important;color:var(--text)!important;
+      text-shadow:none!important;
+    }
+    .brandTitle span{
+      background:linear-gradient(100deg,#d4a937,#ffe58f 30%,#fff8dc 48%,#ffdf7a 64%,#d4a937);
+      background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+      animation:brandShimmer 7s linear infinite;
+    }
+    @keyframes brandShimmer{to{background-position:-220% 0}}
+    .brandSubtitle{
+      margin:5px 0 0;color:var(--text-3);font-size:12px;font-weight:500;
+    }
+    .topbarRight{display:flex;align-items:center;gap:12px}
+    .workspaceBadge{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 11px;
+      border:1px solid var(--edge);border-radius:999px;background:rgba(255,255,255,.025);
+      color:var(--text-2);font-size:11px;font-weight:800;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .workspaceBadge i{color:var(--accent);font-size:11px}
+    .profile{
+      width:48px!important;height:48px!important;
+      border:1px solid rgba(var(--accent-rgb),.42)!important;
+      box-shadow:0 14px 32px rgba(0,0,0,.42),0 0 26px rgba(var(--accent-rgb),.12)!important;
+      position:relative;
+    }
+    .profileStatus{
+      position:absolute;right:0;bottom:1px;width:10px;height:10px;border-radius:50%;
+      background:var(--success);border:2px solid #08080d;
+      box-shadow:0 0 12px rgba(74,222,128,.55);
+    }
+
+    .grid{
+      grid-template-columns:300px minmax(0,1fr)!important;
+      gap:18px!important;
+      align-items:start;
+    }
+
+    .card{
+      border:1px solid transparent!important;
+      background:
+        linear-gradient(rgba(14,14,21,.78),rgba(14,14,21,.78)) padding-box,
+        linear-gradient(160deg,rgba(var(--accent-rgb),.28),rgba(255,255,255,.075) 28%,rgba(255,255,255,.025) 70%,rgba(var(--accent-rgb),.14)) border-box!important;
+      border-radius:26px!important;
+      box-shadow:var(--shadow)!important;
+      backdrop-filter:blur(18px) saturate(125%)!important;
+      -webkit-backdrop-filter:blur(18px) saturate(125%)!important;
+    }
+    .card:hover{border-color:rgba(var(--accent-rgb),.22)!important}
+    .card-header{
+      min-height:72px;
+      padding:16px 18px!important;
+      background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012))!important;
+      border-bottom:1px solid var(--edge)!important;
+    }
+    .card-kicker{
+      margin-bottom:3px;font-size:9px;font-weight:800;letter-spacing:.18em;
+      color:var(--text-3);
+    }
+    .sidebarHeader h3{
+      margin:0;font-size:15px!important;font-weight:800!important;
+      letter-spacing:-.01em!important;text-transform:none!important;color:var(--text)!important;
+    }
+    .chip{
+      border:1px solid var(--edge)!important;
+      background:rgba(255,255,255,.025)!important;
+      color:var(--text-2)!important;
+      font-size:10px!important;font-weight:700!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+    }
+    .toolCount i{color:var(--accent)}
+    .toolSearchWrap{
+      position:relative;margin:14px 14px 4px;
+    }
+    .toolSearchWrap>i{
+      position:absolute;left:13px;top:50%;transform:translateY(-50%);
+      color:var(--text-3);font-size:12px;pointer-events:none;
+    }
+    .toolSearchWrap input{
+      height:42px!important;padding:0 48px 0 36px!important;
+      border-radius:13px!important;
+      background:rgba(0,0,0,.2)!important;
+      border:1px solid var(--edge)!important;
+      font-size:12px!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+    }
+    .toolSearchWrap input::placeholder{color:var(--text-3)}
+    .toolSearchWrap kbd{
+      position:absolute;right:9px;top:50%;transform:translateY(-50%);
+      padding:3px 6px;border:1px solid var(--edge);border-radius:6px;
+      color:var(--text-3);background:rgba(255,255,255,.025);
+      font:600 9px var(--mono);
+    }
+
+    .nav{
+      padding:10px!important;gap:6px!important;
+    }
+    .nav button{
+      width:100%;min-height:57px;padding:9px 10px!important;
+      border-radius:15px!important;
+      border:1px solid transparent!important;
+      background:transparent!important;
+      color:var(--text-2)!important;
+      gap:11px!important;
+      box-shadow:none!important;
+      transform:none!important;
+      transition:background .25s var(--ease),border-color .25s var(--ease),transform .25s var(--ease),color .25s var(--ease);
+    }
+    .nav button:hover{
+      transform:translateX(3px)!important;
+      background:rgba(255,255,255,.035)!important;
+      border-color:var(--edge)!important;
+      box-shadow:none!important;
+      color:var(--text)!important;
+    }
+    .nav button.active{
+      background:
+        radial-gradient(circle at 0% 0%,rgba(var(--accent-rgb),.18),transparent 60%),
+        rgba(var(--accent-rgb),.055)!important;
+      border-color:rgba(var(--accent-rgb),.26)!important;
+      color:var(--text)!important;
+      box-shadow:inset 3px 0 0 var(--accent),0 12px 30px rgba(0,0,0,.16)!important;
+    }
+    .nav .ico{
+      width:34px!important;height:34px;border-radius:11px;
+      display:grid!important;place-items:center;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--edge);
+      color:var(--text-2)!important;
+      flex:0 0 34px;
+    }
+    .nav button.active .ico{
+      color:var(--accent)!important;
+      border-color:rgba(var(--accent-rgb),.25);
+      background:rgba(var(--accent-rgb),.09);
+      box-shadow:0 0 20px rgba(var(--accent-rgb),.08);
+    }
+    .nav .ico i{font-size:13px!important}
+    .navText{display:block;min-width:0;text-align:left}
+    .navText b{
+      display:block;font-size:12px;font-weight:800;color:inherit;line-height:1.2;
+    }
+    .navText small{
+      display:block;margin-top:3px;font-size:9.5px;font-weight:500;color:var(--text-3);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .nav button.active .navText small{color:rgba(255,223,122,.64)}
+
+    .toolHeader{
+      min-height:88px!important;
+      align-items:center!important;
+      gap:18px!important;
+    }
+    .toolHeading{min-width:0}
+    .toolHeading h2{
+      margin:0!important;font-size:20px!important;font-weight:800!important;
+      letter-spacing:-.035em!important;color:var(--text)!important;text-transform:none!important;
+    }
+    .toolHeading p{
+      margin:5px 0 0!important;max-width:680px;
+      font-size:11px!important;line-height:1.5;color:var(--text-3)!important;
+    }
+    .toolHint{
+      flex:0 0 auto;
+      color:var(--text-2)!important;
+    }
+    .toolHint i{color:var(--accent);margin-right:2px}
+
+    .card-body{padding:22px!important}
+    .section-title{
+      margin:0 0 9px!important;font-size:19px!important;font-weight:800!important;
+      letter-spacing:-.03em!important;color:var(--text)!important;
+    }
+    .muted{color:var(--text-2)!important;font-size:12px;line-height:1.65}
+    label{
+      font-size:10px!important;font-weight:800!important;
+      letter-spacing:.015em;color:var(--text-2)!important;
+      margin-bottom:7px!important;
+    }
+    input,textarea,select{
+      min-height:44px;
+      padding:11px 13px!important;
+      border-radius:13px!important;
+      border:1px solid var(--edge)!important;
+      background:rgba(0,0,0,.20)!important;
+      color:var(--text)!important;
+      font-family:var(--font)!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+      transition:border-color .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease),transform .2s var(--ease);
+    }
+    textarea{
+      min-height:160px;
+      font-family:var(--mono)!important;
+      font-size:11px!important;
+      line-height:1.55!important;
+    }
+    input::placeholder,textarea::placeholder{color:#626275!important}
+    input:hover,textarea:hover,select:hover{border-color:rgba(255,255,255,.13)!important}
+    input:focus,textarea:focus,select:focus{
+      border-color:rgba(var(--accent-rgb),.58)!important;
+      background:rgba(0,0,0,.26)!important;
+      box-shadow:0 0 0 4px rgba(var(--accent-rgb),.07),0 12px 30px rgba(0,0,0,.16)!important;
+    }
+    input[type="file"]{padding:8px!important;color:var(--text-2)!important}
+    input[type="file"]::file-selector-button{
+      border:1px solid var(--edge);border-radius:9px;padding:7px 10px;
+      margin-right:8px;background:rgba(255,255,255,.05);color:var(--text);
+      font:700 10px var(--font);cursor:pointer;
+    }
+
+    .btnrow{gap:8px!important;margin-top:12px!important}
+    .btn{
+      min-height:42px;
+      padding:10px 14px!important;
+      border-radius:13px!important;
+      font-size:11px!important;font-weight:800!important;
+      background:linear-gradient(135deg,#f7d46a,#ffdf7a)!important;
+      color:#0b0b0f!important;
+      box-shadow:0 12px 28px rgba(0,0,0,.28),0 0 24px rgba(var(--accent-rgb),.07)!important;
+      transition:transform .22s var(--spring),box-shadow .22s var(--ease),filter .22s var(--ease)!important;
+    }
+    .btn:hover{transform:translateY(-2px)!important;filter:brightness(1.04);box-shadow:0 16px 32px rgba(0,0,0,.34),0 0 30px rgba(var(--accent-rgb),.11)!important}
+    .btn:active{transform:translateY(0) scale(.985)!important}
+    .btn.secondary{
+      background:rgba(255,255,255,.035)!important;color:var(--text-2)!important;
+      border:1px solid var(--edge)!important;box-shadow:none!important;
+    }
+    .btn.secondary:hover{color:var(--text)!important;border-color:rgba(var(--accent-rgb),.32)!important;background:rgba(var(--accent-rgb),.055)!important}
+    .btn.danger{
+      background:rgba(255,107,107,.06)!important;color:#ff9b9b!important;
+      border:1px solid rgba(255,107,107,.18)!important;box-shadow:none!important;
+    }
+    .btn.danger:hover{background:rgba(255,107,107,.1)!important;border-color:rgba(255,107,107,.3)!important}
+
+    .checkbox{
+      min-height:42px;padding:9px 11px!important;
+      border-radius:12px!important;border:1px solid var(--edge)!important;
+      background:rgba(255,255,255,.025)!important;
+      color:var(--text-2)!important;font-size:10px;
+    }
+    .checkbox input{accent-color:var(--accent);width:15px!important;height:15px}
+    .checkbox label{color:inherit!important;font-size:10px!important;font-weight:700!important}
+
+    .divider{
+      height:1px!important;background:linear-gradient(90deg,transparent,var(--edge),transparent)!important;
+      margin:20px 0!important;
+    }
+    .result-grid{gap:12px!important}
+    .result-card{
+      border:1px solid var(--edge)!important;
+      border-radius:18px!important;
+      padding:15px!important;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(var(--accent-rgb),.07),transparent 52%),
+        rgba(0,0,0,.18)!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+    }
+    .result-card h4{
+      margin:0 0 10px!important;font-size:10px!important;font-weight:800!important;
+      letter-spacing:.12em!important;color:var(--text-3)!important;
+    }
+    .small{font-size:10px!important;line-height:1.55;color:var(--text-3)!important}
+    .code{
+      border-radius:12px!important;border:1px solid var(--edge)!important;
+      background:rgba(0,0,0,.22)!important;color:var(--text-2);
+      font:500 10px/1.55 var(--mono)!important;
+    }
+
+    .progressWrap{
+      padding:14px!important;border-radius:17px!important;
+      border:1px solid var(--edge)!important;background:rgba(255,255,255,.025)!important;
+    }
+    .progressLabel{font-size:10px!important;font-weight:800!important;color:var(--text-2)!important}
+    .progressPct{font-size:10px!important;color:var(--accent)!important}
+    .progressBar{height:9px!important;border:none!important;background:rgba(255,255,255,.055)!important}
+    .progressFill{background:linear-gradient(90deg,#d4a937,#ffdf7a)!important;box-shadow:0 0 16px rgba(var(--accent-rgb),.2)}
+
+    .chart{
+      height:132px!important;padding:13px!important;gap:14px!important;
+      border-radius:18px!important;border:1px solid var(--edge)!important;
+      background:rgba(0,0,0,.17)!important;
+    }
+    .barLabel{font-size:10px!important;font-weight:800!important;color:var(--text-2)!important}
+    .bar{height:88px!important;border-radius:11px!important;border-color:var(--edge)!important;background:rgba(255,255,255,.045)!important}
+    .bar>div{background:linear-gradient(180deg,#ffdf7a,#d4a937)!important}
+    .bar.invalid>div{background:linear-gradient(180deg,#ff8d8d,#ef4444)!important}
+
+    .otpBigDisplay{
+      margin:16px 0!important;padding:21px!important;
+      border-radius:18px!important;border:1px solid rgba(var(--accent-rgb),.2)!important;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(var(--accent-rgb),.1),transparent 55%),
+        rgba(0,0,0,.22)!important;
+      color:var(--accent)!important;
+      font:800 38px/1 var(--mono)!important;
+      letter-spacing:.18em!important;
+      text-shadow:0 0 28px rgba(var(--accent-rgb),.3)!important;
+    }
+
+    .tableContainer{
+      border-radius:17px!important;border:1px solid var(--edge)!important;background:rgba(0,0,0,.18)!important;
+    }
+    table.inboxTable{font-size:10px!important}
+    table.inboxTable th{
+      padding:11px 13px!important;background:rgba(255,255,255,.025)!important;
+      color:var(--text-3)!important;border-color:var(--edge)!important;font-size:9px!important;
+    }
+    table.inboxTable td{padding:13px!important;border-color:rgba(255,255,255,.045)!important}
+    table.inboxTable tr:hover td{background:rgba(var(--accent-rgb),.035)!important}
+    .tdSender,.tdSubject{color:var(--text)!important}
+    .tdPreview{color:var(--text-3)!important}
+    .tdDate{color:var(--text-3)!important}
+    .toggleGroup{
+      padding:3px!important;border-radius:11px!important;
+      background:rgba(0,0,0,.25)!important;border-color:var(--edge)!important;
+    }
+    .toggleBtn{
+      padding:7px 10px!important;font-size:10px!important;color:var(--text-3)!important;
+      border-radius:8px!important;
+    }
+    .toggleBtn.active{
+      background:rgba(var(--accent-rgb),.13)!important;color:var(--accent)!important;
+      box-shadow:inset 0 0 0 1px rgba(var(--accent-rgb),.16);
+    }
+
+    .toast{
+      bottom:24px!important;padding:11px 14px!important;border-radius:13px!important;
+      background:rgba(18,18,26,.92)!important;border:1px solid var(--edge-strong)!important;
+      backdrop-filter:blur(18px)!important;box-shadow:var(--shadow-soft)!important;
+      font-size:11px!important;
+    }
+    .toast .dot{background:var(--accent)!important;box-shadow:0 0 12px rgba(var(--accent-rgb),.4)}
+    .toast.error .dot{background:var(--danger)!important}
+
+
+    .sidebarFoot{
+      display:flex;align-items:center;gap:10px;
+      margin:4px 14px 14px;padding:11px 12px;
+      border:1px solid var(--edge);border-radius:14px;
+      background:rgba(255,255,255,.018);
+    }
+    .sidebarFootIcon{
+      width:30px;height:30px;display:grid;place-items:center;
+      border-radius:9px;background:rgba(var(--accent-rgb),.08);
+      color:var(--accent);border:1px solid rgba(var(--accent-rgb),.14);
+      font-size:11px;
+    }
+    .sidebarFoot b{display:block;font-size:9.5px;color:var(--text-2);font-weight:800}
+    .sidebarFoot span{display:block;margin-top:2px;font-size:8.5px;color:var(--text-3)}
+
+    @media (max-width:980px){
+      .container{padding:20px 16px 56px!important}
+      .grid{grid-template-columns:1fr!important}
+      .nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));}
+      .toolSearchWrap{margin-bottom:10px}
+    }
+    @media (max-width:680px){
+      .topbar{align-items:flex-start!important}
+      .workspaceBadge{display:none}
+      .brandSubtitle{display:none}
+      .brandTitle{font-size:22px!important}
+      .brandMark{width:46px!important;height:46px!important}
+      .topbarRight{gap:8px}
+      .grid{gap:12px!important}
+      .toolHeader{align-items:flex-start!important;flex-direction:column!important}
+      .toolHint{align-self:flex-start}
+      .card-body{padding:16px!important}
+      .row,.result-grid{grid-template-columns:1fr!important}
+      .nav{grid-template-columns:1fr!important}
+      .nav button{min-height:54px}
+      .btnrow .btn{flex:1 1 auto}
+      .toolSearchWrap kbd{display:none}
+      .otpBigDisplay{font-size:30px!important}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+    }
+  </style>
 </head>
 
 <body>
@@ -471,109 +959,202 @@ const VANZ_ENV = {
   </div>
 
   <div class="container">
-    <div class="topbar">
+    <header class="topbar">
       <div class="brand">
         <div class="brandMark" aria-hidden="true">
-          <i class="fa-regular fa-cube"></i>
+          <i class="fa-solid fa-cubes-stacked"></i>
         </div>
-        <h1 class="brandTitle">Vanzshop Tools</h1>
+        <div class="brandCopy">
+          <div class="brandOverline"><span class="liveDot"></span> VANZSHOP WORKSPACE</div>
+          <h1 class="brandTitle">VanzShop <span>Tools</span></h1>
+          <p class="brandSubtitle">Utility suite untuk workflow yang lebih cepat & rapi.</p>
+        </div>
       </div>
-      <div class="profile">
-        <img src="profile.png" alt="Profile" onerror="this.src=VANZ_ENV.PROFILE_IMAGE">
+      <div class="topbarRight">
+        <button class="themeToggle" id="themeToggle" onclick="toggleVanzTheme()" title="Ganti mode siang / malam" aria-label="Ganti mode siang / malam"><i class="fa-solid fa-moon"></i></button>
+        <div class="workspaceBadge"><i class="fa-solid fa-bolt"></i><span>Ready</span></div>
+        <div class="profile" title="VanzShop">
+          <img src="profile.png" alt="VanzShop" onerror="this.src=VANZ_ENV.PROFILE_IMAGE">
+          <span class="profileStatus" aria-hidden="true"></span>
+        </div>
       </div>
-    </div>
+    </header>
 
     <div class="grid">
       <!-- Sidebar Nav -->
       <div class="card">
-        <div class="card-header">
-          <h3>Menu</h3>
-          <span class="chip"><i class="fa-solid fa-code"></i> v9.1</span>
+        <div class="card-header sidebarHeader">
+          <div>
+            <div class="card-kicker">TOOLBOX</div>
+            <h3>All Utilities</h3>
+          </div>
+          <span class="chip toolCount"><i class="fa-solid fa-layer-group"></i> 14 tools</span>
+        </div>
+
+        <div class="toolSearchWrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="toolSearch" type="search" autocomplete="off" placeholder="Cari tool..." aria-label="Cari tool" oninput="filterTools(this.value)">
+          <kbd>⌘ K</kbd>
         </div>
 
         <div class="nav">
-          <button id="nav-emailgen" onclick="showTool('emailgen')">
+          <button id="nav-emailgen" data-tool-label="Email Generator" onclick="showTool('emailgen')">
             <span class="ico"><i class="fa-regular fa-envelope"></i></span>
-            Email Generator
+            <span class="navText"><b>Email Generator</b><small>Generate alamat email</small></span>
           </button>
 
-          <button id="nav-authenticator" onclick="showTool('authenticator')">
+          <button id="nav-authenticator" data-tool-label="Authenticator 2FA" onclick="showTool('authenticator')">
             <span class="ico"><i class="fa-solid fa-key"></i></span>
-            2FA Authenticator
+            <span class="navText"><b>Authenticator 2FA</b><small>Generate kode OTP</small></span>
           </button>
 
-          <button id="nav-outlook" onclick="showTool('outlook')">
+          <button id="nav-outlook" data-tool-label="Outlook Inbox" onclick="showTool('outlook')">
             <span class="ico"><i class="fa-solid fa-inbox"></i></span>
-            Outlook Live Reader
+            <span class="navText"><b>Outlook Inbox</b><small>Baca inbox</small></span>
           </button>
 
-          <button id="nav-refund" class="active" onclick="showTool('refund')">
+          <button id="nav-refund" class="active" data-tool-label="Refund Calculator" onclick="showTool('refund')">
             <span class="ico"><i class="fa-solid fa-sack-dollar"></i></span>
-            Kalkulator Refund
+            <span class="navText"><b>Refund Calculator</b><small>Hitung estimasi refund</small></span>
           </button>
 
-          <button id="nav-validator" onclick="showTool('validator')">
+          <button id="nav-validator" data-tool-label="Email Validator" onclick="showTool('validator')">
             <span class="ico"><i class="fa-solid fa-shield-halved"></i></span>
-            Validator
+            <span class="navText"><b>Email Validator</b><small>Periksa format email</small></span>
           </button>
 
-          <button id="nav-currency" onclick="showTool('currency')">
+          <button id="nav-currency" data-tool-label="Currency Converter" onclick="showTool('currency')">
             <span class="ico"><i class="fa-solid fa-money-bill-transfer"></i></span>
-            Currency Converter
+            <span class="navText"><b>Currency Converter</b><small>IDR ↔ USD</small></span>
           </button>
 
-          <button id="nav-domain" onclick="showTool('domain')">
+          <button id="nav-domain" data-tool-label="Domain Analyzer" onclick="showTool('domain')">
             <span class="ico"><i class="fa-solid fa-globe"></i></span>
-            Domain Analyzer
+            <span class="navText"><b>Domain Analyzer</b><small>Ringkas statistik domain</small></span>
           </button>
 
-          <button id="nav-formatter" onclick="showTool('formatter')">
+          <button id="nav-formatter" data-tool-label="Data Formatter" onclick="showTool('formatter')">
             <span class="ico"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
-            Formatter
+            <span class="navText"><b>Data Formatter</b><small>Normalisasi data teks</small></span>
           </button>
 
-          <button id="nav-splitter" onclick="showTool('splitter')">
+          <button id="nav-splitter" data-tool-label="File Splitter" onclick="showTool('splitter')">
             <span class="ico"><i class="fa-solid fa-scissors"></i></span>
-            Splitter
+            <span class="navText"><b>File Splitter</b><small>Bagi data per baris</small></span>
           </button>
 
-          <button id="nav-gsuite" onclick="showTool('gsuite')">
-            <span class="ico"><i class="fa-solid fa-users"></i></span>
-            GSuite Creator
+          <button id="nav-jsoncsv" data-tool-label="JSON ke CSV" onclick="showTool('jsoncsv')">
+            <span class="ico"><i class="fa-solid fa-file-code"></i></span>
+            <span class="navText"><b>JSON → CSV</b><small>Convert data JSON ke CSV</small></span>
           </button>
+
+          <button id="nav-urlencoder" data-tool-label="URL Encoder Decoder" onclick="showTool('urlencoder')">
+            <span class="ico"><i class="fa-solid fa-link"></i></span>
+            <span class="navText"><b>URL Encoder</b><small>Encode & decode URL</small></span>
+          </button>
+
+          <button id="nav-txtbatch" data-tool-label="Batch TXT Generator" onclick="showTool('txtbatch')">
+            <span class="ico"><i class="fa-solid fa-file-lines"></i></span>
+            <span class="navText"><b>Batch TXT</b><small>Buat banyak file TXT</small></span>
+          </button>
+
+          <button id="nav-proxy" data-tool-label="Proxy List Checker" onclick="showTool('proxy')">
+            <span class="ico"><i class="fa-solid fa-network-wired"></i></span>
+            <span class="navText"><b>Proxy Checker</b><small>Validasi format proxy</small></span>
+          </button>
+
+          <button id="nav-gsuite" data-tool-label="Workspace CSV" onclick="showTool('gsuite')">
+            <span class="ico"><i class="fa-solid fa-users"></i></span>
+            <span class="navText"><b>Workspace CSV</b><small>Generate data CSV</small></span>
+          </button>
+        </div>
+
+        <div class="sidebarFoot">
+          <div class="sidebarFootIcon"><i class="fa-solid fa-shield-halved"></i></div>
+          <div>
+            <b>VanzShop Utility Suite</b>
+            <span>Fast • Clean • Focused</span>
+          </div>
         </div>
       </div>
 
       <!-- Main Content Card -->
       <div class="card">
-        <div class="card-header">
-          <h2 id="toolTitle">Kalkulator Refund</h2>
-          <span class="chip" id="toolHint"><i class="fa-solid fa-circle-info"></i> isi input → hitung</span>
+        <div class="card-header toolHeader">
+          <div class="toolHeading">
+            <div class="card-kicker" id="toolKicker">WORKSPACE TOOL</div>
+            <h2 id="toolTitle">Refund Calculator</h2>
+            <p id="toolDescription">Hitung estimasi refund dengan parameter harga, diskon, dan sisa masa aktif.</p>
+          </div>
+          <span class="chip toolHint" id="toolHint"><i class="fa-solid fa-circle-info"></i> Isi input → hitung</span>
         </div>
 
         <div class="card-body">
 
+
+          <!-- TOOL: JSON -> CSV -->
+          <section id="tool-jsoncsv" class="hidden">
+            <h3 class="section-title">JSON → CSV</h3>
+            <p class="muted" style="margin-top:-6px;">Konversi array JSON menjadi CSV. Nested object akan diratakan dengan notasi titik.</p>
+            <div class="toolHero"><b><i class="fa-solid fa-circle-info"></i> Format yang didukung</b><p>Masukkan array JSON seperti <code>[{"name":"Vanz","price":1000}]</code>. Header dibuat otomatis dari seluruh field.</p></div>
+            <label for="jsonCsvInput">JSON Input</label>
+            <textarea id="jsonCsvInput" placeholder='[
+  {"name":"Vanz","email":"hello@example.com","active":true},
+  {"name":"Shop","email":"shop@example.com","active":false}
+]'></textarea>
+            <div class="btnrow"><button class="btn" onclick="jsonToCsv()"><i class="fa-solid fa-file-csv"></i> Convert ke CSV</button><button class="btn secondary" onclick="jsonCsvCopy()"><i class="fa-solid fa-copy"></i> Salin</button><button class="btn secondary" onclick="jsonCsvDownload()"><i class="fa-solid fa-download"></i> Download CSV</button><button class="btn danger" onclick="jsonCsvClear()"><i class="fa-solid fa-trash"></i> Bersihkan</button></div>
+            <div class="divider"></div><label for="jsonCsvOutput">CSV Output</label><textarea id="jsonCsvOutput" readonly placeholder="Hasil CSV akan muncul di sini..."></textarea>
+          </section>
+
+          <!-- TOOL: URL ENCODER -->
+          <section id="tool-urlencoder" class="hidden">
+            <h3 class="section-title">URL Encoder / Decoder</h3>
+            <p class="muted" style="margin-top:-6px;">Encode komponen URL atau decode kembali ke teks aslinya.</p>
+            <label for="urlToolInput">Input</label><textarea id="urlToolInput" placeholder="https://example.com/search?q=Vanz Shop & premium"></textarea>
+            <div class="btnrow"><button class="btn" onclick="urlEncodeTool()"><i class="fa-solid fa-lock"></i> Encode URL</button><button class="btn secondary" onclick="urlDecodeTool()"><i class="fa-solid fa-lock-open"></i> Decode URL</button><button class="btn secondary" onclick="urlCopyTool()"><i class="fa-solid fa-copy"></i> Salin</button><button class="btn danger" onclick="urlClearTool()"><i class="fa-solid fa-trash"></i> Bersihkan</button></div>
+            <div class="divider"></div><label for="urlToolOutput">Output</label><textarea id="urlToolOutput" readonly placeholder="Hasil akan muncul di sini..."></textarea>
+          </section>
+
+          <!-- TOOL: BATCH TXT -->
+          <section id="tool-txtbatch" class="hidden">
+            <h3 class="section-title">Batch TXT Generator</h3>
+            <p class="muted" style="margin-top:-6px;">Bagi ribuan baris menjadi banyak file TXT lalu download semuanya sebagai satu ZIP.</p>
+            <div class="row"><div><label for="txtBatchLines">Data / Baris</label><textarea id="txtBatchLines" style="min-height:230px;" placeholder="baris 1\nbaris 2\nbaris 3\n..."></textarea></div><div><label for="txtBatchSize">Baris per file</label><input id="txtBatchSize" type="number" min="1" value="100"/><label for="txtBatchPrefix" style="margin-top:12px;">Nama file</label><input id="txtBatchPrefix" value="vanzshop" placeholder="vanzshop"/><label for="txtBatchExt" style="margin-top:12px;">Ekstensi</label><select id="txtBatchExt"><option value="txt">.txt</option><option value="csv">.csv</option><option value="log">.log</option><option value="list">.list</option></select></div></div>
+            <div class="btnrow"><button class="btn" onclick="txtBatchBuild()"><i class="fa-solid fa-layer-group"></i> Buat File</button><button class="btn secondary" id="txtBatchZipBtn" onclick="txtBatchZip()" disabled><i class="fa-solid fa-file-zipper"></i> Download ZIP</button><button class="btn danger" onclick="txtBatchClear()"><i class="fa-solid fa-trash"></i> Bersihkan</button></div>
+            <div class="divider"></div><div class="inline"><span class="chip" id="txtBatchStats"><i class="fa-solid fa-list"></i> 0 baris • 0 file</span></div><div id="txtBatchResults" class="result-grid" style="margin-top:12px;"></div>
+          </section>
+
+          <!-- TOOL: PROXY CHECKER -->
+          <section id="tool-proxy" class="hidden">
+            <h3 class="section-title">Proxy List Checker</h3>
+            <p class="muted" style="margin-top:-6px;">Validasi daftar proxy secara lokal: format, host, port, dan duplikasi. Tidak melakukan koneksi keluar ke proxy.</p>
+            <div class="toolHero"><b><i class="fa-solid fa-shield-halved"></i> Safe local checker</b><p>Checker ini tidak menguji konektivitas proxy atau melakukan request melalui proxy. Untuk pengecekan koneksi nyata, gunakan backend/Worker milik sendiri dengan aturan akses yang jelas.</p></div>
+            <label for="proxyInput">Proxy List</label><textarea id="proxyInput" placeholder="http://user:pass@127.0.0.1:8080\nhttps://192.168.1.10:3128\n10.0.0.1:8080"></textarea>
+            <div class="btnrow"><button class="btn" onclick="proxyCheck()"><i class="fa-solid fa-magnifying-glass"></i> Check Format</button><button class="btn secondary" onclick="proxyCopyValid()"><i class="fa-solid fa-copy"></i> Salin Valid</button><button class="btn danger" onclick="proxyClear()"><i class="fa-solid fa-trash"></i> Bersihkan</button></div>
+            <div class="divider"></div><div class="result-grid"><div class="result-card"><h4>Ringkasan</h4><div id="proxySummary" class="small">Belum ada pemeriksaan.</div></div><div class="result-card"><h4>Hasil</h4><div id="proxyResults" class="code" style="max-height:320px;">—</div></div></div>
+          </section>
+
           <!-- TOOL: 2FA AUTHENTICATOR -->
           <section id="tool-authenticator" class="hidden">
-            <h3 class="section-title">2FA Authenticator</h3>
-            <p class="muted" style="margin-top:-6px;">Masukkan Secret Key (Base32) atau link otpauth:// lalu tekan tombol untuk menghasilkan kode.</p>
+            <h3 class="section-title">Authenticator 2FA</h3>
+            <p class="muted" style="margin-top:-6px;">Masukkan kunci rahasia Base32 atau URL otpauth untuk menghasilkan kode OTP 6 digit.</p>
 
             <div>
-              <label for="authSecret">Secret Key (Base32) / otpauth URL</label>
+              <label for="authSecret">Kunci Rahasia (Base32) / URL otpauth</label>
               <input id="authSecret" placeholder="Contoh: JBSWY3DPEHPK3PXP atau otpauth://totp/..." value="" />
             </div>
 
             <div class="btnrow" style="margin-top:14px;">
-              <button class="btn" onclick="authGenerate()"><i class="fa-solid fa-key"></i> Dapatkan Kode OTP</button>
+              <button class="btn" onclick="authGenerate()"><i class="fa-solid fa-key"></i> Generate Kode OTP</button>
               <button class="btn secondary" id="authCopyBtn" onclick="authCopyCode()" disabled><i class="fa-solid fa-copy"></i> Salin Kode</button>
-              <button class="btn danger" onclick="authClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+              <button class="btn danger" onclick="authClear()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
             </div>
 
             <div class="divider"></div>
 
             <div class="progressWrap" id="authProgressWrap" style="opacity: 0.45;">
               <div class="progressTop">
-                <div class="progressLabel">Siklus Detik (30s Period)</div>
+                <div class="progressLabel">Siklus OTP (30 detik)</div>
                 <div class="progressPct" id="authPctText">—s</div>
               </div>
               <div class="progressBar"><div class="progressFill" id="authPctFill" style="width: 0%;"></div></div>
@@ -584,9 +1165,9 @@ const VANZ_ENV = {
             </div>
 
             <div class="result-card">
-              <h4>Status Layanan</h4>
+              <h4>Status</h4>
               <div class="small" id="authStatusText">
-                Silakan masukkan Secret Key di atas lalu klik "Dapatkan Kode OTP" untuk memulai.
+                Silakan masukkan Secret Key di atas lalu klik "Generate Kode OTP" untuk memulai.
               </div>
             </div>
           </section>
@@ -594,16 +1175,16 @@ const VANZ_ENV = {
           <!-- TOOL: OUTLOOK LIVE READER (PERSIS PREMIUMISME.CO/TOOLS/OUTLOOK) -->
           <section id="tool-outlook" class="hidden">
             <div class="inline" style="margin-bottom:8px;">
-              <h3 class="section-title" style="margin:0;">Outlook Reader</h3>
+              <h3 class="section-title" style="margin:0;">Outlook Inbox</h3>
               <div class="toggleGroup">
                 <div class="toggleBtn active" id="modeOAuth2" onclick="setOutlookAuthMode('oauth2')">OAuth2</div>
                 <div class="toggleBtn" id="modeGraph" onclick="setOutlookAuthMode('graph')">Graph API</div>
               </div>
             </div>
-            <p class="muted" style="margin-top:0px;">Tempelkan kredensial akun Outlook format <code>email|pass|refresh_token|client_id</code> atau <code>refresh_token</code> saja.</p>
+            <p class="muted" style="margin-top:0px;">Masukkan data autentikasi Outlook dengan format <code>email|pass|refresh_token|client_id</code> atau <code>refresh_token</code> saja.</p>
 
             <div>
-              <label for="olCombo">Masukkan Email / Token</label>
+              <label for="olCombo">Email / Token</label>
               <textarea id="olCombo" placeholder="Contoh:
 BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|9e5f94bc-e8a4-4e73-b8be-63364c29d753" style="min-height:90px;"></textarea>
             </div>
@@ -613,13 +1194,13 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
                 <span class="chip" id="olAccountBadge"><i class="fa-solid fa-user"></i> <span id="olDetectedEmail">1 Akun</span></span>
                 <div class="checkbox" style="padding:6px 12px; border-radius:999px;">
                   <input type="checkbox" id="olUseProxy" checked />
-                  <label for="olUseProxy" style="margin:0; font-size:11px;">Bypass CORS</label>
+                  <label for="olUseProxy" style="margin:0; font-size:11px;">Gunakan proxy CORS</label>
                 </div>
               </div>
 
               <div class="btnrow" style="margin:0;">
                 <button class="btn secondary" onclick="olClearReader()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
-                <button class="btn" id="olFetchBtn" onclick="olFetchInbox()"><i class="fa-solid fa-envelope-open-text"></i> Read Inbox</button>
+                <button class="btn" id="olFetchBtn" onclick="olFetchInbox()"><i class="fa-solid fa-envelope-open-text"></i> Baca Inbox</button>
               </div>
             </div>
 
@@ -635,8 +1216,8 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
                 </div>
                 <div class="inline" style="gap:6px;">
                   <input id="olSearchInput" placeholder="Cari email / subjek..." oninput="olFilterTable()" style="padding:7px 12px; font-size:12px; width:180px; border-radius:999px;" />
-                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olFetchInbox()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
-                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olExportData('csv')">CSV</button>
+                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olFetchInbox()"><i class="fa-solid fa-rotate-right"></i> Muat Ulang</button>
+                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olExportData('csv')">Unduh CSV</button>
                   <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olExportData('json')">JSON</button>
                 </div>
               </div>
@@ -653,7 +1234,7 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
                   <tbody id="olTableBody">
                     <tr>
                       <td colspan="3" style="text-align:center; padding:35px; color:var(--muted);">
-                        Belum ada pesan yang dibaca. Klik "Read Inbox" di atas.
+                        Belum ada pesan yang dibaca. Klik "Baca Inbox" di atas.
                       </td>
                     </tr>
                   </tbody>
@@ -665,7 +1246,7 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
           <!-- Email Generator -->
           <section id="tool-emailgen" class="hidden">
             <h3 class="section-title">Email Generator</h3>
-            <p class="muted" style="margin-top:-6px;">Domain + optional subdomain + jumlah + panjang random.</p>
+            <p class="muted" style="margin-top:-6px;">Buat alamat email berdasarkan domain, subdomain opsional, jumlah, dan panjang teks acak.</p>
 
             <div class="row">
               <div>
@@ -673,7 +1254,7 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
                 <input id="egDomain" placeholder="Contoh: vanzshop.com" />
               </div>
               <div>
-                <label for="egCount">Jumlah email</label>
+                <label for="egCount">Jumlah data email</label>
                 <input id="egCount" type="number" min="1" max="200000" placeholder="10" />
               </div>
             </div>
@@ -684,14 +1265,14 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
                 <input id="egSub" placeholder="Contoh: api (jadi api.vanzshop.com)" />
               </div>
               <div>
-                <label for="egLen">Panjang random</label>
+                <label for="egLen">Panjang teks acak</label>
                 <input id="egLen" type="number" min="3" max="32" placeholder="10" />
               </div>
             </div>
 
             <div class="row" style="margin-top:12px;">
               <div>
-                <label for="egMode">Random</label>
+                <label for="egMode">Pola karakter acak</label>
                 <select id="egMode">
                   <option value="alnum">Huruf + Angka</option>
                   <option value="alpha">Huruf saja</option>
@@ -700,7 +1281,7 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
               </div>
               <div class="checkbox" style="align-self:end;">
                 <input type="checkbox" id="egUnique" checked />
-                <label for="egUnique" style="margin:0;">Unik di sesi ini</label>
+                <label for="egUnique" style="margin:0;">Hindari duplikat di sesi ini</label>
               </div>
             </div>
 
@@ -720,8 +1301,8 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
 
           <!-- Refund -->
           <section id="tool-refund">
-            <h3 class="section-title">Kalkulator Refund</h3>
-            <p class="muted" style="margin-top:-6px;">Isi dulu inputnya, lalu hitung. Ringkasan rapi + progress bar.</p>
+            <h3 class="section-title">Refund Calculator</h3>
+            <p class="muted" style="margin-top:-6px;">Masukkan parameter transaksi, lalu hitung estimasi refund dan ringkasannya.</p>
 
             <div class="row">
               <div>
@@ -729,29 +1310,29 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
                 <input id="rfProduct" placeholder="Contoh: Ai Perplexity" />
               </div>
               <div>
-                <label for="rfRate">Rate Refund (%)</label>
+                <label for="rfRate">Persentase Refund (%)</label>
                 <input id="rfRate" type="number" min="0" max="100" step="1" placeholder="100" />
               </div>
             </div>
 
             <div class="row" style="margin-top:12px;">
               <div>
-                <label for="rfPrice">Harga Beli (Rp)</label>
+                <label for="rfPrice">Harga Pembelian (Rp)</label>
                 <input id="rfPrice" type="number" min="0" placeholder="30000" />
               </div>
               <div>
-                <label for="rfDiscount">Diskon Tambahan (%) (optional)</label>
+                <label for="rfDiscount">Diskon Tambahan (%) — opsional</label>
                 <input id="rfDiscount" type="number" min="0" max="100" step="0.1" placeholder="0" />
               </div>
             </div>
 
             <div class="row" style="margin-top:12px;">
               <div>
-                <label for="rfRemaining">Sisa Masa Aktif (Hari)</label>
+                <label for="rfRemaining">Sisa Masa Aktif (hari)</label>
                 <input id="rfRemaining" type="number" min="0" placeholder="20" />
               </div>
               <div>
-                <label for="rfTotal">Total Durasi (Hari)</label>
+                <label for="rfTotal">Total Durasi (hari)</label>
                 <input id="rfTotal" type="number" min="1" placeholder="30" />
               </div>
             </div>
@@ -789,24 +1370,24 @@ BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|
 
           <!-- Validator -->
           <section id="tool-validator" class="hidden">
-            <h3 class="section-title">Validator</h3>
-            <p class="muted" style="margin-top:-6px;">Pisah valid/invalid + filter domain + chart.</p>
+            <h3 class="section-title">Email Validator</h3>
+            <p class="muted" style="margin-top:-6px;">Periksa format email, filter domain, dan lihat distribusi hasil valid atau invalid.</p>
 
             <div class="row">
               <div>
-                <label for="valFile">Upload (.txt)</label>
+                <label for="valFile">Upload file teks (.txt)</label>
                 <input id="valFile" type="file" accept=".txt,text/plain" />
                 <div class="small" id="valFileInfo" style="margin-top:8px;"></div>
               </div>
               <div>
-                <label for="valDomains">Filter domain (optional)</label>
+                <label for="valDomains">Filter domain — opsional</label>
                 <input id="valDomains" placeholder="Contoh: gmail.com,vanzshop.com" />
               </div>
             </div>
 
             <div style="margin-top:12px;">
               <label for="valInput">Input</label>
-              <textarea id="valInput" placeholder="input email disini . . . .
+              <textarea id="valInput" placeholder="Tempel data di sini . . . .
 
 Contoh:
 user@gmail.com
@@ -815,7 +1396,7 @@ user@outlook.com:abc"></textarea>
 
               <div class="inline" style="margin-top:10px;">
                 <span class="chip" id="valCount"><i class="fa-solid fa-list"></i> 0</span>
-                <button class="btn danger" onclick="valClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+                <button class="btn danger" onclick="valClear()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
               </div>
             </div>
 
@@ -823,9 +1404,9 @@ user@outlook.com:abc"></textarea>
 
             <div class="row">
               <div class="checkbox"><input type="checkbox" id="valTrim" checked /><label for="valTrim" style="margin:0;">Trim</label></div>
-              <div class="checkbox"><input type="checkbox" id="valExtractEmailOnly" checked /><label for="valExtractEmailOnly" style="margin:0;">Extract email dari combo</label></div>
-              <div class="checkbox"><input type="checkbox" id="valBlockDisposable" /><label for="valBlockDisposable" style="margin:0;">Block disposable</label></div>
-              <div class="checkbox"><input type="checkbox" id="valCaseInsensitive" checked /><label for="valCaseInsensitive" style="margin:0;">Case-insensitive</label></div>
+              <div class="checkbox"><input type="checkbox" id="valExtractEmailOnly" checked /><label for="valExtractEmailOnly" style="margin:0;">Ambil email dari baris</label></div>
+              <div class="checkbox"><input type="checkbox" id="valBlockDisposable" /><label for="valBlockDisposable" style="margin:0;">Blokir disposable email</label></div>
+              <div class="checkbox"><input type="checkbox" id="valCaseInsensitive" checked /><label for="valCaseInsensitive" style="margin:0;">Abaikan huruf besar/kecil</label></div>
             </div>
 
             <div class="btnrow">
@@ -865,14 +1446,14 @@ user@outlook.com:abc"></textarea>
           <!-- Currency Converter -->
           <section id="tool-currency" class="hidden">
             <h3 class="section-title">Currency Converter</h3>
-            <p class="muted" style="margin-top:-6px;">Konversi IDR ↔ USD dengan tampilan sederhana.</p>
+            <p class="muted" style="margin-top:-6px;">Konversi nilai IDR dan USD menggunakan kurs yang tersimpan di konfigurasi aplikasi.</p>
 
             <div class="toggleGroup" style="margin-bottom:14px;">
               <div class="toggleBtn active" id="curIDRUSD" onclick="setCurrencyMode('idr')">IDR → USD</div>
               <div class="toggleBtn" id="curUSDIDR" onclick="setCurrencyMode('usd')">USD → IDR</div>
             </div>
 
-            <label>Jumlah</label>
+            <label>Jumlah data</label>
             <input id="currencyInput" type="number" placeholder="Masukkan nominal">
 
             <div class="btnrow">
@@ -896,19 +1477,19 @@ user@outlook.com:abc"></textarea>
 
             <div class="row">
               <div>
-                <label for="daFile">Upload (.txt)</label>
+                <label for="daFile">Upload file teks (.txt)</label>
                 <input id="daFile" type="file" accept=".txt,text/plain" />
                 <div class="small" id="daFileInfo" style="margin-top:8px;"></div>
               </div>
               <div>
-                <label for="daTop">Top (N)</label>
+                <label for="daTop">Jumlah teratas (N)</label>
                 <input id="daTop" type="number" min="3" max="200" value="30" />
               </div>
             </div>
 
             <div style="margin-top:12px;">
               <label for="daInput">Input</label>
-              <textarea id="daInput" placeholder="input email disini . . . .
+              <textarea id="daInput" placeholder="Tempel data di sini . . . .
 
 Contoh:
 user@gmail.com
@@ -916,7 +1497,7 @@ user@yahoo.com|123
 user@outlook.com:abc"></textarea>
               <div class="inline" style="margin-top:10px;">
                 <span class="chip" id="daCount"><i class="fa-solid fa-list"></i> 0</span>
-                <button class="btn danger" onclick="daClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+                <button class="btn danger" onclick="daClear()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
               </div>
             </div>
 
@@ -924,8 +1505,8 @@ user@outlook.com:abc"></textarea>
 
             <div class="row">
               <div class="checkbox"><input type="checkbox" id="daTrim" checked /><label for="daTrim" style="margin:0;">Trim</label></div>
-              <div class="checkbox"><input type="checkbox" id="daExtract" checked /><label for="daExtract" style="margin:0;">Extract email dari combo</label></div>
-              <div class="checkbox"><input type="checkbox" id="daLower" checked /><label for="daLower" style="margin:0;">Lowercase</label></div>
+              <div class="checkbox"><input type="checkbox" id="daExtract" checked /><label for="daExtract" style="margin:0;">Ambil email dari baris</label></div>
+              <div class="checkbox"><input type="checkbox" id="daLower" checked /><label for="daLower" style="margin:0;">Ubah ke huruf kecil</label></div>
               <div class="checkbox"><input type="checkbox" id="daOnlyValid" checked /><label for="daOnlyValid" style="margin:0;">Hitung hanya email valid</label></div>
             </div>
 
@@ -951,11 +1532,11 @@ user@outlook.com:abc"></textarea>
 
           <!-- Formatter -->
           <section id="tool-formatter" class="hidden">
-            <h3 class="section-title">Formatter</h3>
+            <h3 class="section-title">Data Formatter</h3>
 
             <div class="row">
               <div>
-                <label for="fmtFile">Upload (.txt)</label>
+                <label for="fmtFile">Upload file teks (.txt)</label>
                 <input id="fmtFile" type="file" accept=".txt,text/plain" />
                 <div class="small" id="fmtFileInfo" style="margin-top:8px;"></div>
               </div>
@@ -971,18 +1552,18 @@ user@outlook.com:abc"></textarea>
 
             <div class="row" style="margin-top:12px;">
               <div>
-                <label for="fmtSetPass">Set password (optional)</label>
+                <label for="fmtSetPass">Atur password — opsional</label>
                 <input id="fmtSetPass" placeholder="Contoh: Premium123" />
               </div>
               <div class="checkbox" style="align-self:end;">
                 <input type="checkbox" id="fmtForcePass" />
-                <label for="fmtForcePass" style="margin:0;">Force override password</label>
+                <label for="fmtForcePass" style="margin:0;">Paksa ganti password</label>
               </div>
             </div>
 
             <div style="margin-top:12px;">
               <label for="fmtInput">Input</label>
-              <textarea id="fmtInput" placeholder="input email disini . . . .
+              <textarea id="fmtInput" placeholder="Tempel data di sini . . . .
 
 Contoh:
 user@gmail.com
@@ -990,7 +1571,7 @@ user@yahoo.com|123
 user@outlook.com:abc"></textarea>
               <div class="inline" style="margin-top:10px;">
                 <span class="chip" id="fmtCount"><i class="fa-solid fa-list"></i> 0</span>
-                <button class="btn danger" onclick="fmtClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+                <button class="btn danger" onclick="fmtClear()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
               </div>
             </div>
 
@@ -998,9 +1579,9 @@ user@outlook.com:abc"></textarea>
 
             <div class="row">
               <div class="checkbox"><input type="checkbox" id="fmtTrim" checked /><label for="fmtTrim" style="margin:0;">Trim</label></div>
-              <div class="checkbox"><input type="checkbox" id="fmtRemoveEmpty" checked /><label for="fmtRemoveEmpty" style="margin:0;">Remove empty lines</label></div>
-              <div class="checkbox"><input type="checkbox" id="fmtRemoveNonAscii" /><label for="fmtRemoveNonAscii" style="margin:0;">Remove non-ASCII</label></div>
-              <div class="checkbox"><input type="checkbox" id="fmtKeepOriginalPass" checked /><label for="fmtKeepOriginalPass" style="margin:0;">Ambil pass dari input</label></div>
+              <div class="checkbox"><input type="checkbox" id="fmtRemoveEmpty" checked /><label for="fmtRemoveEmpty" style="margin:0;">Hapus baris kosong</label></div>
+              <div class="checkbox"><input type="checkbox" id="fmtRemoveNonAscii" /><label for="fmtRemoveNonAscii" style="margin:0;">Hapus karakter non-ASCII</label></div>
+              <div class="checkbox"><input type="checkbox" id="fmtKeepOriginalPass" checked /><label for="fmtKeepOriginalPass" style="margin:0;">Gunakan password dari input</label></div>
             </div>
 
             <div class="btnrow">
@@ -1019,23 +1600,23 @@ user@outlook.com:abc"></textarea>
 
           <!-- Splitter -->
           <section id="tool-splitter" class="hidden">
-            <h3 class="section-title">Splitter</h3>
+            <h3 class="section-title">File Splitter</h3>
 
             <div class="row">
               <div>
-                <label for="splitFileInput">Upload (.txt)</label>
+                <label for="splitFileInput">Upload file teks (.txt)</label>
                 <input id="splitFileInput" type="file" accept=".txt,text/plain" />
                 <div class="small" id="splitFileInfo" style="margin-top:8px;"></div>
               </div>
               <div>
-                <label for="splitSize">Bagi per (X) baris</label>
+                <label for="splitSize">Jumlah data baris per bagian</label>
                 <input id="splitSize" type="number" min="1" placeholder="10" />
               </div>
             </div>
 
             <div style="margin-top:12px;">
               <label for="splitInput">Input</label>
-              <textarea id="splitInput" placeholder="input email disini . . . .
+              <textarea id="splitInput" placeholder="Tempel data di sini . . . .
 
 Contoh:
 user@gmail.com|123
@@ -1043,7 +1624,7 @@ user@yahoo.com|123
 user@outlook.com|abc"></textarea>
               <div class="inline" style="margin-top:10px;">
                 <span class="chip" id="splitCount"><i class="fa-solid fa-list"></i> 0</span>
-                <button class="btn danger" onclick="splitClear()"><i class="fa-solid fa-trash"></i> Clear</button>
+                <button class="btn danger" onclick="splitClear()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
               </div>
             </div>
 
@@ -1058,7 +1639,7 @@ user@outlook.com|abc"></textarea>
 
           <!-- GSuite -->
           <section id="tool-gsuite" class="hidden">
-            <h3 class="section-title">GSuite Creator</h3>
+            <h3 class="section-title">Workspace CSV Generator</h3>
 
             <div class="row">
               <div><label for="gsFirst">First Name</label><input id="gsFirst" placeholder="Apps"/></div>
@@ -1067,11 +1648,11 @@ user@outlook.com|abc"></textarea>
 
             <div class="row" style="margin-top:12px;">
               <div><label for="gsDomain">Domain</label><input id="gsDomain" placeholder="vanzshop.com"/></div>
-              <div><label for="gsQty">Jumlah</label><input id="gsQty" type="number" min="1" max="100000" placeholder="100"/></div>
+              <div><label for="gsQty">Jumlah data</label><input id="gsQty" type="number" min="1" max="100000" placeholder="100"/></div>
             </div>
 
             <div class="row" style="margin-top:12px;">
-              <div><label for="gsAlphabetLen">Panjang username random</label><input id="gsAlphabetLen" type="number" min="5" max="24" placeholder="8"/></div>
+              <div><label for="gsAlphabetLen">Panjang username acak</label><input id="gsAlphabetLen" type="number" min="5" max="24" placeholder="8"/></div>
               <div><label for="gsPass">Password</label><input id="gsPass" placeholder="Premium123"/></div>
             </div>
 
@@ -1083,7 +1664,7 @@ user@outlook.com|abc"></textarea>
 
             <div class="divider"></div>
             <div class="result-card">
-              <h4>Output (email|pass)</h4>
+              <h4>Output (email|password)</h4>
               <textarea id="gsOutput" readonly style="min-height:300px;"></textarea>
             </div>
           </section>
@@ -1158,36 +1739,72 @@ user@outlook.com|abc"></textarea>
     }
 
     // ===== Navigation =====
-    const tools = ["emailgen","authenticator","outlook","refund","validator","currency","domain","formatter","splitter","gsuite"];
+    const tools = ["emailgen","authenticator","outlook","refund","validator","currency","domain","formatter","splitter","gsuite","jsoncsv","urlencoder","txtbatch","proxy"];
     function showTool(name){
-      const title = {
-        emailgen:"Email Generator",
-        authenticator:"2FA Authenticator",
-        outlook:"Outlook Reader",
-        refund:"Kalkulator Refund",
-        validator:"Validator",
-        duplicate:"Duplicate Remover",
-        domain:"Domain Analyzer",
-        formatter:"Formatter",
-        splitter:"Splitter",
-        gsuite:"GSuite Creator"
-      }[name] || "Tools";
-      document.getElementById("toolTitle").textContent = title;
-
-      const hint = {
-        emailgen:"domain → generate",
-        authenticator:"masukkan key → klik dapatkan OTP",
-        outlook:"refresh token → read inbox",
-        refund:"isi input → hitung",
-        validator:"upload/paste → validate",
-        duplicate:"paste → remove dup",
-        domain:"paste → analyze domain",
-        formatter:"normalize + set pass",
-        splitter:"split + zip",
-        gsuite:"generate csv"
-      }[name] || "";
-
-      document.getElementById("toolHint").innerHTML = `<i class="fa-solid fa-circle-info"></i> ${hint}`;
+      const meta = {
+        emailgen:{
+          title:"Email Generator",
+          desc:"Buat alamat email berbasis domain dengan pola acak yang bisa dikustomisasi.",
+          hint:"Domain → jumlah → buat"
+        },
+        authenticator:{
+          title:"Authenticator 2FA",
+          desc:"Hasilkan kode OTP berbasis waktu dari Secret Key Base32 atau otpauth URL.",
+          hint:"Secret key → generate OTP"
+        },
+        outlook:{
+          title:"Outlook Inbox",
+          desc:"Kelola tampilan inbox dan hasil pembacaan pesan dari mode autentikasi yang tersedia.",
+          hint:"Token → baca inbox"
+        },
+        refund:{
+          title:"Refund Calculator",
+          desc:"Hitung estimasi refund berdasarkan harga, diskon, dan sisa masa aktif.",
+          hint:"Isi parameter → hitung"
+        },
+        validator:{
+          title:"Email Validator",
+          desc:"Periksa format email, filter domain, lalu pisahkan data valid dan invalid.",
+          hint:"Input → periksa → export"
+        },
+        domain:{
+          title:"Domain Analyzer",
+          desc:"Ringkas distribusi domain dari kumpulan data dan tampilkan statistik teratas.",
+          hint:"Input → analisis"
+        },
+        formatter:{
+          title:"Data Formatter",
+          desc:"Rapikan dan ubah format data teks menjadi output yang konsisten.",
+          hint:"Input → format → export"
+        },
+        splitter:{
+          title:"File Splitter",
+          desc:"Bagi data teks menjadi beberapa bagian berdasarkan jumlah baris yang ditentukan.",
+          hint:"Input → bagi → ZIP"
+        },
+        gsuite:{
+          title:"Workspace CSV Generator",
+          desc:"Siapkan data user dalam format CSV yang sesuai untuk workflow Google Workspace.",
+          hint:"Data → generate → CSV"
+        },
+        jsoncsv:{title:"JSON → CSV",desc:"Konversi array JSON menjadi file CSV dengan header otomatis.",hint:"JSON → CSV → download"},
+        urlencoder:{title:"URL Encoder / Decoder",desc:"Encode atau decode teks URL dengan aman di browser.",hint:"Input → encode / decode"},
+        txtbatch:{title:"Batch TXT Generator",desc:"Pecah data menjadi banyak file teks dan download dalam satu ZIP.",hint:"Baris → file → ZIP"},
+        proxy:{title:"Proxy List Checker",desc:"Validasi format proxy, host, port, dan duplikasi secara lokal.",hint:"Proxy list → check format"},
+        currency:{
+          title:"Currency Converter",
+          desc:"Konversi nilai IDR dan USD menggunakan kurs yang tersimpan di konfigurasi aplikasi.",
+          hint:"Nominal → konversi"
+        }
+      };
+      const info = meta[name] || {
+        title:"VanzShop Tools",
+        desc:"Utility workspace untuk workflow harian.",
+        hint:"Pilih tool untuk mulai"
+      };
+      document.getElementById("toolTitle").textContent = info.title;
+      document.getElementById("toolDescription").textContent = info.desc;
+      document.getElementById("toolHint").innerHTML = `<i class="fa-solid fa-circle-info"></i> ${info.hint}`;
 
       tools.forEach(t=>{
         const el = document.getElementById("tool-"+t);
@@ -1197,6 +1814,28 @@ user@outlook.com|abc"></textarea>
       });
     }
     window.showTool = showTool;
+
+    function filterTools(query){
+      const q = String(query || "").trim().toLowerCase();
+      document.querySelectorAll(".nav > button[data-tool-label]").forEach(btn=>{
+        const hay = (btn.dataset.toolLabel || btn.textContent || "").toLowerCase();
+        btn.style.display = !q || hay.includes(q) ? "flex" : "none";
+      });
+    }
+
+    document.addEventListener("keydown", (e)=>{
+      const tag = (document.activeElement?.tagName || "").toLowerCase();
+      if((e.metaKey || e.ctrlKey) && e.key.toLowerCase()==="k"){
+        e.preventDefault();
+        const s = document.getElementById("toolSearch");
+        if(s){ s.focus(); s.select(); }
+      }
+      if(e.key === "Escape" && tag === "input" && document.activeElement?.id === "toolSearch"){
+        document.getElementById("toolSearch").value = "";
+        filterTools("");
+        document.getElementById("toolSearch").blur();
+      }
+    });
 
     // ============================================================
     
@@ -1335,7 +1974,7 @@ user@outlook.com|abc"></textarea>
       document.getElementById("authPctText").textContent = "—s";
       document.getElementById("authPctFill").style.width = "0%";
       document.getElementById("authProgressWrap").style.opacity = "0.45";
-      document.getElementById("authStatusText").textContent = "Silakan masukkan Secret Key di atas lalu klik \"Dapatkan Kode OTP\" untuk memulai.";
+      document.getElementById("authStatusText").textContent = "Silakan masukkan Secret Key di atas lalu klik \"Generate Kode OTP\" untuk memulai.";
       toast("2FA di-reset");
     }
 
@@ -1431,7 +2070,7 @@ user@outlook.com|abc"></textarea>
 
       const creds = parseOutlookString(raw);
       if(!creds.refreshToken){
-        toast("Refresh token tidak ditemukan di teks input!", "error");
+        toast("Muat Ulang token tidak ditemukan di teks input!", "error");
         return;
       }
 
@@ -1446,7 +2085,7 @@ user@outlook.com|abc"></textarea>
       toast("Meminta token akses Microsoft...");
 
       try {
-        // Step 1: Tukar Refresh Token menjadi Access Token
+        // Step 1: Tukar Muat Ulang Token menjadi Access Token
         // Support token live.com / msa consumer (M.C547...) maupun Azure AD
         let isConsumerMsa = creds.refreshToken.startsWith("M.C") || creds.refreshToken.startsWith("M.R");
         let tokenUrl = isConsumerMsa
@@ -1498,14 +2137,14 @@ user@outlook.com|abc"></textarea>
             <td colspan="3" style="text-align:center; padding:35px; color:var(--danger);">
               <i class="fa-solid fa-circle-exclamation" style="font-size:22px; margin-bottom:8px;"></i><br/>
               <b>${err.message}</b><br/>
-              <span class="small">Pastikan refresh token masih aktif dan opsi "Bypass CORS" tercentang.</span>
+              <span class="small">Pastikan refresh token masih aktif dan opsi "Gunakan proxy CORS" tercentang.</span>
             </td>
           </tr>
         `;
         toast(err.message, "error");
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-envelope-open-text"></i> Read Inbox`;
+        btn.innerHTML = `<i class="fa-solid fa-envelope-open-text"></i> Baca Inbox`;
       }
     }
 
@@ -1586,7 +2225,7 @@ user@outlook.com|abc"></textarea>
       document.getElementById("olTableBody").innerHTML = `
         <tr>
           <td colspan="3" style="text-align:center; padding:35px; color:var(--muted);">
-            Belum ada pesan yang dibaca. Klik "Read Inbox" di atas.
+            Belum ada pesan yang dibaca. Klik "Baca Inbox" di atas.
           </td>
         </tr>
       `;
@@ -2195,75 +2834,39 @@ user@outlook.com|abc"></textarea>
     }
     window.gsGenerate = gsGenerate; window.gsCopy = gsCopy; window.gsDownloadCSV = gsDownloadCSV;
 
+
+    // ===== JSON -> CSV =====
+    let jsonCsvData="";
+    function flattenObject(obj,prefix="",out={}){Object.entries(obj||{}).forEach(([k,v])=>{const key=prefix?prefix+"."+k:k;if(v&&typeof v==='object'&&!Array.isArray(v)) flattenObject(v,key,out);else out[key]=Array.isArray(v)?JSON.stringify(v):v;});return out;}
+    function csvEscape(v){const x=v==null?"":String(v);return /[",\n\r]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x;}
+    function jsonToCsv(){try{const raw=document.getElementById('jsonCsvInput').value.trim();const data=JSON.parse(raw);const arr=Array.isArray(data)?data:[data];if(!arr.length)throw Error('JSON kosong');const flat=arr.map(x=>flattenObject(x));const headers=[...new Set(flat.flatMap(x=>Object.keys(x)))];jsonCsvData=[headers.join(','),...flat.map(r=>headers.map(h=>csvEscape(r[h])).join(','))].join('\n');document.getElementById('jsonCsvOutput').value=jsonCsvData;toast(`CSV siap • ${arr.length} row`);}catch(e){toast('JSON tidak valid: '+e.message,true);}}
+    function jsonCsvCopy(){if(!jsonCsvData)return; navigator.clipboard.writeText(jsonCsvData).then(()=>toast('CSV disalin'));}
+    function jsonCsvDownload(){if(!jsonCsvData)jsonToCsv();if(jsonCsvData)downloadText(`json-${new Date().toISOString().slice(0,10)}.csv`,jsonCsvData);}
+    function jsonCsvClear(){document.getElementById('jsonCsvInput').value='';document.getElementById('jsonCsvOutput').value='';jsonCsvData='';}
+    // ===== URL Encoder =====
+    function urlEncodeTool(){const v=document.getElementById('urlToolInput').value;document.getElementById('urlToolOutput').value=encodeURIComponent(v);toast('URL encoded');}
+    function urlDecodeTool(){try{document.getElementById('urlToolOutput').value=decodeURIComponent(document.getElementById('urlToolInput').value);toast('URL decoded');}catch(e){toast('Format URL encoded tidak valid',true);}}
+    function urlCopyTool(){const v=document.getElementById('urlToolOutput').value;if(v)navigator.clipboard.writeText(v).then(()=>toast('Output disalin'));}
+    function urlClearTool(){document.getElementById('urlToolInput').value='';document.getElementById('urlToolOutput').value='';}
+    // ===== Batch TXT =====
+    let txtBatchGroups=[];
+    function txtBatchBuild(){const lines=document.getElementById('txtBatchLines').value.split(/\r?\n/).filter(x=>x.length);const size=Math.max(1,Number(document.getElementById('txtBatchSize').value)||100);const prefix=(document.getElementById('txtBatchPrefix').value||'vanzshop').replace(/[^a-zA-Z0-9_-]/g,'-');const ext=document.getElementById('txtBatchExt').value;txtBatchGroups=[];for(let i=0;i<lines.length;i+=size)txtBatchGroups.push(lines.slice(i,i+size));const out=document.getElementById('txtBatchResults');out.innerHTML='';txtBatchGroups.forEach((g,i)=>{const d=document.createElement('div');d.className='result-card';d.innerHTML=`<h4>${prefix}-${String(i+1).padStart(3,'0')}.${ext} <span class="small">(${g.length} baris)</span></h4><textarea readonly style="min-height:140px;">${g.map(x=>x.replace(/&/g,'&amp;').replace(/</g,'&lt;')).join('\n')}</textarea><button class="btn secondary" style="margin-top:8px" onclick="txtBatchDownload(${i})"><i class="fa-solid fa-download"></i> Download</button>`;out.appendChild(d);});document.getElementById('txtBatchStats').innerHTML=`<i class="fa-solid fa-list"></i> ${lines.length} baris • ${txtBatchGroups.length} file`;document.getElementById('txtBatchZipBtn').disabled=!txtBatchGroups.length;toast(`${txtBatchGroups.length} file dibuat`);}
+    function txtBatchDownload(i){if(!txtBatchGroups[i])return;const prefix=(document.getElementById('txtBatchPrefix').value||'vanzshop').replace(/[^a-zA-Z0-9_-]/g,'-');const ext=document.getElementById('txtBatchExt').value;downloadText(`${prefix}-${String(i+1).padStart(3,'0')}.${ext}`,txtBatchGroups[i].join('\n'));}
+    async function txtBatchZip(){if(!txtBatchGroups.length)return;const zip=new JSZip();const prefix=(document.getElementById('txtBatchPrefix').value||'vanzshop').replace(/[^a-zA-Z0-9_-]/g,'-');const ext=document.getElementById('txtBatchExt').value;txtBatchGroups.forEach((g,i)=>zip.file(`${prefix}-${String(i+1).padStart(3,'0')}.${ext}`,g.join('\n')));const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${prefix}-batch.zip`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('ZIP downloaded');}
+    function txtBatchClear(){document.getElementById('txtBatchLines').value='';document.getElementById('txtBatchResults').innerHTML='';document.getElementById('txtBatchStats').innerHTML='<i class="fa-solid fa-list"></i> 0 baris • 0 file';txtBatchGroups=[];document.getElementById('txtBatchZipBtn').disabled=true;}
+    // ===== Proxy format checker (local only) =====
+    let proxyValid=[];
+    function parseProxy(line){let s=line.trim();if(!s)return null;let original=s;if(!/^[a-z][a-z0-9+.-]*:\/\//i.test(s))s='http://'+s;try{const u=new URL(s);const port=Number(u.port||80);const host=u.hostname;const ok=!!host&&port>=1&&port<=65535;return {original,host,port,protocol:u.protocol.replace(':',''),auth:!!u.username,ok};}catch(e){return {original,ok:false,error:'Format URL/proxy tidak valid'};}}
+    function proxyCheck(){const lines=document.getElementById('proxyInput').value.split(/\r?\n/);const seen=new Set();proxyValid=[];let valid=0,invalid=0,dup=0;const rows=lines.filter(Boolean).map(line=>{const p=parseProxy(line);if(!p)return '';const key=p.host+':'+p.port;if(!p.ok){invalid++;return `✕ INVALID  ${p.original} — ${p.error}`;}if(seen.has(key)){dup++;return `⚠ DUPLICATE ${p.original} — ${key}`;}seen.add(key);proxyValid.push(p.original);valid++;return `✓ VALID    ${p.original} → ${p.protocol.toUpperCase()} ${p.host}:${p.port}${p.auth?' • auth':''}`;});document.getElementById('proxySummary').textContent=`Valid: ${valid} • Invalid: ${invalid} • Duplicate: ${dup}`;document.getElementById('proxyResults').textContent=rows.join('\n')||'—';toast(`Check selesai • ${valid} valid`);}
+    function proxyCopyValid(){if(!proxyValid.length){toast('Belum ada proxy valid',true);return;}navigator.clipboard.writeText(proxyValid.join('\n')).then(()=>toast(`${proxyValid.length} proxy disalin`));}
+    function proxyClear(){document.getElementById('proxyInput').value='';document.getElementById('proxySummary').textContent='Belum ada pemeriksaan.';document.getElementById('proxyResults').textContent='—';proxyValid=[];}
+    // ===== Theme =====
+    function applyVanzTheme(theme){document.documentElement.setAttribute('data-vs-theme',theme);localStorage.setItem('vanzshop-theme',theme);const b=document.getElementById('themeToggle');if(b)b.innerHTML=theme==='light'?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>';}
+    function toggleVanzTheme(){applyVanzTheme(document.documentElement.getAttribute('data-vs-theme')==='light'?'dark':'light');}
+    (function(){const saved=localStorage.getItem('vanzshop-theme');applyVanzTheme(saved==='light'?'light':'dark');})();
+
     // Default view
     showTool("refund");
   </script>
 </body>
 </html>
-
-<style>
-.brandTitle{
- color:#f6c945 !important;
- text-shadow:
- 0 0 8px rgba(246,201,69,.8),
- 0 0 25px rgba(246,201,69,.45),
- 0 0 45px rgba(246,201,69,.25);
- letter-spacing:.5px;
-}
-
-.brandMark{
- border-color:rgba(246,201,69,.45)!important;
- box-shadow:
- 0 0 25px rgba(246,201,69,.25),
- inset 0 0 20px rgba(246,201,69,.1);
-}
-
-.profile{
- position:relative;
-}
-
-.profile:after{
- content:"";
- position:absolute;
- inset:-5px;
- border-radius:50%;
- box-shadow:0 0 30px rgba(246,201,69,.55);
- z-index:-1;
-}
-
-.nav button,
-.card{
- transition:.25s ease;
-}
-
-.nav button:hover{
- transform:translateX(6px);
- border-color:rgba(246,201,69,.65)!important;
- box-shadow:
- 0 0 25px rgba(246,201,69,.18),
- inset 0 0 20px rgba(246,201,69,.08);
-}
-
-.btn{
- background:
- linear-gradient(135deg,#f6c945,#ffe78a)!important;
- color:#090909!important;
- box-shadow:
- 0 8px 30px rgba(246,201,69,.25);
-}
-
-.result-card{
- background:
- linear-gradient(
- 145deg,
- rgba(246,201,69,.08),
- rgba(255,255,255,.04)
- );
-}
-
-#currencyResult{
- color:#f6c945;
- text-shadow:
- 0 0 20px rgba(246,201,69,.5);
-}
-</style>
