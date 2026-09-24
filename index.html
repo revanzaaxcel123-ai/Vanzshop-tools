@@ -93,6 +93,7 @@
       flex:0 0 auto;
       display:grid; place-items:center;
       border-radius:14px;
+      overflow:hidden;
       background: rgba(0,0,0,.20);
       border: 1px solid rgba(255,255,255,.10);
       box-shadow: 0 18px 40px rgba(0,0,0,.35);
@@ -101,6 +102,11 @@
     .brandMark i{
       font-size: 18px;
       color: rgba(255,255,255,.92);
+    }
+    .brandLogo{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
     }
     .profile{
       width:46px;
@@ -587,7 +593,14 @@ body{background:radial-gradient(900px 650px at 82% 18%,color-mix(in srgb,var(--v
 ================================ */
 const VANZ_ENV = {
   APP_NAME: "VanzShop Tools",
-  PROFILE_IMAGE: "profile.png",
+  PROFILE_IMAGE: "profile.png",   // dipakai sbg LOGO di ikon kiri header
+
+  // Link navigasi header (Home / API / Docs) — edit sesuai kebutuhan
+  NAV: {
+    HOME: "https://vanzshop.com",
+    API:  "https://vanzshop.com/api",
+    DOCS: "https://vanzshop.com/docs"
+  },
 
   THEME: {
     GOLD: "#f6c945",
@@ -1144,6 +1157,19 @@ const VANZ_ENV = {
     .backHome i{transition:transform .3s var(--ease)}.backHome:hover i{transform:translateX(-3px)}
     [data-theme="light"] .themeToggle i{color:#d4930f}
 
+    /* ---------- nav pill (Home / API / Docs) ---------- */
+    .navGroup{display:inline-flex;align-items:center;gap:4px;height:44px;padding:4px;border-radius:14px;
+      background:var(--u-soft);border:1px solid var(--edge);backdrop-filter:blur(14px)}
+    .navPill{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:11px;
+      text-decoration:none;color:var(--text-2);font:800 12px var(--font);letter-spacing:.2px;
+      border:1px solid transparent;transition:all .22s var(--ease);white-space:nowrap}
+    .navPill i{font-size:12px;color:var(--u-accent);transition:transform .25s var(--ease)}
+    .navPill:hover{color:var(--text);background:rgba(var(--u-accent-rgb),.12);border-color:rgba(var(--u-accent-rgb),.35);
+      transform:translateY(-1px)}
+    .navPill:hover i{transform:translateY(-1px) scale(1.08)}
+    @media (max-width:900px){ .navPill span{display:none} .navPill{padding:0 11px} }
+    @media (max-width:560px){ .navGroup{gap:2px;padding:3px} }
+
     /* ---------- kartu ---------- */
     .card{background:linear-gradient(var(--u-card),var(--u-card)) padding-box,var(--u-edge) border-box!important}
     .card-header{background:linear-gradient(180deg,var(--surface-2),transparent)!important}
@@ -1221,7 +1247,9 @@ const VANZ_ENV = {
     <header class="topbar">
       <div class="brand">
         <div class="brandMark" aria-hidden="true">
-          <i class="fa-solid fa-cubes-stacked"></i>
+          <img class="brandLogo" src="profile.png" alt="VanzShop"
+               onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='';">
+          <i class="fa-solid fa-cubes-stacked" style="display:none"></i>
         </div>
         <div class="brandCopy">
           <div class="brandOverline"><span class="liveDot"></span> VANZSHOP WORKSPACE</div>
@@ -1230,13 +1258,13 @@ const VANZ_ENV = {
         </div>
       </div>
       <div class="topbarRight">
-        <a class="backHome" href="https://vanzshop.com" title="Kembali ke Menu Utama"><i class="fa-solid fa-arrow-left"></i><span>Menu Utama</span></a>
+        <nav class="navGroup" aria-label="Navigasi utama">
+          <a class="navPill" data-nav="HOME" href="https://vanzshop.com" data-cursor="Home" title="Beranda"><i class="fa-solid fa-house"></i><span>Home</span></a>
+          <a class="navPill" data-nav="API" href="https://vanzshop.com/api" data-cursor="API" title="API"><i class="fa-solid fa-code"></i><span>API</span></a>
+          <a class="navPill" data-nav="DOCS" href="https://vanzshop.com/docs" data-cursor="Docs" title="Dokumentasi"><i class="fa-solid fa-book-open"></i><span>Docs</span></a>
+        </nav>
         <button class="themeToggle" id="themeToggle" onclick="toggleVanzTheme()" title="Ganti mode siang / malam" aria-label="Ganti mode siang / malam"><i class="fa-solid fa-moon"></i></button>
         <div class="workspaceBadge"><i class="fa-solid fa-bolt"></i><span>Ready</span></div>
-        <div class="profile" title="VanzShop">
-          <img src="profile.png" alt="VanzShop" onerror="this.src=VANZ_ENV.PROFILE_IMAGE">
-          <span class="profileStatus" aria-hidden="true"></span>
-        </div>
       </div>
     </header>
 
@@ -2796,6 +2824,17 @@ user@outlook.com|abc"></textarea>
     }
     window.rfCalc = rfCalc; window.rfCopy = rfCopy; window.rfReset = rfReset;
     window.addEventListener("DOMContentLoaded", ()=>{
+      // Terapkan link nav dari VANZ_ENV.NAV + logo brand dari VANZ_ENV.PROFILE_IMAGE
+      try {
+        document.querySelectorAll("[data-nav]").forEach(a=>{
+          const url = VANZ_ENV.NAV && VANZ_ENV.NAV[a.dataset.nav];
+          if(url) a.href = url;
+        });
+        const logo = document.querySelector(".brandLogo");
+        if(logo && VANZ_ENV.PROFILE_IMAGE) logo.src = VANZ_ENV.PROFILE_IMAGE;
+        if(window.__vanzRefreshCursor) window.__vanzRefreshCursor();
+      } catch(e){}
+
       rfResetUI();
       document.getElementById("rfProduct").value = "";
       document.getElementById("rfRate").value = "";
