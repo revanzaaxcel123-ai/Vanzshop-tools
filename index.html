@@ -422,6 +422,123 @@
       background:var(--gold);
       color:#000;
     }
+    .otpBadgeInline em{font-style:normal; opacity:.7; font-size:9px; text-transform:uppercase; letter-spacing:.6px; margin-left:2px;}
+    .otpBadgeInline span{font-size:13px; letter-spacing:1.5px;}
+
+    /* ============ OUTLOOK LIVE READER — PREMIUM UI ============ */
+    #tool-outlook{ --olg: var(--gold, #f6c945); }
+    /* Top bar: Home + status API */
+    .olx-topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+    .olx-home{
+      display:inline-flex; align-items:center; gap:9px; text-decoration:none;
+      padding:9px 16px; border-radius:999px; font-weight:800; font-size:13px;
+      color:var(--text); border:1px solid var(--edge,rgba(255,255,255,.12));
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));
+      transition:.25s; letter-spacing:.2px;
+    }
+    .olx-home i{ color:var(--olg); }
+    .olx-home:hover{ border-color:rgba(246,201,69,.55); transform:translateY(-1px); box-shadow:0 8px 22px -12px rgba(246,201,69,.5); }
+    .olx-apibar{
+      display:inline-flex; align-items:center; gap:10px; padding:7px 8px 7px 14px;
+      border-radius:999px; font-size:11.5px; font-family:var(--mono);
+      background:rgba(0,0,0,.28); border:1px solid var(--edge,rgba(255,255,255,.10));
+      color:var(--muted);
+    }
+    .olx-api-dot{ width:8px; height:8px; border-radius:50%; background:#8a8f98; box-shadow:0 0 0 3px rgba(138,143,152,.18); transition:.3s; }
+    .olx-api-dot[data-state="idle"]{ background:#8a8f98; box-shadow:0 0 0 3px rgba(138,143,152,.18); }
+    .olx-api-dot[data-state="loading"]{ background:var(--olg); box-shadow:0 0 0 3px rgba(246,201,69,.25); animation:olpulse 1s infinite; }
+    .olx-api-dot[data-state="ok"]{ background:#31d07a; box-shadow:0 0 0 3px rgba(49,208,122,.22); }
+    .olx-api-dot[data-state="err"]{ background:#ff5d6c; box-shadow:0 0 0 3px rgba(255,93,108,.22); }
+    @keyframes olpulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
+    .olx-api-label{ color:var(--text-2,rgba(255,255,255,.8)); font-weight:700; }
+    .olx-api-sep{ width:1px; height:12px; background:var(--edge,rgba(255,255,255,.15)); }
+    .olx-api-ep{ opacity:.75; }
+    .olx-api-badge{
+      margin-left:2px; padding:3px 10px; border-radius:999px; font-weight:800; font-size:10.5px;
+      background:rgba(246,201,69,.14); color:var(--olg); border:1px solid rgba(246,201,69,.3);
+    }
+    /* Hero */
+    .olx-hero{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:18px; }
+    .olx-hero-ic{
+      flex:none; width:54px; height:54px; border-radius:16px; display:grid; place-items:center;
+      font-size:23px; color:#fff;
+      background:linear-gradient(145deg,#2a3550,#141b2c);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.15), 0 10px 26px -14px rgba(0,0,0,.7);
+    }
+    .olx-hero-tx{ flex:1; min-width:200px; }
+    .olx-hero-tx h3{ margin:0; font-size:22px; font-weight:900; letter-spacing:-.4px; color:var(--text); }
+    .olx-hero-tx p{ margin:4px 0 0; font-size:12.5px; line-height:1.5; color:var(--muted); max-width:520px; }
+    .olx-hero-toggle{ margin-left:auto; }
+    /* Card */
+    .olx-card{
+      border-radius:18px; padding:18px;
+      background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+      border:1px solid var(--edge,rgba(255,255,255,.10));
+      box-shadow:0 18px 44px -30px rgba(0,0,0,.8);
+    }
+    .olx-card-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+    .olx-card-head label{ margin:0; font-size:13px; font-weight:800; color:var(--text); display:inline-flex; align-items:center; gap:8px; }
+    .olx-card-head label i{ color:var(--olg); }
+    .olx-hint{ font-size:11px; color:var(--muted); }
+    .olx-hint code{ font-family:var(--mono); background:rgba(246,201,69,.10); color:var(--olg); padding:1px 6px; border-radius:5px; font-size:10.5px; }
+    #olCombo{ font-family:var(--mono); font-size:12px; line-height:1.6; }
+    .olx-controls{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:14px; }
+    .olx-controls-l{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .olx-controls-r{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .olx-chip{ background:rgba(255,255,255,.05); }
+    /* Switch */
+    .olx-switch{ display:inline-flex; align-items:center; gap:9px; cursor:pointer; margin:0; font-size:12px; font-weight:700; color:var(--text-2,rgba(255,255,255,.85)); user-select:none; }
+    .olx-switch input{ display:none; }
+    .olx-switch-track{ position:relative; width:38px; height:21px; border-radius:999px; background:rgba(255,255,255,.14); border:1px solid var(--edge,rgba(255,255,255,.12)); transition:.25s; }
+    .olx-switch-thumb{ position:absolute; top:2px; left:2px; width:15px; height:15px; border-radius:50%; background:#fff; transition:.25s; box-shadow:0 1px 3px rgba(0,0,0,.4); }
+    .olx-switch input:checked + .olx-switch-track{ background:linear-gradient(90deg,var(--olg),#e0a92e); border-color:transparent; }
+    .olx-switch input:checked + .olx-switch-track .olx-switch-thumb{ left:19px; }
+    .olx-go{ box-shadow:0 12px 26px -14px rgba(246,201,69,.65); }
+    /* Result */
+    .olx-result{ margin-top:20px; }
+    .olx-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+    .olx-toolbar-r{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .olx-acc-chip{ background:rgba(246,201,69,.12); border:1px solid rgba(246,201,69,.35); color:var(--olg); font-weight:800; gap:8px; }
+    .olx-acc-chip b{ background:rgba(246,201,69,.9); color:#1a1206; padding:1px 8px; border-radius:999px; font-size:11px; }
+    .olx-search{ position:relative; display:inline-flex; align-items:center; }
+    .olx-search i{ position:absolute; left:12px; font-size:11px; color:var(--muted); pointer-events:none; }
+    .olx-search input{ padding:8px 14px 8px 30px !important; font-size:12px; width:200px; border-radius:999px; margin:0; }
+    .olx-mini{ padding:8px 13px !important; font-size:12px !important; }
+    .olx-table-wrap{ background:rgba(0,0,0,.22); }
+    /* Sender cell */
+    .olx-sender{ display:flex; align-items:center; gap:11px; }
+    .olx-avatar{
+      flex:none; width:34px; height:34px; border-radius:11px; display:grid; place-items:center;
+      font-weight:900; font-size:14px; color:#fff;
+      background:linear-gradient(145deg, hsl(var(--h,220) 55% 42%), hsl(var(--h,220) 55% 26%));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+    }
+    .olx-sender-tx{ display:flex; flex-direction:column; line-height:1.25; min-width:0; }
+    .olx-sender-tx b{ font-weight:800; font-size:12.5px; color:var(--text); }
+    .olx-sender-tx i{ font-style:normal; font-size:10.5px; color:var(--muted); font-family:var(--mono); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px; }
+    /* Empty / error state */
+    .olx-empty{ display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; padding:46px 20px; }
+    .olx-empty i{ font-size:30px; color:var(--olg); opacity:.85; margin-bottom:4px; }
+    .olx-empty b{ font-size:15px; font-weight:800; color:var(--text); }
+    .olx-empty span{ font-size:12px; color:var(--muted); max-width:380px; line-height:1.55; }
+    .olx-empty em{ font-style:normal; color:var(--olg); font-weight:700; }
+    .olx-error i{ color:#ff6b78; }
+    /* LIGHT MODE tweaks */
+    [data-theme="light"] .olx-home{ background:linear-gradient(180deg,#fffaf0,#fbf3e2); }
+    [data-theme="light"] .olx-apibar{ background:#fffaf0; }
+    [data-theme="light"] .olx-hero-ic{ background:linear-gradient(145deg,#2a2a35,#14141c); }
+    [data-theme="light"] .olx-card{ background:linear-gradient(180deg,#fffdf8,#fbf6ec); box-shadow:0 18px 44px -30px rgba(120,90,20,.35); }
+    [data-theme="light"] .olx-chip{ background:rgba(60,40,10,.05); }
+    [data-theme="light"] .olx-switch-track{ background:rgba(60,40,10,.16); }
+    [data-theme="light"] .olx-table-wrap{ background:#fffdf8; }
+    [data-theme="light"] .olx-acc-chip b{ color:#fff; }
+    [data-theme="light"] .olx-api-badge{ background:rgba(185,132,35,.14); color:var(--accent-2,#8f6212); border-color:rgba(185,132,35,.32); }
+    @media (max-width:640px){
+      .olx-hero-toggle{ margin-left:0; }
+      .olx-search input{ width:150px; }
+      .olx-sender-tx i{ display:none; }
+    }
     .toggleGroup{
       display:inline-flex;
       background:rgba(0,0,0,.35);
@@ -1315,69 +1432,96 @@ const VANZ_ENV = {
             </div>
           </section>
 
-          <!-- TOOL: OUTLOOK LIVE READER (PERSIS PREMIUMISME.CO/TOOLS/OUTLOOK) -->
+          <!-- TOOL: OUTLOOK LIVE READER -->
           <section id="tool-outlook" class="hidden">
-            <div class="inline" style="margin-bottom:8px;">
-              <h3 class="section-title" style="margin:0;">Outlook Inbox</h3>
-              <div class="toggleGroup">
+
+            <!-- BAR ATAS: Home + status API -->
+            <div class="olx-topbar">
+              <a class="olx-home" href="https://vanzshop.com">
+                <i class="fa-solid fa-house"></i><span>Menu Utama</span>
+              </a>
+              <div class="olx-apibar">
+                <span class="olx-api-dot" id="olApiDot"></span>
+                <span class="olx-api-label">Microsoft Graph</span>
+                <span class="olx-api-sep"></span>
+                <span class="olx-api-ep" id="olApiEndpoint">/me/messages</span>
+                <span class="olx-api-badge" id="olApiStatus">Siap</span>
+              </div>
+            </div>
+
+            <!-- HERO -->
+            <div class="olx-hero">
+              <div class="olx-hero-ic"><i class="fa-solid fa-inbox"></i></div>
+              <div class="olx-hero-tx">
+                <h3>Outlook Live Reader</h3>
+                <p>Baca inbox &amp; tangkap kode OTP secara real-time via refresh token — aman, cepat, tanpa login manual.</p>
+              </div>
+              <div class="toggleGroup olx-hero-toggle">
                 <div class="toggleBtn active" id="modeOAuth2" onclick="setOutlookAuthMode('oauth2')">OAuth2</div>
                 <div class="toggleBtn" id="modeGraph" onclick="setOutlookAuthMode('graph')">Graph API</div>
               </div>
             </div>
-            <p class="muted" style="margin-top:0px;">Masukkan data autentikasi Outlook dengan format <code>email|pass|refresh_token|client_id</code> atau <code>refresh_token</code> saja.</p>
 
-            <div>
-              <label for="olCombo">Email / Token</label>
-              <textarea id="olCombo" placeholder="Contoh:
-BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|9e5f94bc-e8a4-4e73-b8be-63364c29d753" style="min-height:90px;"></textarea>
+            <!-- INPUT CARD -->
+            <div class="olx-card">
+              <div class="olx-card-head">
+                <label for="olCombo"><i class="fa-solid fa-key"></i> Data Autentikasi</label>
+                <span class="olx-hint">Format <code>email|pass|refresh_token|client_id</code> — atau <code>refresh_token</code> saja</span>
+              </div>
+              <textarea id="olCombo" spellcheck="false" placeholder="BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|9e5f94bc-e8a4-4e73-b8be-63364c29d753" style="min-height:96px;"></textarea>
+
+              <div class="olx-controls">
+                <div class="olx-controls-l">
+                  <span class="chip olx-chip" id="olAccountBadge"><i class="fa-solid fa-user"></i> <span id="olDetectedEmail">1 Akun</span></span>
+                  <label class="olx-switch" for="olUseProxy" title="Lewatkan lewat proxy CORS agar bisa diakses dari browser">
+                    <input type="checkbox" id="olUseProxy" checked />
+                    <span class="olx-switch-track"><span class="olx-switch-thumb"></span></span>
+                    <span class="olx-switch-tx">Proxy CORS</span>
+                  </label>
+                </div>
+                <div class="olx-controls-r">
+                  <button class="btn secondary" onclick="olClearReader()"><i class="fa-solid fa-eraser"></i> Bersihkan</button>
+                  <button class="btn olx-go" id="olFetchBtn" onclick="olFetchInbox()"><i class="fa-solid fa-bolt"></i> Baca Inbox</button>
+                </div>
+              </div>
             </div>
 
-            <div class="inline" style="margin-top:10px;">
-              <div class="inline" style="gap:8px;">
-                <span class="chip" id="olAccountBadge"><i class="fa-solid fa-user"></i> <span id="olDetectedEmail">1 Akun</span></span>
-                <div class="checkbox" style="padding:6px 12px; border-radius:999px;">
-                  <input type="checkbox" id="olUseProxy" checked />
-                  <label for="olUseProxy" style="margin:0; font-size:11px;">Gunakan proxy CORS</label>
+            <!-- RESULT -->
+            <div id="olInboxResultArea" class="olx-result">
+              <div class="olx-toolbar">
+                <span class="chip olx-acc-chip" id="olActiveAccountChip">
+                  <i class="fa-solid fa-envelope"></i>
+                  <span id="olActiveAccountName">Belum ada akun</span>
+                  <b id="olMsgCount">0</b>
+                </span>
+                <div class="olx-toolbar-r">
+                  <div class="olx-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="olSearchInput" placeholder="Cari pengirim / subjek..." oninput="olFilterTable()" />
+                  </div>
+                  <button class="btn secondary olx-mini" onclick="olFetchInbox()"><i class="fa-solid fa-rotate-right"></i> Muat Ulang</button>
+                  <button class="btn secondary olx-mini" onclick="olExportData('csv')"><i class="fa-solid fa-file-csv"></i> CSV</button>
+                  <button class="btn secondary olx-mini" onclick="olExportData('json')"><i class="fa-solid fa-code"></i> JSON</button>
                 </div>
               </div>
 
-              <div class="btnrow" style="margin:0;">
-                <button class="btn secondary" onclick="olClearReader()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
-                <button class="btn" id="olFetchBtn" onclick="olFetchInbox()"><i class="fa-solid fa-envelope-open-text"></i> Baca Inbox</button>
-              </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <!-- INBOX RESULT AREA (PREMIUMISME STYLE) -->
-            <div id="olInboxResultArea">
-              <div class="inline" style="margin-bottom:10px;">
-                <div class="inline" style="gap:8px;">
-                  <span class="chip" style="background:rgba(246,201,69,.12); border-color:rgba(246,201,69,.4); color:var(--gold);" id="olActiveAccountChip">
-                    <span id="olActiveAccountName">Belum ada akun</span> (<span id="olMsgCount">0</span>)
-                  </span>
-                </div>
-                <div class="inline" style="gap:6px;">
-                  <input id="olSearchInput" placeholder="Cari email / subjek..." oninput="olFilterTable()" style="padding:7px 12px; font-size:12px; width:180px; border-radius:999px;" />
-                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olFetchInbox()"><i class="fa-solid fa-rotate-right"></i> Muat Ulang</button>
-                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olExportData('csv')">Unduh CSV</button>
-                  <button class="btn secondary" style="padding:7px 12px; font-size:12px;" onclick="olExportData('json')">JSON</button>
-                </div>
-              </div>
-
-              <div class="tableContainer">
+              <div class="tableContainer olx-table-wrap">
                 <table class="inboxTable">
                   <thead>
                     <tr>
                       <th>Pengirim</th>
-                      <th>Subjek & Preview</th>
-                      <th style="text-align:right;">Tanggal</th>
+                      <th>Subjek &amp; Preview</th>
+                      <th style="text-align:right;">Waktu</th>
                     </tr>
                   </thead>
                   <tbody id="olTableBody">
                     <tr>
-                      <td colspan="3" style="text-align:center; padding:35px; color:var(--muted);">
-                        Belum ada pesan yang dibaca. Klik "Baca Inbox" di atas.
+                      <td colspan="3">
+                        <div class="olx-empty">
+                          <i class="fa-solid fa-envelope-open-text"></i>
+                          <b>Belum ada pesan</b>
+                          <span>Tempel token di atas lalu klik <em>Baca Inbox</em> untuk menarik email terbaru.</span>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -1896,8 +2040,8 @@ user@outlook.com|abc"></textarea>
           hint:"Secret key → generate OTP"
         },
         outlook:{
-          title:"Outlook Inbox",
-          desc:"Kelola tampilan inbox dan hasil pembacaan pesan dari mode autentikasi yang tersedia.",
+          title:"Outlook Live Reader",
+          desc:"Baca inbox Outlook & tangkap kode OTP real-time lewat refresh token, tanpa login manual.",
           hint:"Token → baca inbox"
         },
         refund:{
@@ -2180,28 +2324,35 @@ user@outlook.com|abc"></textarea>
 
     async function proxiedFetch(url, options = {}) {
       const useProxy = document.getElementById("olUseProxy").checked;
+
+      // Coba langsung dulu (kalau kebetulan CORS diizinkan) — kalau gagal baru proxy.
+      const attempts = [];
       if (!useProxy) {
-        return fetch(url, options);
+        attempts.push({ label: "langsung", target: url, opts: options });
+      } else {
+        // PENTING: hanya proxy "prepend" (URL ditempel di belakang) yang meneruskan
+        // method POST + body + header Authorization. Proxy query-param (?url=) sering
+        // cuma GET → itu sebabnya tukar refresh_token (POST) gagal & inbox tak terbaca.
+        attempts.push(
+          { label: "thingproxy", target: "https://thingproxy.freeboard.io/fetch/" + url, opts: options },
+          { label: "corsproxy",  target: "https://corsproxy.io/?url=" + encodeURIComponent(url), opts: options },
+          { label: "codetabs",   target: "https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(url), opts: options }
+        );
       }
 
-      // Daftar proxy publik
-      const proxies = [
-        u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
-        u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`
-      ];
-
-      for (let i = 0; i < proxies.length; i++) {
+      let lastErr = null;
+      for (const a of attempts) {
         try {
-          const proxyUrl = proxies[i](url);
-          const res = await fetch(proxyUrl, options);
-          if (res.ok || res.status === 400 || res.status === 401) {
-            return res;
-          }
+          const res = await fetch(a.target, a.opts);
+          // Terima respons HTTP apa pun (termasuk 4xx) supaya pemanggil bisa baca
+          // pesan error asli dari Microsoft. status 0 = opaque/diblokir → lanjut.
+          if (res && res.status !== 0) return res;
         } catch (e) {
-          if (i === proxies.length - 1) throw e;
+          lastErr = e;
         }
       }
-      return fetch(url, options);
+      if (lastErr) throw new Error("Gagal menjangkau server (proxy CORS mungkin sedang down). Coba lagi atau matikan proxy.");
+      throw new Error("Semua proxy CORS gagal merespons. Coba beberapa saat lagi.");
     }
 
     async function olFetchInbox(){
@@ -2225,6 +2376,7 @@ user@outlook.com|abc"></textarea>
       const btn = document.getElementById("olFetchBtn");
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Membaca...`;
+      olSetApiStatus("loading", "Menghubungkan");
       toast("Meminta token akses Microsoft...");
 
       try {
@@ -2273,21 +2425,25 @@ user@outlook.com|abc"></textarea>
         olCurrentMessages = mailData.value || [];
         document.getElementById("olMsgCount").textContent = olCurrentMessages.length;
         renderOutlookTable(olCurrentMessages);
+        olSetApiStatus("ok", "Terhubung");
         toast(`Selesai! ${olCurrentMessages.length} pesan terbaca.`);
       } catch (err) {
+        olSetApiStatus("err", "Gagal");
         document.getElementById("olTableBody").innerHTML = `
           <tr>
-            <td colspan="3" style="text-align:center; padding:35px; color:var(--danger);">
-              <i class="fa-solid fa-circle-exclamation" style="font-size:22px; margin-bottom:8px;"></i><br/>
-              <b>${err.message}</b><br/>
-              <span class="small">Pastikan refresh token masih aktif dan opsi "Gunakan proxy CORS" tercentang.</span>
+            <td colspan="3">
+              <div class="olx-empty olx-error">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <b>${escapeHtml(err.message)}</b>
+                <span>Pastikan <em>refresh token</em> masih aktif dan opsi <em>Proxy CORS</em> menyala. Kalau proxy sedang down, coba lagi beberapa saat.</span>
+              </div>
             </td>
           </tr>
         `;
         toast(err.message, "error");
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-envelope-open-text"></i> Baca Inbox`;
+        btn.innerHTML = `<i class="fa-solid fa-bolt"></i> Baca Inbox`;
       }
     }
 
@@ -2296,32 +2452,52 @@ user@outlook.com|abc"></textarea>
       tbody.innerHTML = "";
 
       if(!messages.length){
-        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:35px; color:var(--muted);">Kotak masuk kosong.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="3"><div class="olx-empty"><i class="fa-solid fa-inbox"></i><b>Kotak masuk kosong</b><span>Tidak ada pesan yang cocok untuk ditampilkan.</span></div></td></tr>`;
         return;
       }
 
       messages.forEach(msg => {
+        const addr = (msg.from && msg.from.emailAddress) ? (msg.from.emailAddress.address || "") : "";
         const sender = (msg.from && msg.from.emailAddress)
           ? (msg.from.emailAddress.name || msg.from.emailAddress.address)
           : "Unknown";
 
+        const initials = (sender.trim()[0] || "?").toUpperCase();
+        const hue = Math.abs(hashStr(sender)) % 360;
+
         const d = new Date(msg.receivedDateTime);
-        const dateStr = d.toLocaleDateString("id-ID", { day:"numeric", month:"short" }) + ", " + d.toLocaleTimeString("id-ID", { hour:"2-digit", minute:"2-digit" });
+        const dateStr = d.toLocaleDateString("id-ID", { day:"numeric", month:"short" }) + " · " + d.toLocaleTimeString("id-ID", { hour:"2-digit", minute:"2-digit" });
 
         const otp = extractCodeFromText((msg.subject || "") + " " + (msg.bodyPreview || ""));
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td class="tdSender">${escapeHtml(sender)}</td>
+          <td class="tdSender">
+            <div class="olx-sender">
+              <span class="olx-avatar" style="--h:${hue}">${escapeHtml(initials)}</span>
+              <span class="olx-sender-tx">
+                <b>${escapeHtml(sender)}</b>
+                ${addr ? `<i>${escapeHtml(addr)}</i>` : ""}
+              </span>
+            </div>
+          </td>
           <td>
             <div class="tdSubject">${escapeHtml(msg.subject || "(Tanpa Subjek)")}</div>
             <div class="tdPreview">${escapeHtml(msg.bodyPreview || "")}</div>
-            ${otp ? `<div class="otpBadgeInline" onclick="navigator.clipboard.writeText('${otp}').then(()=>toast('OTP [${otp}] disalin!'))"><i class="fa-solid fa-shield-halved"></i> OTP: ${otp} (Salin)</div>` : ''}
+            ${otp ? `<div class="otpBadgeInline" onclick="navigator.clipboard.writeText('${otp}').then(()=>toast('Kode OTP ${otp} disalin!'))" title="Klik untuk salin"><i class="fa-solid fa-shield-halved"></i> <span>${otp}</span> <em>Salin</em></div>` : ''}
           </td>
           <td class="tdDate">${dateStr}</td>
         `;
         tbody.appendChild(tr);
       });
+    }
+
+    function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=(h<<5)-h+s.charCodeAt(i); h|=0; } return h; }
+    function olSetApiStatus(state, text){
+      const dot = document.getElementById("olApiDot");
+      const badge = document.getElementById("olApiStatus");
+      if(dot) dot.setAttribute("data-state", state);
+      if(badge) badge.textContent = text;
     }
 
     function olFilterTable(){
@@ -2365,10 +2541,15 @@ user@outlook.com|abc"></textarea>
       document.getElementById("olActiveAccountName").textContent = "Belum ada akun";
       document.getElementById("olMsgCount").textContent = "0";
       olCurrentMessages = [];
+      olSetApiStatus("idle", "Siap");
       document.getElementById("olTableBody").innerHTML = `
         <tr>
-          <td colspan="3" style="text-align:center; padding:35px; color:var(--muted);">
-            Belum ada pesan yang dibaca. Klik "Baca Inbox" di atas.
+          <td colspan="3">
+            <div class="olx-empty">
+              <i class="fa-solid fa-envelope-open-text"></i>
+              <b>Belum ada pesan</b>
+              <span>Tempel token di atas lalu klik <em>Baca Inbox</em> untuk menarik email terbaru.</span>
+            </div>
           </td>
         </tr>
       `;
