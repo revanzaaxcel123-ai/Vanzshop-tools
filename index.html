@@ -1442,7 +1442,7 @@ const VANZ_ENV = {
               </a>
               <div class="olx-apibar">
                 <span class="olx-api-dot" id="olApiDot"></span>
-                <span class="olx-api-label">Microsoft Graph</span>
+                <span class="olx-api-label" id="olApiLabel">Outlook API</span>
                 <span class="olx-api-sep"></span>
                 <span class="olx-api-ep" id="olApiEndpoint">/me/messages</span>
                 <span class="olx-api-badge" id="olApiStatus">Siap</span>
@@ -2355,6 +2355,70 @@ user@outlook.com|abc"></textarea>
       throw new Error("Semua proxy CORS gagal merespons. Coba beberapa saat lagi.");
     }
 
+    /* ============================================================
+       KONFIGURASI BACKEND OUTLOOK (OPSI C — GABUNGAN)
+       ------------------------------------------------------------
+       Isi URL backend Vercel kamu setelah deploy, TANPA garis miring
+       di akhir. Contoh:
+         window.OL_API_BASE = "https://mail-vanzshop.vercel.app";
+       Kalau dibiarkan kosong (""), tab ini otomatis pakai mode
+       browser (Graph API + proxy publik) sebagai cadangan.
+       ============================================================ */
+    window.OL_API_BASE = window.OL_API_BASE || "";
+
+    // Scope IMAP untuk akun consumer Outlook (dipakai saat mode backend).
+    const OL_IMAP_SCOPE = "https://outlook.office365.com/IMAP.AccessAsUser.All offline_access";
+
+    // Normalisasi nama & alamat pengirim dari 2 bentuk data:
+    //  - Graph: msg.from.emailAddress.{name,address}
+    //  - IMAP : msg.from berupa string "Nama <alamat@x>"
+    function olSenderName(msg){
+      if(msg.from && msg.from.emailAddress) return msg.from.emailAddress.name || msg.from.emailAddress.address || "Unknown";
+      if(typeof msg.from === "string"){ const m = msg.from.match(/^\s*"?(.*?)"?\s*<(.+?)>\s*$/); return m ? (m[1].trim() || m[2]) : msg.from; }
+      return "Unknown";
+    }
+    function olSenderAddr(msg){
+      if(msg.from && msg.from.emailAddress) return msg.from.emailAddress.address || "";
+      if(typeof msg.from === "string"){ const m = msg.from.match(/<(.+?)>/); return m ? m[1] : (msg.from.includes("@") ? msg.from.trim() : ""); }
+      return "";
+    }
+
+    // MODE BACKEND (IMAP): tukar token via /api/token lalu baca inbox via /api/imap/inbox.
+    async function olFetchViaBackend(creds){
+      const base = window.OL_API_BASE.replace(/\/+$/,"");
+      document.getElementById("olApiLabel").textContent = "Outlook IMAP";
+      document.getElementById("olApiEndpoint").textContent = "INBOX+Junk";
+
+      // Step 1 — access token dengan scope IMAP
+      const params = new URLSearchParams();
+      params.append("client_id", creds.clientId);
+      params.append("grant_type", "refresh_token");
+      params.append("refresh_token", creds.refreshToken);
+      params.append("scope", OL_IMAP_SCOPE);
+
+      const tokenRes = await fetch(base + "/api/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+      });
+      const tokenData = await tokenRes.json().catch(()=>({}));
+      if(!tokenRes.ok || !tokenData.access_token){
+        const desc = tokenData.error_description || tokenData.error || `HTTP ${tokenRes.status}`;
+        throw new Error(`Gagal Login (IMAP): ${desc}`);
+      }
+
+      // Step 2 — baca inbox lewat backend (IMAP dijalankan di server)
+      const email = creds.email || (tokenData.email || "");
+      const mailRes = await fetch(base + "/api/imap/inbox", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, accessToken: tokenData.access_token })
+      });
+      const mailData = await mailRes.json().catch(()=>({}));
+      if(!mailRes.ok) throw new Error(mailData.error || "Gagal membaca inbox dari backend IMAP");
+      return mailData.messages || [];
+    }
+
     async function olFetchInbox(){
       const raw = document.getElementById("olCombo").value.trim();
       if(!raw){
@@ -2379,6 +2443,29 @@ user@outlook.com|abc"></textarea>
       olSetApiStatus("loading", "Menghubungkan");
       toast("Meminta token akses Microsoft...");
 
+      // ===== MODE BACKEND (IMAP) — dipakai bila OL_API_BASE di-set =====
+      if(window.OL_API_BASE && window.OL_API_BASE.trim()){
+        try {
+          olCurrentMessages = await olFetchViaBackend(creds);
+          document.getElementById("olMsgCount").textContent = olCurrentMessages.length;
+          renderOutlookTable(olCurrentMessages);
+          olSetApiStatus("ok", "Terhubung");
+          toast(`Selesai! ${olCurrentMessages.length} pesan terbaca via IMAP.`);
+        } catch (err) {
+          olSetApiStatus("err", "Gagal");
+          document.getElementById("olTableBody").innerHTML =
+            `<tr><td colspan="3"><div class="olx-empty olx-error"><i class="fa-solid fa-triangle-exclamation"></i><b>${escapeHtml(err.message)}</b><span>Cek URL <em>OL_API_BASE</em>, atau pastikan refresh token punya izin IMAP.</span></div></td></tr>`;
+          toast(err.message, "error");
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fa-solid fa-bolt"></i> Baca Inbox`;
+        }
+        return;
+      }
+
+      // ===== MODE BROWSER (Graph API + proxy publik) — cadangan =====
+      document.getElementById("olApiLabel").textContent = "Microsoft Graph";
+      document.getElementById("olApiEndpoint").textContent = "/me/messages";
       try {
         // Step 1: Tukar Muat Ulang Token menjadi Access Token
         // Support token live.com / msa consumer (M.C547...) maupun Azure AD
@@ -2457,10 +2544,8 @@ user@outlook.com|abc"></textarea>
       }
 
       messages.forEach(msg => {
-        const addr = (msg.from && msg.from.emailAddress) ? (msg.from.emailAddress.address || "") : "";
-        const sender = (msg.from && msg.from.emailAddress)
-          ? (msg.from.emailAddress.name || msg.from.emailAddress.address)
-          : "Unknown";
+        const sender = olSenderName(msg);
+        const addr = olSenderAddr(msg);
 
         const initials = (sender.trim()[0] || "?").toUpperCase();
         const hue = Math.abs(hashStr(sender)) % 360;
@@ -2468,7 +2553,8 @@ user@outlook.com|abc"></textarea>
         const d = new Date(msg.receivedDateTime);
         const dateStr = d.toLocaleDateString("id-ID", { day:"numeric", month:"short" }) + " · " + d.toLocaleTimeString("id-ID", { hour:"2-digit", minute:"2-digit" });
 
-        const otp = extractCodeFromText((msg.subject || "") + " " + (msg.bodyPreview || ""));
+        // OTP: pakai hasil backend (msg.otp) bila ada, kalau tidak ekstrak sendiri.
+        const otp = msg.otp || extractCodeFromText((msg.subject || "") + " " + (msg.bodyPreview || ""));
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -2505,7 +2591,7 @@ user@outlook.com|abc"></textarea>
       const filtered = olCurrentMessages.filter(m => {
         const subj = (m.subject || "").toLowerCase();
         const prev = (m.bodyPreview || "").toLowerCase();
-        const send = (m.from?.emailAddress?.name || m.from?.emailAddress?.address || "").toLowerCase();
+        const send = (olSenderName(m) + " " + olSenderAddr(m)).toLowerCase();
         return subj.includes(q) || prev.includes(q) || send.includes(q);
       });
       renderOutlookTable(filtered);
@@ -2523,8 +2609,8 @@ user@outlook.com|abc"></textarea>
         const header = ["Tanggal","Pengirim","Email Pengirim","Subjek","Preview"];
         const rows = olCurrentMessages.map(m => [
           `"${m.receivedDateTime}"`,
-          `"${(m.from?.emailAddress?.name || '').replace(/"/g, '""')}"`,
-          `"${(m.from?.emailAddress?.address || '').replace(/"/g, '""')}"`,
+          `"${olSenderName(m).replace(/"/g, '""')}"`,
+          `"${olSenderAddr(m).replace(/"/g, '""')}"`,
           `"${(m.subject || '').replace(/"/g, '""')}"`,
           `"${(m.bodyPreview || '').replace(/"/g, '""')}"`
         ]);
