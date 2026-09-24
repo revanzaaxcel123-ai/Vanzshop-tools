@@ -9,6 +9,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
+  <script>
+    (function(){var t="dark";try{t=localStorage.getItem("vanz-theme")||localStorage.getItem("vanzshop-theme")||"dark"}catch(e){}
+      t=t==="light"?"light":"dark";var r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-vs-theme",t);})();
+  </script>
+  <meta name="theme-color" content="#050509" id="metaTheme">
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
@@ -948,9 +954,145 @@ const VANZ_ENV = {
       *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
     }
   </style>
+
+  <style>
+    /* =========================================================
+       VANZSHOP UNIFIED THEME — samakan dengan semua halaman VanzShop
+       (malam: hitam-emas · siang: krem-emas)
+       ========================================================= */
+    :root{
+      --u-bg:#050509;--u-card:rgba(14,14,21,.78);
+      --u-edge:linear-gradient(160deg,rgba(247,212,106,.3),rgba(255,255,255,.07) 28%,rgba(255,255,255,.025) 70%,rgba(247,212,106,.15));
+      --u-grid:rgba(255,255,255,.05);--u-grid-op:.55;--u-accent-rgb:247,212,106;
+      --u-icon-bg:rgba(11,14,40,.95);--u-icon-fg:#fff;--u-icon-ring:rgba(255,255,255,.08);
+      --u-field:rgba(0,0,0,.2);--u-soft:rgba(255,255,255,.035);--u-orb:rgba(255,255,255,.09);
+    }
+    [data-theme="light"]{
+      color-scheme:light;
+      --bg:#f6f0e4;--bg-deep:#efe6d4;
+      --surface:rgba(255,252,245,.8);--surface-2:rgba(60,40,10,.035);--surface-3:rgba(60,40,10,.055);
+      --edge:rgba(60,40,10,.1);--edge-strong:rgba(60,40,10,.16);
+      --accent:#b98423;--accent-2:#8f6212;--accent-rgb:185,132,35;
+      --text:#211c13;--text-2:#6f6656;--text-3:#a39984;--muted:#6f6656;--gold:#b98423;--gold2:#8f6212;
+      --shadow:0 30px 70px -34px rgba(120,90,30,.45),inset 0 1px 0 #fff;--shadow-soft:0 18px 40px -20px rgba(120,90,30,.35);
+      --vs-bg:#f6f0e4;--vs-bg2:#efe6d4;--vs-panel:rgba(255,252,245,.8);--vs-line:rgba(60,40,10,.1);--vs-accent:#b98423;--vs-accent2:#8f6212;--vs-text:#211c13;--vs-muted:#6f6656;--vs-grid:rgba(60,40,10,.06);
+      --u-bg:#f6f0e4;--u-card:rgba(255,252,245,.82);
+      --u-edge:linear-gradient(160deg,rgba(185,132,35,.5),rgba(255,255,255,.9) 30%,rgba(255,255,255,.55) 70%,rgba(185,132,35,.3));
+      --u-grid:rgba(60,40,10,.06);--u-grid-op:.9;--u-accent-rgb:185,132,35;
+      --u-icon-bg:#2a2319;--u-icon-fg:#fff;--u-icon-ring:rgba(255,255,255,.12);
+      --u-field:rgba(255,255,255,.75);--u-soft:rgba(255,255,255,.6);
+    }
+
+    /* ---------- background baru (sama seperti halaman lain) ---------- */
+    html{background:var(--u-bg)!important;transition:background-color .4s}
+    body{background:transparent!important}
+    .container{position:relative;z-index:1}
+    body::before,.gridbg,.space{display:none!important}
+    .u-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+    .u-grid{position:absolute;inset:-1px;opacity:var(--u-grid-op);
+      background-image:linear-gradient(to right,var(--u-grid) 1px,transparent 1px),linear-gradient(to bottom,var(--u-grid) 1px,transparent 1px);background-size:64px 64px;
+      -webkit-mask-image:radial-gradient(ellipse 120% 90% at 50% 30%,#000 45%,transparent 100%);mask-image:radial-gradient(ellipse 120% 90% at 50% 30%,#000 45%,transparent 100%);
+      animation:uGrid 60s linear infinite}
+    @keyframes uGrid{to{background-position:64px 64px}}
+    .u-warm{position:absolute;inset:0;background:radial-gradient(circle at 78% 30%,rgba(var(--u-accent-rgb),.16) 0%,rgba(var(--u-accent-rgb),.06) 20%,transparent 55%),radial-gradient(circle at 12% 90%,rgba(var(--u-accent-rgb),.07) 0%,transparent 40%)}
+    [data-theme="light"] .u-warm{background:radial-gradient(ellipse 120% 80% at 50% 0%,#efe6d4,transparent 70%),radial-gradient(circle at 80% 22%,rgba(233,185,73,.28) 0%,rgba(233,185,73,.1) 22%,transparent 55%),radial-gradient(circle at 10% 85%,rgba(233,185,73,.12) 0%,transparent 40%)}
+    .u-beam{position:absolute;top:-30%;left:58%;width:36vw;height:160%;filter:blur(10px);transform:rotate(24deg);
+      background:linear-gradient(90deg,transparent,rgba(var(--u-accent-rgb),.06) 45%,rgba(var(--u-accent-rgb),.11) 50%,rgba(var(--u-accent-rgb),.06) 55%,transparent);animation:uBeam 14s ease-in-out infinite alternate}
+    @keyframes uBeam{from{transform:translateX(-16vw) rotate(24deg);opacity:.5}to{transform:translateX(10vw) rotate(24deg);opacity:1}}
+    .u-orb{position:absolute;border-radius:50%;background:radial-gradient(circle at 30% 20%,var(--u-orb),transparent 70%);opacity:.6;animation:uOrb 24s ease-in-out infinite alternate}
+    [data-theme="light"] .u-orb{opacity:.9;background:radial-gradient(circle at 32% 28%,#fffaf0,#e3d5b8 72%);
+      box-shadow:inset -26px -30px 60px rgba(150,110,40,.22),inset 10px 12px 30px rgba(255,255,255,.8),0 40px 80px -30px rgba(150,110,40,.35)}
+    .u-orb.o1{width:220px;height:220px;left:7%;top:62%;animation-delay:-4s}
+    .u-orb.o2{width:170px;height:170px;left:28%;top:30%;animation-delay:-12s;opacity:.52}
+    .u-orb.o3{width:280px;height:280px;right:12%;top:18%;animation-delay:-18s;opacity:.58}
+    .u-orb.o4{width:260px;height:260px;right:10%;bottom:-60px;animation-delay:-10s;opacity:.54}
+    [data-theme="light"] .u-orb{opacity:.95!important}
+    @keyframes uOrb{0%{transform:translate3d(0,0,0) scale(1);opacity:.45}40%{transform:translate3d(18px,-26px,0) scale(1.05);opacity:.8}100%{transform:translate3d(-16px,-10px,0) scale(1.02);opacity:.55}}
+    [data-theme="light"] .u-orb{animation-name:uOrbL}
+    @keyframes uOrbL{0%{transform:translate3d(0,0,0) scale(1)}40%{transform:translate3d(18px,-26px,0) scale(1.05)}100%{transform:translate3d(-16px,-10px,0) scale(1.02)}}
+    .u-spot{position:absolute;inset:0;opacity:0;transition:opacity .4s;background:radial-gradient(520px circle at var(--x,50%) var(--y,30%),rgba(var(--u-accent-rgb),.08),transparent 60%)}
+    .u-spot.on{opacity:1}
+    .u-noise{position:absolute;inset:0;opacity:.035;mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    [data-theme="light"] .u-noise{opacity:.025;mix-blend-mode:multiply}
+    #uDust{position:absolute;inset:0;width:100%;height:100%}
+
+    /* ---------- tombol atas ---------- */
+    .backHome,.themeToggle{height:44px;border-radius:13px!important;display:inline-flex!important;align-items:center;justify-content:center;gap:8px;
+      background:var(--u-soft)!important;border:1px solid var(--edge)!important;color:var(--text-2)!important;font:800 12px var(--font);text-decoration:none;
+      box-shadow:none!important;transition:all .25s var(--ease)}
+    .backHome{padding:0 14px}
+    .themeToggle{width:44px!important}
+    .backHome:hover,.themeToggle:hover{color:var(--text)!important;border-color:rgba(var(--u-accent-rgb),.45)!important;transform:translateY(-1px)}
+    .backHome i{transition:transform .3s var(--ease)}.backHome:hover i{transform:translateX(-3px)}
+    [data-theme="light"] .themeToggle i{color:#d4930f}
+
+    /* ---------- kartu ---------- */
+    .card{background:linear-gradient(var(--u-card),var(--u-card)) padding-box,var(--u-edge) border-box!important}
+    .card-header{background:linear-gradient(180deg,var(--surface-2),transparent)!important}
+
+    /* ---------- icon: putih di lingkaran gelap (gaya VanzShop) ---------- */
+    .nav .ico{border-radius:50%!important;background:var(--u-icon-bg)!important;color:var(--u-icon-fg)!important;border:0!important;
+      box-shadow:inset 0 0 0 1px var(--u-icon-ring),0 8px 16px -8px rgba(0,0,0,.6)!important;transition:transform .4s var(--spring)}
+    .nav button.active .ico{color:#fff!important;background:var(--u-icon-bg)!important;box-shadow:inset 0 0 0 1px var(--u-icon-ring),0 0 0 3px rgba(var(--u-accent-rgb),.35)!important}
+    .nav button:hover .ico{transform:scale(1.06) rotate(-5deg)}
+    .brandMark{border-radius:50%!important;background:var(--u-icon-bg)!important;border:0!important;box-shadow:inset 0 0 0 1px var(--u-icon-ring),0 0 0 4px rgba(var(--u-accent-rgb),.14),0 14px 30px -12px rgba(0,0,0,.6)!important}
+    .brandMark i{color:#fff!important}
+    .sidebarFootIcon{border-radius:50%!important;background:var(--u-icon-bg)!important;color:#fff!important;border:0!important}
+
+    /* ---------- mode siang: timpa warna gelap bawaan ---------- */
+    [data-theme="light"] .brandTitle{color:var(--text)!important}
+    [data-theme="light"] .brandTitle span{background:linear-gradient(100deg,#8f6212,#b98423 30%,#dcab4a 48%,#b98423 64%,#8f6212);background-size:220% 100%;-webkit-background-clip:text;background-clip:text}
+    [data-theme="light"] .profileStatus{border-color:var(--bg)!important}
+    [data-theme="light"] .workspaceBadge,[data-theme="light"] .chip{background:rgba(255,255,255,.7)!important;border-color:var(--edge)!important;color:var(--text-2)!important}
+    [data-theme="light"] .nav button{background:transparent!important;color:var(--text-2)!important}
+    [data-theme="light"] .nav button:hover{background:rgba(255,255,255,.6)!important;color:var(--text)!important}
+    [data-theme="light"] .nav button.active{background:radial-gradient(circle at 0% 0%,rgba(185,132,35,.16),transparent 60%),rgba(255,255,255,.75)!important;color:var(--text)!important;border-color:rgba(185,132,35,.32)!important}
+    [data-theme="light"] .nav button.active .navText small{color:var(--accent-2)!important}
+    [data-theme="light"] label,[data-theme="light"] .checkbox label{color:var(--text-2)!important}
+    [data-theme="light"] input,[data-theme="light"] textarea,[data-theme="light"] select,[data-theme="light"] .toolSearchWrap input{
+      background:var(--u-field)!important;color:var(--text)!important;border-color:var(--edge)!important;box-shadow:inset 0 1px 2px rgba(120,90,30,.06)!important}
+    [data-theme="light"] input:focus,[data-theme="light"] textarea:focus,[data-theme="light"] select:focus{background:#fff!important;border-color:rgba(185,132,35,.6)!important;box-shadow:0 0 0 4px rgba(185,132,35,.12)!important}
+    [data-theme="light"] input::placeholder,[data-theme="light"] textarea::placeholder{color:#b3a996!important}
+    [data-theme="light"] select option{color:#211c13;background:#fff}
+    [data-theme="light"] input[type="file"]::file-selector-button{background:#fff;color:var(--text);border-color:var(--edge)}
+    [data-theme="light"] .btn{background:linear-gradient(145deg,#fff3cf,#e9b949 45%,#c8912a)!important;color:#1a1307!important;box-shadow:0 12px 26px -12px rgba(185,132,35,.55)!important}
+    [data-theme="light"] .btn.secondary{background:rgba(255,255,255,.75)!important;color:var(--text-2)!important;border:1px solid var(--edge)!important;box-shadow:none!important}
+    [data-theme="light"] .btn.secondary:hover{color:var(--text)!important;border-color:rgba(185,132,35,.4)!important}
+    [data-theme="light"] .btn.danger{background:rgba(220,60,60,.06)!important;color:#c0392b!important;border:1px solid rgba(220,60,60,.25)!important;box-shadow:none!important}
+    [data-theme="light"] .checkbox,[data-theme="light"] .result-card,[data-theme="light"] .progressWrap,[data-theme="light"] .chart,[data-theme="light"] .tableContainer,[data-theme="light"] .sidebarFoot,[data-theme="light"] .toolHero{
+      background:rgba(255,255,255,.62)!important;border-color:var(--edge)!important;color:var(--text-2)!important}
+    [data-theme="light"] .result-card{background:radial-gradient(circle at 0% 0%,rgba(185,132,35,.08),transparent 55%),rgba(255,255,255,.66)!important}
+    [data-theme="light"] .code{background:#fffaf0!important;color:var(--text)!important;border-color:var(--edge)!important}
+    [data-theme="light"] .progressLabel,[data-theme="light"] .progressPct,[data-theme="light"] .barLabel{color:var(--text)!important}
+    [data-theme="light"] .progressBar,[data-theme="light"] .bar{background:rgba(60,40,10,.07)!important;border-color:var(--edge)!important}
+    [data-theme="light"] .progressFill,[data-theme="light"] .bar>div{background:linear-gradient(90deg,#c8912a,#e9b949)!important}
+    [data-theme="light"] .otpBigDisplay{background:radial-gradient(circle at 50% 0%,rgba(185,132,35,.12),transparent 55%),#fffaf0!important;color:var(--accent-2)!important;text-shadow:none!important;border-color:rgba(185,132,35,.3)!important}
+    [data-theme="light"] table.inboxTable th{background:rgba(60,40,10,.04)!important;color:var(--text-3)!important}
+    [data-theme="light"] table.inboxTable td{border-color:var(--edge)!important;color:var(--text-2)}
+    [data-theme="light"] .tdSender,[data-theme="light"] .tdSubject{color:var(--text)!important}
+    [data-theme="light"] .tdDate,[data-theme="light"] .tdPreview{color:var(--text-3)!important}
+    [data-theme="light"] .toggleGroup{background:rgba(60,40,10,.06)!important;border-color:var(--edge)!important}
+    [data-theme="light"] .toggleBtn{color:var(--text-3)!important}
+    [data-theme="light"] .toggleBtn.active{background:#2a2319!important;color:#fff3cf!important;box-shadow:none}
+    [data-theme="light"] .otpBadgeInline{color:var(--accent-2)}
+    [data-theme="light"] .toast{background:rgba(255,252,245,.96)!important;color:var(--text)!important;border-color:var(--edge-strong)!important}
+    [data-theme="light"] .sidebarFoot b{color:var(--text-2)!important}
+    [data-theme="light"] code{color:var(--accent-2)}
+
+    /* ---------- HP: matikan efek berat biar stabil ---------- */
+    @media (hover:none),(pointer:coarse){
+      *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+      .u-beam,.u-noise,.u-spot{display:none}.u-grid,.u-orb{animation:none!important}
+      :root{--u-card:rgba(14,14,21,.96)}
+      [data-theme="light"]{--u-card:rgba(255,252,245,.97)}
+    }
+    @media (max-width:680px){ .backHome span{display:none} .backHome{width:44px;padding:0} }
+  </style>
 </head>
 
 <body>
+  <div class="u-bg" aria-hidden="true"><div class="u-grid"></div><div class="u-warm"></div><div class="u-beam"></div><canvas id="uDust"></canvas><div class="u-spot" id="uSpot"></div><div class="u-orb o1"></div><div class="u-orb o2"></div><div class="u-orb o3"></div><div class="u-orb o4"></div><div class="u-noise"></div></div>
   <div class="gridbg"></div>
   <div class="space" aria-hidden="true">
     <div class="planet p1"></div>
@@ -971,6 +1113,7 @@ const VANZ_ENV = {
         </div>
       </div>
       <div class="topbarRight">
+        <a class="backHome" href="https://vanzshop.com" title="Kembali ke Menu Utama"><i class="fa-solid fa-arrow-left"></i><span>Menu Utama</span></a>
         <button class="themeToggle" id="themeToggle" onclick="toggleVanzTheme()" title="Ganti mode siang / malam" aria-label="Ganti mode siang / malam"><i class="fa-solid fa-moon"></i></button>
         <div class="workspaceBadge"><i class="fa-solid fa-bolt"></i><span>Ready</span></div>
         <div class="profile" title="VanzShop">
@@ -2485,7 +2628,7 @@ user@outlook.com|abc"></textarea>
     // ===== Duplicate =====
     let dupCleaned = [];
     const dupInput = document.getElementById("dupInput");
-    dupInput.addEventListener("input", ()=>{
+    if (dupInput) dupInput.addEventListener("input", ()=>{
       document.getElementById("dupCount").innerHTML = `<i class="fa-solid fa-list"></i> ${sanitizeLines(dupInput.value).length}`;
     });
     function dupClear(){
@@ -2861,12 +3004,34 @@ user@outlook.com|abc"></textarea>
     function proxyCopyValid(){if(!proxyValid.length){toast('Belum ada proxy valid',true);return;}navigator.clipboard.writeText(proxyValid.join('\n')).then(()=>toast(`${proxyValid.length} proxy disalin`));}
     function proxyClear(){document.getElementById('proxyInput').value='';document.getElementById('proxySummary').textContent='Belum ada pemeriksaan.';document.getElementById('proxyResults').textContent='—';proxyValid=[];}
     // ===== Theme =====
-    function applyVanzTheme(theme){document.documentElement.setAttribute('data-vs-theme',theme);localStorage.setItem('vanzshop-theme',theme);const b=document.getElementById('themeToggle');if(b)b.innerHTML=theme==='light'?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>';}
+    function applyVanzTheme(theme){const r=document.documentElement;r.setAttribute('data-vs-theme',theme);r.setAttribute('data-theme',theme);try{localStorage.setItem('vanzshop-theme',theme);localStorage.setItem('vanz-theme',theme);}catch(e){}const m=document.getElementById('metaTheme');if(m)m.setAttribute('content',theme==='light'?'#f6f0e4':'#050509');const b=document.getElementById('themeToggle');if(b){b.innerHTML=theme==='light'?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>';b.title=theme==='light'?'Mode Malam':'Mode Siang';}}
     function toggleVanzTheme(){applyVanzTheme(document.documentElement.getAttribute('data-vs-theme')==='light'?'dark':'light');}
-    (function(){const saved=localStorage.getItem('vanzshop-theme');applyVanzTheme(saved==='light'?'light':'dark');})();
+    (function(){let saved='dark';try{saved=localStorage.getItem('vanz-theme')||localStorage.getItem('vanzshop-theme')||'dark';}catch(e){}applyVanzTheme(saved==='light'?'light':'dark');})();
 
     // Default view
     showTool("refund");
+  </script>
+
+  <script>
+  /* ===== FX background VanzShop: partikel debu emas + spotlight kursor ===== */
+  (function(){
+    var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches, fine=matchMedia("(hover:hover) and (pointer:fine)").matches;
+    var cv=document.getElementById("uDust"); if(!cv) return; var ctx=cv.getContext("2d"), W=0,H=0,parts=[],raf=0;
+    function rgb(){return document.documentElement.getAttribute("data-theme")==="light"?"200,150,50":"255,223,122";}
+    function size(){var d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);
+      var n=Math.min(fine?70:24,Math.round(W*H/22000));parts=[];for(var i=0;i<n;i++)parts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,vy:-(Math.random()*.25+.05),vx:(Math.random()-.5)*.12,a:Math.random()*.5+.15,ph:Math.random()*6.28,tw:Math.random()*.02+.005});if(reduce)draw(0);}
+    function draw(t){var c=rgb();ctx.clearRect(0,0,W,H);ctx.shadowColor="rgba("+c+",.8)";ctx.shadowBlur=fine?6:0;
+      for(var i=0;i<parts.length;i++){var p=parts[i],a=p.a*(.6+.4*Math.sin(p.ph+t*p.tw*.06));ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.2832);ctx.fillStyle="rgba("+c+","+a+")";ctx.fill();
+        if(!reduce){p.x+=p.vx;p.y+=p.vy;if(p.y<-4){p.y=H+4;p.x=Math.random()*W}if(p.x<-4)p.x=W+4;if(p.x>W+4)p.x=-4}}}
+    function loop(t){draw(t);raf=requestAnimationFrame(loop)}
+    var rt;addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(size,150)});
+    document.addEventListener("visibilitychange",function(){if(reduce)return;document.hidden?cancelAnimationFrame(raf):(raf=requestAnimationFrame(loop))});
+    size();if(!reduce)raf=requestAnimationFrame(loop);
+    var sp=document.getElementById("uSpot");
+    if(sp&&fine&&!reduce){var sx=0,sy=0,sr=0;addEventListener("pointermove",function(e){sx=e.clientX;sy=e.clientY;sp.classList.add("on");
+      if(!sr)sr=requestAnimationFrame(function(){sp.style.setProperty("--x",sx+"px");sp.style.setProperty("--y",sy+"px");sr=0})},{passive:true});
+      document.addEventListener("pointerleave",function(){sp.classList.remove("on")});}
+  })();
   </script>
 </body>
 </html>
