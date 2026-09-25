@@ -1303,7 +1303,7 @@ const VANZ_ENV = {
             <span class="navText"><b>Authenticator 2FA</b><small>Generate kode OTP</small></span>
           </button>
 
-          <button id="nav-outlook" data-tool-label="Inbox OTP Reader" onclick="showTool('outlook')">
+          <button id="nav-outlook" data-tool-label="Outlook Inbox" onclick="showTool('outlook')">
             <span class="ico"><i class="fa-solid fa-inbox"></i></span>
             <span class="navText"><b>Inbox OTP Reader</b><small>Deteksi kode OTP dari inbox</small></span>
           </button>
@@ -1467,14 +1467,14 @@ const VANZ_ENV = {
             </div>
           </section>
 
-          <!-- TOOL: INBOX OTP READER -->
+          <!-- TOOL: OUTLOOK LIVE READER / INBOX OTP READER -->
           <section id="tool-outlook" class="hidden">
             <div class="olx-topbar">
               <a class="olx-home" href="https://vanzshop.com">
                 <i class="fa-solid fa-house"></i><span>Menu Utama</span>
               </a>
               <div class="olx-apibar">
-                <span class="olx-api-dot" id="olApiDot" data-state="idle"></span>
+                <span class="olx-api-dot" id="olApiDot"></span>
                 <span class="olx-api-label" id="olApiLabel">Inbox OTP API</span>
                 <span class="olx-api-sep"></span>
                 <span class="olx-api-ep" id="olApiEndpoint">/api/inbox</span>
@@ -1493,52 +1493,35 @@ const VANZ_ENV = {
             <div class="olx-card">
               <div class="olx-card-head">
                 <label for="olCombo"><i class="fa-solid fa-key"></i> Data OAuth</label>
-                <span class="olx-hint">Format <code>email|refresh_token|client_id</code> atau <code>email||refresh_token|client_id</code></span>
+                <span class="olx-hint">Format <code>email|refresh_token|client_id</code> atau <code>email|password|refresh_token|client_id</code></span>
               </div>
-
-              <textarea id="olCombo" spellcheck="false"
-                placeholder="email@outlook.com|refresh_token|client_id&#10;email@hotmail.com|refresh_token|client_id"
-                style="min-height:130px;"></textarea>
+              <textarea id="olCombo" spellcheck="false" placeholder="email@outlook.com|refresh_token|client_id-uuid&#10;atau email@outlook.com|password|refresh_token|client_id-uuid" style="min-height:120px;"></textarea>
 
               <div class="olx-controls">
                 <div class="olx-controls-l">
-                  <span class="chip olx-chip" id="olAccountBadge">
-                    <i class="fa-solid fa-users"></i>
-                    <span id="olDetectedEmail">0 Akun</span>
-                  </span>
-
-                  <label class="olx-switch" for="olAuto">
-                    <input type="checkbox" id="olAuto">
+                  <span class="chip olx-chip" id="olAccountBadge"><i class="fa-solid fa-users"></i> <span id="olDetectedEmail">0 Akun</span></span>
+                  <label class="olx-switch" for="olAutoRefresh">
+                    <input type="checkbox" id="olAutoRefresh" onchange="olToggleAutoRefresh()" />
                     <span class="olx-switch-track"><span class="olx-switch-thumb"></span></span>
                     <span class="olx-switch-tx">AUTO</span>
                   </label>
-
-                  <select id="olInterval" class="olx-mini" aria-label="Interval auto refresh">
-                    <option value="10000">10s</option>
-                    <option value="30000" selected>30s</option>
-                    <option value="60000">60s</option>
+                  <select id="olRefreshEvery" class="olx-refresh-select" title="Interval auto refresh">
+                    <option value="10">10s</option>
+                    <option value="30" selected>30s</option>
+                    <option value="60">60s</option>
                   </select>
-
-                  <label class="olx-switch" for="olNotify">
-                    <input type="checkbox" id="olNotify">
+                  <label class="olx-switch" for="olNotifyOtp">
+                    <input type="checkbox" id="olNotifyOtp" />
                     <span class="olx-switch-track"><span class="olx-switch-thumb"></span></span>
                     <span class="olx-switch-tx">NOTIF OTP</span>
                   </label>
                 </div>
-
                 <div class="olx-controls-r">
-                  <button class="btn secondary" onclick="olClearReader()">
-                    <i class="fa-solid fa-eraser"></i> Bersihkan
-                  </button>
-                  <button class="btn olx-go" id="olFetchBtn" onclick="olFetchInbox()">
-                    <i class="fa-solid fa-bolt"></i> Baca Inbox
-                  </button>
+                  <button class="btn secondary" onclick="olClearReader()"><i class="fa-solid fa-eraser"></i> Bersihkan</button>
+                  <button class="btn olx-go" id="olFetchBtn" onclick="olFetchInbox()"><i class="fa-solid fa-bolt"></i> Baca Inbox</button>
                 </div>
               </div>
-
-              <div class="small" style="margin-top:10px;">
-                Refresh token hanya dikirim ke endpoint aplikasi Anda untuk ditukar menjadi access token dan tidak disimpan oleh reader.
-              </div>
+              <div class="small" style="margin-top:10px;opacity:.72;">Refresh token hanya dikirim ke <code>/api/inbox</code> pada deployment yang sama dan tidak disimpan oleh reader.</div>
             </div>
 
             <div id="olInboxResultArea" class="olx-result">
@@ -1551,17 +1534,11 @@ const VANZ_ENV = {
                 <div class="olx-toolbar-r">
                   <div class="olx-search">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input id="olSearchInput" placeholder="Cari pengirim / subjek / OTP..." oninput="olFilterTable()" />
+                    <input id="olSearchInput" placeholder="Cari pengirim / subjek / OTP" oninput="olFilterTable()" />
                   </div>
-                  <button class="btn secondary olx-mini" onclick="olFetchInbox()">
-                    <i class="fa-solid fa-rotate-right"></i> Muat Ulang
-                  </button>
-                  <button class="btn secondary olx-mini" onclick="olExportData('csv')">
-                    <i class="fa-solid fa-file-csv"></i> CSV
-                  </button>
-                  <button class="btn secondary olx-mini" onclick="olExportData('json')">
-                    <i class="fa-solid fa-code"></i> JSON
-                  </button>
+                  <button class="btn secondary olx-mini" onclick="olFetchInbox()"><i class="fa-solid fa-rotate-right"></i> Muat Ulang</button>
+                  <button class="btn secondary olx-mini" onclick="olExportData('csv')"><i class="fa-solid fa-file-csv"></i> CSV</button>
+                  <button class="btn secondary olx-mini" onclick="olExportData('json')"><i class="fa-solid fa-code"></i> JSON</button>
                 </div>
               </div>
 
@@ -1576,15 +1553,7 @@ const VANZ_ENV = {
                     </tr>
                   </thead>
                   <tbody id="olTableBody">
-                    <tr>
-                      <td colspan="4">
-                        <div class="olx-empty">
-                          <i class="fa-solid fa-shield-halved"></i>
-                          <b>Inbox OTP Reader siap</b>
-                          <span>Masukkan akun yang Anda berwenang akses lalu tekan <em>Baca Inbox</em>.</span>
-                        </div>
-                      </td>
-                    </tr>
+                    <tr><td colspan="4"><div class="olx-empty"><i class="fa-solid fa-envelope-open-text"></i><b>Belum ada pesan</b><span>Masukkan data OAuth yang memang Anda berwenang akses lalu klik <em>Baca Inbox</em>.</span></div></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -2338,348 +2307,310 @@ user@outlook.com|abc"></textarea>
     window.authClear = authClear;
 
     // ============================================================
-    // ===== TOOL: INBOX OTP READER ================================
+    // ===== TOOL: INBOX OTP READER (SAME-ORIGIN /api/inbox) =====
     // ============================================================
     let olCurrentMessages = [];
-    let olReaderRunning = false;
+    let olReaderBusy = false;
     let olAutoTimer = null;
-    let olHasRead = false;
-    const olSeen = new Set();
+    let olLastInput = "";
     const OL_MAX_ACCOUNTS = 20;
 
-    function olParseAccounts(raw){
-      return raw.split(/\r?\n/).map((line,index)=>{
-        if(!line.trim()) return null;
-        const p=line.trim().split("|");
-        if(p.length===3){
-          const [email,refreshToken,clientId]=p.map(x=>x.trim());
-          if(email.includes("@") && refreshToken && clientId) return {email,refreshToken,clientId};
-        }
-        if(p.length===4){
-          const [email,_password,refreshToken,clientId]=p.map(x=>x.trim());
-          if(email.includes("@") && refreshToken && clientId) return {email,refreshToken,clientId};
-        }
-        return {error:`Baris ${index+1}: format harus email|refresh_token|client_id`};
-      }).filter(Boolean);
+    function setOutlookAuthMode(){ return; }
+
+    function olNormalizeError(value){
+      if(value == null) return "Unknown error";
+      if(typeof value === "string") return value;
+      if(value.message) return String(value.message);
+      if(value.error_description) return String(value.error_description);
+      if(value.error){
+        if(typeof value.error === "string") return value.error;
+        if(value.error.message) return String(value.error.message);
+      }
+      try { return JSON.stringify(value); } catch(e) { return String(value); }
     }
 
     function olExtractOtp(text){
-      const value=String(text||"");
-      if(!/(?:otp|one.?time|verification|verify|verification code|security code|security|kode|code|login|sign.?in|authenticate|confirmation)/i.test(value)) return "";
-      const matches=value.match(/(?:^|\D)(\d{4,8})(?!\d)/g)||[];
-      for(const x of matches){
-        const m=x.match(/\d{4,8}/);
+      const value = String(text || "");
+      if(!/(?:otp|one[ -]?time|verification|verify|security code|security|confirmation|confirm|login|sign[ -]?in|authenticate|kode|code)/i.test(value)) return "";
+      const matches = value.match(/(?:^|\D)(\d{4,8})(?!\d)/g) || [];
+      for(const item of matches){
+        const m = item.match(/\d{4,8}/);
         if(m) return m[0];
       }
       return "";
     }
 
-    function olNormalizeMessage(m,email){
-      const subject=m.subject||"";
-      const preview=m.preview||"";
-      const content=m.content||"";
-      const full=subject+" "+preview+" "+content;
-      return {
-        ...m,
-        email:email||m.email||"",
-        otp:m.otp||olExtractOtp(full)
-      };
-    }
+    function olParseAccounts(raw){
+      const lines = String(raw || "").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+      const accounts = [];
+      const errors = [];
 
-    function olSetApiStatus(state,text){
-      const dot=document.getElementById("olApiDot");
-      const badge=document.getElementById("olApiStatus");
-      if(dot) dot.setAttribute("data-state",state);
-      if(badge) badge.textContent=text;
-    }
+      lines.forEach((line, index) => {
+        const p = line.split("|").map(x=>x.trim());
+        let email = "", refreshToken = "", clientId = "";
 
-    function olUpdateAccountCount(){
-      const raw=document.getElementById("olCombo").value.trim();
-      const lines=raw?raw.split(/\r?\n/).filter(x=>x.trim()):[];
-      document.getElementById("olDetectedEmail").textContent=`${lines.length} Akun`;
+        if(p.length === 4){
+          [email, , refreshToken, clientId] = p;
+        } else if(p.length === 3){
+          [email, refreshToken, clientId] = p;
+        } else {
+          errors.push(`Baris ${index + 1}: format harus email|refresh_token|client_id atau email|password|refresh_token|client_id`);
+          return;
+        }
+
+        if(!/^\S+@\S+\.\S+$/.test(email)){
+          errors.push(`Baris ${index + 1}: email tidak valid`);
+          return;
+        }
+        if(!refreshToken || refreshToken.length < 20){
+          errors.push(`Baris ${index + 1}: refresh token kosong/tidak lengkap`);
+          return;
+        }
+        if(!clientId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(clientId)){
+          errors.push(`Baris ${index + 1}: client_id harus UUID`);
+          return;
+        }
+        accounts.push({email, refreshToken, clientId});
+      });
+
+      return {accounts: accounts.slice(0, OL_MAX_ACCOUNTS), errors};
     }
 
     async function olReadOne(account){
-      const response=await fetch("/api/inbox",{
-        method:"POST",
-        headers:{"Content-Type":"application/json","Accept":"application/json"},
-        body:JSON.stringify({
-          email:account.email,
-          refreshToken:account.refreshToken,
-          clientId:account.clientId
+      const response = await fetch("/api/inbox", {
+        method: "POST",
+        headers: {"Content-Type":"application/json", "Accept":"application/json"},
+        body: JSON.stringify({
+          email: account.email,
+          refreshToken: account.refreshToken,
+          clientId: account.clientId
         }),
-        cache:"no-store",
-        credentials:"same-origin"
+        cache: "no-store",
+        credentials: "same-origin"
       });
 
-      const data=await response.json().catch(()=>({}));
-      if(!response.ok) throw new Error(data.error||`API gagal (${response.status})`);
+      const rawText = await response.text();
+      let data = {};
+      try { data = rawText ? JSON.parse(rawText) : {}; } catch(e) { data = {error: rawText || `HTTP ${response.status}`}; }
 
+      if(!response.ok){
+        throw new Error(olNormalizeError(data.error || data));
+      }
+
+      const messages = Array.isArray(data.messages) ? data.messages : [];
       return {
-        email:account.email,
-        messages:(data.messages||[]).map(m=>olNormalizeMessage(m,account.email)),
-        partial:Boolean(data.partial)
+        email: account.email,
+        partial: Boolean(data.partial),
+        messages: messages.map(m => ({
+          ...m,
+          email: account.email,
+          otp: m.otp || olExtractOtp(`${m.subject || ""} ${m.preview || ""} ${m.content || ""}`)
+        }))
       };
     }
 
-    async function olFetchInbox(){
-      if(olReaderRunning) return;
-
-      const raw=document.getElementById("olCombo").value.trim();
-      if(!raw){
-        toast("Masukkan data OAuth terlebih dahulu.","error");
-        return;
+    function olSenderName(msg){
+      if(msg.name) return msg.name;
+      if(msg.from && msg.from.emailAddress) return msg.from.emailAddress.name || msg.from.emailAddress.address || "Unknown";
+      if(typeof msg.from === "string"){
+        const m = msg.from.match(/^\s*"?(.*?)"?\s*<(.+?)>\s*$/);
+        return m ? (m[1].trim() || m[2]) : msg.from;
       }
-
-      const accounts=olParseAccounts(raw);
-      const invalid=accounts.find(a=>a.error);
-      if(invalid){
-        toast(invalid.error,"error");
-        return;
-      }
-
-      if(!accounts.length){
-        toast("Tidak ada akun yang valid.","error");
-        return;
-      }
-
-      if(accounts.length>OL_MAX_ACCOUNTS){
-        toast(`Maksimal ${OL_MAX_ACCOUNTS} akun per sesi.`,"error");
-        return;
-      }
-
-      olReaderRunning=true;
-      const btn=document.getElementById("olFetchBtn");
-      btn.disabled=true;
-      btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Membaca...';
-      olSetApiStatus("loading","Menghubungkan");
-
-      const all=[];
-      const errors=[];
-      let partialCount=0;
-
-      try{
-        for(let i=0;i<accounts.length;i++){
-          const account=accounts[i];
-          document.getElementById("olActiveAccountName").textContent=account.email;
-          document.getElementById("olApiStatus").textContent=`${i+1}/${accounts.length}`;
-
-          try{
-            const result=await olReadOne(account);
-            all.push(...result.messages);
-            if(result.partial) partialCount++;
-          }catch(err){
-            errors.push(`${account.email}: ${err.message}`);
-          }
-        }
-
-        all.sort((a,b)=>Date.parse(b.time||"")-Date.parse(a.time||""));
-
-        const fresh=all.filter(m=>{
-          const key=`${m.email}|${m.id}`;
-          return m.otp && !olSeen.has(key);
-        });
-
-        olCurrentMessages=all;
-        document.getElementById("olMsgCount").textContent=all.length;
-        renderOutlookTable(all);
-
-        if(olHasRead && fresh.length && document.getElementById("olNotify").checked){
-          olNotifyOtp(fresh);
-        }
-
-        all.forEach(m=>olSeen.add(`${m.email}|${m.id}`));
-        olHasRead=true;
-
-        olSetApiStatus(errors.length?"err":"ok",errors.length?"Sebagian gagal":"Terhubung");
-
-        let msg=`${all.length} email terbaca`;
-        if(partialCount) msg+=` • ${partialCount} akun sebagian`;
-        if(errors.length) msg+=` • ${errors.length} akun gagal`;
-        toast(msg,errors.length?"error":"ok");
-
-        if(errors.length){
-          document.getElementById("olApiEndpoint").textContent=errors.join(" • ").slice(0,120);
-        }else{
-          document.getElementById("olApiEndpoint").textContent="Inbox + Junk";
-        }
-      }finally{
-        olReaderRunning=false;
-        btn.disabled=false;
-        btn.innerHTML='<i class="fa-solid fa-bolt"></i> Baca Inbox';
-      }
+      return "Unknown";
     }
 
-    function olNotifyOtp(messages){
-      const codes=messages.slice(0,5).map(m=>`${m.email}: ${m.otp}`).join("\n");
-      if("Notification" in window && Notification.permission==="granted"){
-        new Notification("OTP baru masuk",{body:codes});
-      }else{
-        toast(`${messages.length} OTP baru terdeteksi`,"ok");
+    function olSenderAddr(msg){
+      if(msg.from && msg.from.emailAddress) return msg.from.emailAddress.address || "";
+      if(typeof msg.from === "string"){
+        const m = msg.from.match(/<(.+?)>/);
+        return m ? m[1] : (msg.from.includes("@") ? msg.from.trim() : "");
+      }
+      return "";
+    }
+
+    async function olFetchInbox(){
+      if(olReaderBusy) return;
+      const raw = document.getElementById("olCombo").value.trim();
+      if(!raw){ toast("Masukkan data OAuth terlebih dahulu.", "error"); return; }
+
+      const parsed = olParseAccounts(raw);
+      if(parsed.errors.length){
+        toast(parsed.errors[0], "error");
+        olSetApiStatus("err", "Format salah");
+        document.getElementById("olTableBody").innerHTML = `<tr><td colspan="4"><div class="olx-empty olx-error"><i class="fa-solid fa-triangle-exclamation"></i><b>Format input belum benar</b><span>${escapeHtml(parsed.errors.join(" • "))}</span></div></td></tr>`;
+        return;
+      }
+      if(!parsed.accounts.length){ toast("Tidak ada akun valid.", "error"); return; }
+
+      olLastInput = raw;
+      olReaderBusy = true;
+      const btn = document.getElementById("olFetchBtn");
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Membaca...`;
+      olSetApiStatus("loading", "Menghubungkan");
+      document.getElementById("olDetectedEmail").textContent = `${parsed.accounts.length} Akun`;
+      document.getElementById("olTableBody").innerHTML = `<tr><td colspan="4"><div class="olx-empty"><i class="fa-solid fa-spinner fa-spin"></i><b>Membaca inbox...</b><span>Memproses akun satu per satu melalui /api/inbox.</span></div></td></tr>`;
+
+      const all = [];
+      const failed = [];
+
+      try {
+        for(let i=0; i<parsed.accounts.length; i++){
+          const account = parsed.accounts[i];
+          document.getElementById("olActiveAccountName").textContent = account.email;
+          try {
+            const result = await olReadOne(account);
+            all.push(...result.messages);
+            if(result.partial) failed.push(`${account.email}: sebagian folder gagal`);
+          } catch(err){
+            failed.push(`${account.email}: ${olNormalizeError(err)}`);
+          }
+          document.getElementById("olMsgCount").textContent = all.length;
+          renderOutlookTable(all);
+        }
+
+        olCurrentMessages = all.sort((a,b)=>Date.parse(b.time || 0)-Date.parse(a.time || 0));
+        document.getElementById("olMsgCount").textContent = olCurrentMessages.length;
+        renderOutlookTable(olCurrentMessages);
+
+        if(all.length && !failed.length){
+          olSetApiStatus("ok", `${parsed.accounts.length}/${parsed.accounts.length} OK`);
+          toast(`Selesai. ${all.length} pesan terbaca.`);
+        } else if(all.length){
+          olSetApiStatus("ok", `${parsed.accounts.length-failed.length}/${parsed.accounts.length} OK`);
+          toast(`Sebagian berhasil: ${all.length} pesan. ${failed.length} akun/folder bermasalah.`, "error");
+        } else {
+          olSetApiStatus("err", "Gagal");
+          document.getElementById("olTableBody").innerHTML = `<tr><td colspan="4"><div class="olx-empty olx-error"><i class="fa-solid fa-triangle-exclamation"></i><b>Tidak ada pesan terbaca</b><span>${escapeHtml(failed.join(" • ") || "Backend tidak mengembalikan pesan.")}</span></div></td></tr>`;
+          toast(failed[0] || "Inbox gagal dibaca.", "error");
+        }
+      } finally {
+        olReaderBusy = false;
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-bolt"></i> Baca Inbox`;
       }
     }
 
     function renderOutlookTable(messages){
-      const tbody=document.getElementById("olTableBody");
-      tbody.replaceChildren();
+      const tbody = document.getElementById("olTableBody");
+      if(!tbody) return;
+      tbody.innerHTML = "";
 
       if(!messages.length){
-        const tr=document.createElement("tr");
-        tr.innerHTML='<td colspan="4"><div class="olx-empty"><i class="fa-solid fa-inbox"></i><b>Tidak ada email</b><span>Inbox/Junk tidak mengembalikan pesan.</span></div></td>';
-        tbody.appendChild(tr);
+        tbody.innerHTML = `<tr><td colspan="4"><div class="olx-empty"><i class="fa-solid fa-inbox"></i><b>Kotak masuk kosong</b><span>Tidak ada pesan yang cocok untuk ditampilkan.</span></div></td></tr>`;
         return;
       }
 
-      messages.forEach(msg=>{
-        const sender=msg.name||msg.from||"Unknown";
-        const initials=(sender.trim()[0]||"?").toUpperCase();
-        const hue=Math.abs(hashStr(sender))%360;
-        const date=msg.time?new Date(msg.time):null;
-        const dateStr=date&&!Number.isNaN(date.getTime())
-          ? date.toLocaleDateString("id-ID",{day:"numeric",month:"short"})+" · "+date.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})
-          :"—";
+      messages.forEach(msg => {
+        const sender = olSenderName(msg);
+        const addr = olSenderAddr(msg);
+        const initials = (sender.trim()[0] || "?").toUpperCase();
+        const hue = Math.abs(hashStr(sender)) % 360;
+        const d = new Date(msg.time || msg.receivedDateTime || Date.now());
+        const dateStr = isNaN(d.getTime()) ? "-" : d.toLocaleDateString("id-ID", {day:"numeric",month:"short"}) + " · " + d.toLocaleTimeString("id-ID", {hour:"2-digit",minute:"2-digit"});
+        const otp = msg.otp || olExtractOtp(`${msg.subject || ""} ${msg.preview || ""} ${msg.content || ""}`);
+        const otpSafe = String(otp || "").replace(/'/g,"\\'");
 
-        const tr=document.createElement("tr");
-        const otp=msg.otp||"";
-
-        tr.innerHTML=`
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
           <td class="tdSender">
             <div class="olx-sender">
               <span class="olx-avatar" style="--h:${hue}">${escapeHtml(initials)}</span>
-              <span class="olx-sender-tx">
-                <b>${escapeHtml(sender)}</b>
-                <i>${escapeHtml(msg.from||msg.email||"")}</i>
-                <small class="tag">${escapeHtml(msg.email||"")} • ${msg.folder==="junkemail"?"Junk":"Inbox"}</small>
-              </span>
+              <span class="olx-sender-tx"><b>${escapeHtml(msg.email || sender)}</b><i>${escapeHtml(addr || sender)}</i></span>
             </div>
           </td>
           <td>
-            <div class="tdSubject">${escapeHtml(msg.subject||"(Tanpa Subjek)")}</div>
-            <div class="tdPreview">${escapeHtml((msg.preview||msg.content||"").slice(0,360))}</div>
-            <button class="btn secondary olx-mini" style="margin-top:7px" data-view-id="${escapeHtml(msg.id||"")}">Lihat</button>
+            <div class="tdSubject">${escapeHtml(msg.subject || "(Tanpa Subjek)")}</div>
+            <div class="tdPreview">${escapeHtml(msg.preview || msg.bodyPreview || "")}</div>
           </td>
-          <td>${otp
-            ? `<button class="otpBadgeInline" data-copy-otp="${escapeHtml(otp)}"><i class="fa-solid fa-shield-halved"></i><span>${escapeHtml(otp)}</span><em>Salin</em></button>`
-            : "—"}</td>
+          <td style="white-space:nowrap;">${otp ? `<div class="otpBadgeInline" onclick="navigator.clipboard.writeText('${otpSafe}').then(()=>toast('Kode OTP disalin!'))" title="Klik untuk salin"><i class="fa-solid fa-shield-halved"></i> <span>${escapeHtml(otp)}</span> <em>Salin</em></div>` : `<span style="opacity:.5">—</span>`}</td>
           <td class="tdDate">${dateStr}</td>
         `;
-
-        const view=tr.querySelector("[data-view-id]");
-        if(view){
-          view.onclick=()=>{
-            const title=msg.subject||"(Tanpa Subjek)";
-            const body=msg.content||msg.preview||"(Kosong)";
-            if(typeof showModal==="function"){
-              showModal(title,body);
-            }else{
-              alert(body);
-            }
-          };
-        }
-
-        const copy=tr.querySelector("[data-copy-otp]");
-        if(copy){
-          copy.onclick=async()=>{
-            const code=copy.getAttribute("data-copy-otp");
-            try{
-              await navigator.clipboard.writeText(code);
-              toast(`OTP ${code} disalin`,"ok");
-            }catch{
-              toast("Clipboard gagal diakses","error");
-            }
-          };
-        }
-
         tbody.appendChild(tr);
       });
     }
 
-    function hashStr(s){
-      let h=0;
-      for(let i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;}
-      return h;
+    function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=(h<<5)-h+s.charCodeAt(i); h|=0; } return h; }
+    function olSetApiStatus(state, text){
+      const dot = document.getElementById("olApiDot");
+      const badge = document.getElementById("olApiStatus");
+      if(dot) dot.setAttribute("data-state", state);
+      if(badge) badge.textContent = text;
     }
 
     function olFilterTable(){
-      const q=(document.getElementById("olSearchInput").value||"").trim().toLowerCase();
-      if(!q){
-        renderOutlookTable(olCurrentMessages);
-        return;
-      }
-      renderOutlookTable(olCurrentMessages.filter(m=>{
-        const text=[
-          m.email,m.from,m.name,m.subject,m.preview,m.content,m.otp,m.folder
-        ].join(" ").toLowerCase();
-        return text.includes(q);
-      }));
+      const q = (document.getElementById("olSearchInput").value || "").toLowerCase().trim();
+      const filtered = !q ? olCurrentMessages : olCurrentMessages.filter(m => {
+        const hay = [m.email, olSenderName(m), olSenderAddr(m), m.subject, m.preview, m.bodyPreview, m.otp].join(" ").toLowerCase();
+        return hay.includes(q);
+      });
+      renderOutlookTable(filtered);
     }
 
     function olExportData(type){
-      if(!olCurrentMessages.length){
-        toast("Tidak ada data untuk diekspor","error");
-        return;
+      if(!olCurrentMessages.length){ toast("Tidak ada data untuk diekspor", "error"); return; }
+      if(type === "json"){
+        downloadText("inbox-otp.json", JSON.stringify(olCurrentMessages, null, 2));
+      } else {
+        const header = ["Akun","Tanggal","Pengirim","Email Pengirim","Subjek","Preview","OTP"];
+        const rows = olCurrentMessages.map(m => [
+          m.email || "",
+          m.time || "",
+          olSenderName(m),
+          olSenderAddr(m),
+          m.subject || "",
+          m.preview || m.bodyPreview || "",
+          m.otp || ""
+        ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(","));
+        downloadText("inbox-otp.csv", [header.join(","), ...rows].join("\n"));
       }
+      toast(`Export ${type.toUpperCase()} selesai!`);
+    }
 
-      if(type==="json"){
-        downloadText("vanzshop-inbox-otp.json",JSON.stringify(olCurrentMessages,null,2));
-      }else{
-        const header=["Account","Folder","Time","From","Subject","OTP","Preview"];
-        const rows=olCurrentMessages.map(m=>[
-          m.email,m.folder,m.time,m.from,m.subject,m.otp,m.preview
-        ].map(v=>`"${String(v||"").replace(/"/g,'""')}"`).join(","));
-        downloadText("vanzshop-inbox-otp.csv",[header.join(","),...rows].join("\n"));
-      }
-      toast(`Export ${type.toUpperCase()} selesai`,"ok");
+    function olToggleAutoRefresh(){
+      if(olAutoTimer){ clearInterval(olAutoTimer); olAutoTimer = null; }
+      const enabled = document.getElementById("olAutoRefresh").checked;
+      if(!enabled) return;
+      const seconds = Math.max(10, Number(document.getElementById("olRefreshEvery").value || 30));
+      olAutoTimer = setInterval(() => {
+        if(!olReaderBusy && document.getElementById("olCombo").value.trim()) olFetchInbox();
+      }, seconds * 1000);
+      toast(`Auto refresh ${seconds}s aktif`);
+    }
+
+    function olNotifyNewOtp(messages){
+      if(!document.getElementById("olNotifyOtp")?.checked || !("Notification" in window)) return;
+      const otp = messages.find(m=>m.otp);
+      if(!otp) return;
+      if(Notification.permission === "default") Notification.requestPermission();
+      if(Notification.permission === "granted") new Notification("VanzShop — OTP Baru", {body:`${otp.email || "Inbox"}: ${otp.otp}`});
     }
 
     function olClearReader(){
-      clearInterval(olAutoTimer);
-      olAutoTimer=null;
-      document.getElementById("olAuto").checked=false;
-      document.getElementById("olCombo").value="";
-      document.getElementById("olSearchInput").value="";
-      document.getElementById("olDetectedEmail").textContent="0 Akun";
-      document.getElementById("olActiveAccountName").textContent="Belum ada akun";
-      document.getElementById("olMsgCount").textContent="0";
-      document.getElementById("olApiEndpoint").textContent="/api/inbox";
-      document.getElementById("olApiStatus").textContent="Siap";
-      olSetApiStatus("idle","Siap");
-      olCurrentMessages=[];
-      olHasRead=false;
-      olSeen.clear();
-      document.getElementById("olTableBody").innerHTML=`
-        <tr><td colspan="4"><div class="olx-empty">
-          <i class="fa-solid fa-shield-halved"></i>
-          <b>Inbox OTP Reader siap</b>
-          <span>Masukkan data OAuth lalu klik <em>Baca Inbox</em>.</span>
-        </div></td></tr>`;
-      toast("Reader dibersihkan","ok");
+      if(olAutoTimer){ clearInterval(olAutoTimer); olAutoTimer = null; }
+      const auto = document.getElementById("olAutoRefresh");
+      if(auto) auto.checked = false;
+      document.getElementById("olCombo").value = "";
+      document.getElementById("olSearchInput").value = "";
+      document.getElementById("olDetectedEmail").textContent = "0 Akun";
+      document.getElementById("olActiveAccountName").textContent = "Belum ada akun";
+      document.getElementById("olMsgCount").textContent = "0";
+      olCurrentMessages = [];
+      olSetApiStatus("idle", "Siap");
+      document.getElementById("olTableBody").innerHTML = `<tr><td colspan="4"><div class="olx-empty"><i class="fa-solid fa-envelope-open-text"></i><b>Belum ada pesan</b><span>Masukkan data OAuth lalu klik <em>Baca Inbox</em>.</span></div></td></tr>`;
+      toast("Reader dibersihkan");
     }
 
-    function olConfigureAuto(){
-      clearInterval(olAutoTimer);
-      olAutoTimer=null;
-      if(document.getElementById("olAuto").checked){
-        olFetchInbox();
-        olAutoTimer=setInterval(()=>{
-          if(!olReaderRunning) olFetchInbox();
-        },Number(document.getElementById("olInterval").value));
-      }
+    function escapeHtml(str){
+      return String(str||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
     }
 
-    document.getElementById("olCombo").addEventListener("input",olUpdateAccountCount);
-    document.getElementById("olAuto").addEventListener("change",olConfigureAuto);
-    document.getElementById("olInterval").addEventListener("change",olConfigureAuto);
-    document.getElementById("olNotify").addEventListener("change",async()=>{
-      if(document.getElementById("olNotify").checked && "Notification" in window && Notification.permission==="default"){
-        await Notification.requestPermission();
-      }
-    });
-
-    window.olFetchInbox=olFetchInbox;
-    window.olFilterTable=olFilterTable;
-    window.olExportData=olExportData;
-    window.olClearReader=olClearReader;
+    window.setOutlookAuthMode = setOutlookAuthMode;
+    window.olFetchInbox = olFetchInbox;
+    window.olFilterTable = olFilterTable;
+    window.olExportData = olExportData;
+    window.olClearReader = olClearReader;
+    window.olToggleAutoRefresh = olToggleAutoRefresh;
 
     // ===== Email Generator =====
     let egOut = [];
