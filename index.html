@@ -1303,9 +1303,9 @@ const VANZ_ENV = {
             <span class="navText"><b>Authenticator 2FA</b><small>Generate kode OTP</small></span>
           </button>
 
-          <button id="nav-outlook" data-tool-label="Outlook Inbox" onclick="showTool('outlook')">
+          <button id="nav-outlook" data-tool-label="Inbox OTP Reader" onclick="showTool('outlook')">
             <span class="ico"><i class="fa-solid fa-inbox"></i></span>
-            <span class="navText"><b>Outlook Inbox</b><small>Baca inbox</small></span>
+            <span class="navText"><b>Inbox OTP Reader</b><small>Deteksi kode OTP dari inbox</small></span>
           </button>
 
           <button id="nav-refund" class="active" data-tool-label="Refund Calculator" onclick="showTool('refund')">
@@ -1467,61 +1467,80 @@ const VANZ_ENV = {
             </div>
           </section>
 
-          <!-- TOOL: OUTLOOK LIVE READER -->
+          <!-- TOOL: INBOX OTP READER -->
           <section id="tool-outlook" class="hidden">
-
-            <!-- BAR ATAS: Home + status API -->
             <div class="olx-topbar">
               <a class="olx-home" href="https://vanzshop.com">
                 <i class="fa-solid fa-house"></i><span>Menu Utama</span>
               </a>
               <div class="olx-apibar">
-                <span class="olx-api-dot" id="olApiDot"></span>
-                <span class="olx-api-label" id="olApiLabel">Outlook API</span>
+                <span class="olx-api-dot" id="olApiDot" data-state="idle"></span>
+                <span class="olx-api-label" id="olApiLabel">Inbox OTP API</span>
                 <span class="olx-api-sep"></span>
-                <span class="olx-api-ep" id="olApiEndpoint">/me/messages</span>
+                <span class="olx-api-ep" id="olApiEndpoint">/api/inbox</span>
                 <span class="olx-api-badge" id="olApiStatus">Siap</span>
               </div>
             </div>
 
-            <!-- HERO -->
             <div class="olx-hero">
-              <div class="olx-hero-ic"><i class="fa-solid fa-inbox"></i></div>
+              <div class="olx-hero-ic"><i class="fa-solid fa-shield-halved"></i></div>
               <div class="olx-hero-tx">
-                <h3>Outlook Live Reader</h3>
-                <p>Baca inbox &amp; tangkap kode OTP secara real-time via refresh token — aman, cepat, tanpa login manual.</p>
-              </div>
-              <div class="toggleGroup olx-hero-toggle">
-                <div class="toggleBtn active" id="modeOAuth2" onclick="setOutlookAuthMode('oauth2')">OAuth2</div>
-                <div class="toggleBtn" id="modeGraph" onclick="setOutlookAuthMode('graph')">Graph API</div>
+                <h3>Inbox OTP Reader</h3>
+                <p>Baca mailbox yang Anda berwenang akses dan deteksi kode verifikasi dari Inbox + Junk melalui backend Microsoft Graph.</p>
               </div>
             </div>
 
-            <!-- INPUT CARD -->
             <div class="olx-card">
               <div class="olx-card-head">
-                <label for="olCombo"><i class="fa-solid fa-key"></i> Data Autentikasi</label>
-                <span class="olx-hint">Format <code>email|pass|refresh_token|client_id</code> — atau <code>refresh_token</code> saja</span>
+                <label for="olCombo"><i class="fa-solid fa-key"></i> Data OAuth</label>
+                <span class="olx-hint">Format <code>email|refresh_token|client_id</code> atau <code>email||refresh_token|client_id</code></span>
               </div>
-              <textarea id="olCombo" spellcheck="false" placeholder="BambiAttallah941555@outlook.com|gtubx019086|M.C547_BL2.0.U.MsaArtifacts.-Cka...|9e5f94bc-e8a4-4e73-b8be-63364c29d753" style="min-height:96px;"></textarea>
+
+              <textarea id="olCombo" spellcheck="false"
+                placeholder="email@outlook.com|refresh_token|client_id&#10;email@hotmail.com|refresh_token|client_id"
+                style="min-height:130px;"></textarea>
 
               <div class="olx-controls">
                 <div class="olx-controls-l">
-                  <span class="chip olx-chip" id="olAccountBadge"><i class="fa-solid fa-user"></i> <span id="olDetectedEmail">1 Akun</span></span>
-                  <label class="olx-switch" for="olUseProxy" title="Lewatkan lewat proxy CORS agar bisa diakses dari browser">
-                    <input type="checkbox" id="olUseProxy" checked />
+                  <span class="chip olx-chip" id="olAccountBadge">
+                    <i class="fa-solid fa-users"></i>
+                    <span id="olDetectedEmail">0 Akun</span>
+                  </span>
+
+                  <label class="olx-switch" for="olAuto">
+                    <input type="checkbox" id="olAuto">
                     <span class="olx-switch-track"><span class="olx-switch-thumb"></span></span>
-                    <span class="olx-switch-tx">Proxy CORS</span>
+                    <span class="olx-switch-tx">AUTO</span>
+                  </label>
+
+                  <select id="olInterval" class="olx-mini" aria-label="Interval auto refresh">
+                    <option value="10000">10s</option>
+                    <option value="30000" selected>30s</option>
+                    <option value="60000">60s</option>
+                  </select>
+
+                  <label class="olx-switch" for="olNotify">
+                    <input type="checkbox" id="olNotify">
+                    <span class="olx-switch-track"><span class="olx-switch-thumb"></span></span>
+                    <span class="olx-switch-tx">NOTIF OTP</span>
                   </label>
                 </div>
+
                 <div class="olx-controls-r">
-                  <button class="btn secondary" onclick="olClearReader()"><i class="fa-solid fa-eraser"></i> Bersihkan</button>
-                  <button class="btn olx-go" id="olFetchBtn" onclick="olFetchInbox()"><i class="fa-solid fa-bolt"></i> Baca Inbox</button>
+                  <button class="btn secondary" onclick="olClearReader()">
+                    <i class="fa-solid fa-eraser"></i> Bersihkan
+                  </button>
+                  <button class="btn olx-go" id="olFetchBtn" onclick="olFetchInbox()">
+                    <i class="fa-solid fa-bolt"></i> Baca Inbox
+                  </button>
                 </div>
+              </div>
+
+              <div class="small" style="margin-top:10px;">
+                Refresh token hanya dikirim ke endpoint aplikasi Anda untuk ditukar menjadi access token dan tidak disimpan oleh reader.
               </div>
             </div>
 
-            <!-- RESULT -->
             <div id="olInboxResultArea" class="olx-result">
               <div class="olx-toolbar">
                 <span class="chip olx-acc-chip" id="olActiveAccountChip">
@@ -1532,11 +1551,17 @@ const VANZ_ENV = {
                 <div class="olx-toolbar-r">
                   <div class="olx-search">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input id="olSearchInput" placeholder="Cari pengirim / subjek..." oninput="olFilterTable()" />
+                    <input id="olSearchInput" placeholder="Cari pengirim / subjek / OTP..." oninput="olFilterTable()" />
                   </div>
-                  <button class="btn secondary olx-mini" onclick="olFetchInbox()"><i class="fa-solid fa-rotate-right"></i> Muat Ulang</button>
-                  <button class="btn secondary olx-mini" onclick="olExportData('csv')"><i class="fa-solid fa-file-csv"></i> CSV</button>
-                  <button class="btn secondary olx-mini" onclick="olExportData('json')"><i class="fa-solid fa-code"></i> JSON</button>
+                  <button class="btn secondary olx-mini" onclick="olFetchInbox()">
+                    <i class="fa-solid fa-rotate-right"></i> Muat Ulang
+                  </button>
+                  <button class="btn secondary olx-mini" onclick="olExportData('csv')">
+                    <i class="fa-solid fa-file-csv"></i> CSV
+                  </button>
+                  <button class="btn secondary olx-mini" onclick="olExportData('json')">
+                    <i class="fa-solid fa-code"></i> JSON
+                  </button>
                 </div>
               </div>
 
@@ -1544,18 +1569,19 @@ const VANZ_ENV = {
                 <table class="inboxTable">
                   <thead>
                     <tr>
-                      <th>Pengirim</th>
+                      <th>Akun / Pengirim</th>
                       <th>Subjek &amp; Preview</th>
+                      <th>OTP</th>
                       <th style="text-align:right;">Waktu</th>
                     </tr>
                   </thead>
                   <tbody id="olTableBody">
                     <tr>
-                      <td colspan="3">
+                      <td colspan="4">
                         <div class="olx-empty">
-                          <i class="fa-solid fa-envelope-open-text"></i>
-                          <b>Belum ada pesan</b>
-                          <span>Tempel token di atas lalu klik <em>Baca Inbox</em> untuk menarik email terbaru.</span>
+                          <i class="fa-solid fa-shield-halved"></i>
+                          <b>Inbox OTP Reader siap</b>
+                          <span>Masukkan akun yang Anda berwenang akses lalu tekan <em>Baca Inbox</em>.</span>
                         </div>
                       </td>
                     </tr>
@@ -2312,380 +2338,348 @@ user@outlook.com|abc"></textarea>
     window.authClear = authClear;
 
     // ============================================================
-    // ===== TOOL: OUTLOOK READER (AUTO PARSER & PROXY) ============
+    // ===== TOOL: INBOX OTP READER ================================
     // ============================================================
-    let olAuthMode = "oauth2";
     let olCurrentMessages = [];
+    let olReaderRunning = false;
+    let olAutoTimer = null;
+    let olHasRead = false;
+    const olSeen = new Set();
+    const OL_MAX_ACCOUNTS = 20;
 
-    function setOutlookAuthMode(mode){
-      olAuthMode = mode;
-      document.getElementById("modeOAuth2").classList.toggle("active", mode==="oauth2");
-      document.getElementById("modeGraph").classList.toggle("active", mode==="graph");
-      toast(`Mode: ${mode.toUpperCase()}`);
-    }
-
-    function parseOutlookString(raw){
-      const line = raw.trim().split("\n")[0].trim();
-      // Split pemisah pipa |, titik dua :, koma, atau tab
-      const parts = line.split(/[|:,\t]+/).map(s=>s.trim()).filter(Boolean);
-
-      let email = "";
-      let refreshToken = "";
-      let clientId = "000000004017045b"; // default client id
-
-      for(const p of parts){
-        if(p.includes("@")){
-          email = p;
-        } else if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(p) || /^[0-9a-f]{16}$/i.test(p)){
-          clientId = p;
-        } else if(p.length > 50){
-          refreshToken = p;
+    function olParseAccounts(raw){
+      return raw.split(/\r?\n/).map((line,index)=>{
+        if(!line.trim()) return null;
+        const p=line.trim().split("|");
+        if(p.length===3){
+          const [email,refreshToken,clientId]=p.map(x=>x.trim());
+          if(email.includes("@") && refreshToken && clientId) return {email,refreshToken,clientId};
         }
-      }
-
-      // fallback jika token tanpa separator
-      if(!refreshToken && parts.length === 1){
-        refreshToken = parts[0];
-      }
-
-      return { email, refreshToken, clientId };
-    }
-
-    function extractCodeFromText(text){
-      if(!text) return null;
-      const m = text.match(/\b\d{4,8}\b/);
-      return m ? m[0] : null;
-    }
-
-    async function proxiedFetch(url, options = {}) {
-      const useProxy = document.getElementById("olUseProxy").checked;
-
-      // Coba langsung dulu (kalau kebetulan CORS diizinkan) — kalau gagal baru proxy.
-      const attempts = [];
-      if (!useProxy) {
-        attempts.push({ label: "langsung", target: url, opts: options });
-      } else {
-        // PENTING: hanya proxy "prepend" (URL ditempel di belakang) yang meneruskan
-        // method POST + body + header Authorization. Proxy query-param (?url=) sering
-        // cuma GET → itu sebabnya tukar refresh_token (POST) gagal & inbox tak terbaca.
-        attempts.push(
-          { label: "thingproxy", target: "https://thingproxy.freeboard.io/fetch/" + url, opts: options },
-          { label: "corsproxy",  target: "https://corsproxy.io/?url=" + encodeURIComponent(url), opts: options },
-          { label: "codetabs",   target: "https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(url), opts: options }
-        );
-      }
-
-      let lastErr = null;
-      for (const a of attempts) {
-        try {
-          const res = await fetch(a.target, a.opts);
-          // Terima respons HTTP apa pun (termasuk 4xx) supaya pemanggil bisa baca
-          // pesan error asli dari Microsoft. status 0 = opaque/diblokir → lanjut.
-          if (res && res.status !== 0) return res;
-        } catch (e) {
-          lastErr = e;
+        if(p.length===4){
+          const [email,_password,refreshToken,clientId]=p.map(x=>x.trim());
+          if(email.includes("@") && refreshToken && clientId) return {email,refreshToken,clientId};
         }
+        return {error:`Baris ${index+1}: format harus email|refresh_token|client_id`};
+      }).filter(Boolean);
+    }
+
+    function olExtractOtp(text){
+      const value=String(text||"");
+      if(!/(?:otp|one.?time|verification|verify|verification code|security code|security|kode|code|login|sign.?in|authenticate|confirmation)/i.test(value)) return "";
+      const matches=value.match(/(?:^|\D)(\d{4,8})(?!\d)/g)||[];
+      for(const x of matches){
+        const m=x.match(/\d{4,8}/);
+        if(m) return m[0];
       }
-      if (lastErr) throw new Error("Gagal menjangkau server (proxy CORS mungkin sedang down). Coba lagi atau matikan proxy.");
-      throw new Error("Semua proxy CORS gagal merespons. Coba beberapa saat lagi.");
-    }
-
-    /* ============================================================
-       KONFIGURASI BACKEND OUTLOOK (OPSI C — GABUNGAN)
-       ------------------------------------------------------------
-       Isi URL backend Vercel kamu setelah deploy, TANPA garis miring
-       di akhir. Contoh:
-         window.OL_API_BASE = "https://mail-vanzshop.vercel.app";
-       Kalau dibiarkan kosong (""), tab ini otomatis pakai mode
-       browser (Graph API + proxy publik) sebagai cadangan.
-       ============================================================ */
-    window.OL_API_BASE = window.OL_API_BASE || "";
-
-    // Scope IMAP untuk akun consumer Outlook (dipakai saat mode backend).
-    const OL_IMAP_SCOPE = "https://outlook.office365.com/IMAP.AccessAsUser.All offline_access";
-
-    // Normalisasi nama & alamat pengirim dari 2 bentuk data:
-    //  - Graph: msg.from.emailAddress.{name,address}
-    //  - IMAP : msg.from berupa string "Nama <alamat@x>"
-    function olSenderName(msg){
-      if(msg.from && msg.from.emailAddress) return msg.from.emailAddress.name || msg.from.emailAddress.address || "Unknown";
-      if(typeof msg.from === "string"){ const m = msg.from.match(/^\s*"?(.*?)"?\s*<(.+?)>\s*$/); return m ? (m[1].trim() || m[2]) : msg.from; }
-      return "Unknown";
-    }
-    function olSenderAddr(msg){
-      if(msg.from && msg.from.emailAddress) return msg.from.emailAddress.address || "";
-      if(typeof msg.from === "string"){ const m = msg.from.match(/<(.+?)>/); return m ? m[1] : (msg.from.includes("@") ? msg.from.trim() : ""); }
       return "";
     }
 
-    // MODE BACKEND (IMAP): tukar token via /api/token lalu baca inbox via /api/imap/inbox.
-    async function olFetchViaBackend(creds){
-      const base = window.OL_API_BASE.replace(/\/+$/,"");
-      document.getElementById("olApiLabel").textContent = "Outlook IMAP";
-      document.getElementById("olApiEndpoint").textContent = "INBOX+Junk";
+    function olNormalizeMessage(m,email){
+      const subject=m.subject||"";
+      const preview=m.preview||"";
+      const content=m.content||"";
+      const full=subject+" "+preview+" "+content;
+      return {
+        ...m,
+        email:email||m.email||"",
+        otp:m.otp||olExtractOtp(full)
+      };
+    }
 
-      // Step 1 — access token dengan scope IMAP
-      const params = new URLSearchParams();
-      params.append("client_id", creds.clientId);
-      params.append("grant_type", "refresh_token");
-      params.append("refresh_token", creds.refreshToken);
-      params.append("scope", OL_IMAP_SCOPE);
+    function olSetApiStatus(state,text){
+      const dot=document.getElementById("olApiDot");
+      const badge=document.getElementById("olApiStatus");
+      if(dot) dot.setAttribute("data-state",state);
+      if(badge) badge.textContent=text;
+    }
 
-      const tokenRes = await fetch(base + "/api/token", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: params.toString()
+    function olUpdateAccountCount(){
+      const raw=document.getElementById("olCombo").value.trim();
+      const lines=raw?raw.split(/\r?\n/).filter(x=>x.trim()):[];
+      document.getElementById("olDetectedEmail").textContent=`${lines.length} Akun`;
+    }
+
+    async function olReadOne(account){
+      const response=await fetch("/api/inbox",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body:JSON.stringify({
+          email:account.email,
+          refreshToken:account.refreshToken,
+          clientId:account.clientId
+        }),
+        cache:"no-store",
+        credentials:"same-origin"
       });
-      const tokenData = await tokenRes.json().catch(()=>({}));
-      if(!tokenRes.ok || !tokenData.access_token){
-        const desc = tokenData.error_description || tokenData.error || `HTTP ${tokenRes.status}`;
-        throw new Error(`Gagal Login (IMAP): ${desc}`);
-      }
 
-      // Step 2 — baca inbox lewat backend (IMAP dijalankan di server)
-      const email = creds.email || (tokenData.email || "");
-      const mailRes = await fetch(base + "/api/imap/inbox", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, accessToken: tokenData.access_token })
-      });
-      const mailData = await mailRes.json().catch(()=>({}));
-      if(!mailRes.ok) throw new Error(mailData.error || "Gagal membaca inbox dari backend IMAP");
-      return mailData.messages || [];
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(data.error||`API gagal (${response.status})`);
+
+      return {
+        email:account.email,
+        messages:(data.messages||[]).map(m=>olNormalizeMessage(m,account.email)),
+        partial:Boolean(data.partial)
+      };
     }
 
     async function olFetchInbox(){
-      const raw = document.getElementById("olCombo").value.trim();
+      if(olReaderRunning) return;
+
+      const raw=document.getElementById("olCombo").value.trim();
       if(!raw){
-        toast("Masukkan email / token terlebih dahulu!", "error");
+        toast("Masukkan data OAuth terlebih dahulu.","error");
         return;
       }
 
-      const creds = parseOutlookString(raw);
-      if(!creds.refreshToken){
-        toast("Muat Ulang token tidak ditemukan di teks input!", "error");
+      const accounts=olParseAccounts(raw);
+      const invalid=accounts.find(a=>a.error);
+      if(invalid){
+        toast(invalid.error,"error");
         return;
       }
 
-      if(creds.email){
-        document.getElementById("olDetectedEmail").textContent = creds.email;
-        document.getElementById("olActiveAccountName").textContent = creds.email;
-      }
-
-      const btn = document.getElementById("olFetchBtn");
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Membaca...`;
-      olSetApiStatus("loading", "Menghubungkan");
-      toast("Meminta token akses Microsoft...");
-
-      // ===== MODE BACKEND (IMAP) — dipakai bila OL_API_BASE di-set =====
-      if(window.OL_API_BASE && window.OL_API_BASE.trim()){
-        try {
-          olCurrentMessages = await olFetchViaBackend(creds);
-          document.getElementById("olMsgCount").textContent = olCurrentMessages.length;
-          renderOutlookTable(olCurrentMessages);
-          olSetApiStatus("ok", "Terhubung");
-          toast(`Selesai! ${olCurrentMessages.length} pesan terbaca via IMAP.`);
-        } catch (err) {
-          olSetApiStatus("err", "Gagal");
-          document.getElementById("olTableBody").innerHTML =
-            `<tr><td colspan="3"><div class="olx-empty olx-error"><i class="fa-solid fa-triangle-exclamation"></i><b>${escapeHtml(err.message)}</b><span>Cek URL <em>OL_API_BASE</em>, atau pastikan refresh token punya izin IMAP.</span></div></td></tr>`;
-          toast(err.message, "error");
-        } finally {
-          btn.disabled = false;
-          btn.innerHTML = `<i class="fa-solid fa-bolt"></i> Baca Inbox`;
-        }
+      if(!accounts.length){
+        toast("Tidak ada akun yang valid.","error");
         return;
       }
 
-      // ===== MODE BROWSER (Graph API + proxy publik) — cadangan =====
-      document.getElementById("olApiLabel").textContent = "Microsoft Graph";
-      document.getElementById("olApiEndpoint").textContent = "/me/messages";
-      try {
-        // Step 1: Tukar Muat Ulang Token menjadi Access Token
-        // Support token live.com / msa consumer (M.C547...) maupun Azure AD
-        let isConsumerMsa = creds.refreshToken.startsWith("M.C") || creds.refreshToken.startsWith("M.R");
-        let tokenUrl = isConsumerMsa
-          ? "https://login.live.com/oauth20_token.srf"
-          : "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+      if(accounts.length>OL_MAX_ACCOUNTS){
+        toast(`Maksimal ${OL_MAX_ACCOUNTS} akun per sesi.`,"error");
+        return;
+      }
 
-        const params = new URLSearchParams();
-        params.append("client_id", creds.clientId);
-        params.append("grant_type", "refresh_token");
-        params.append("refresh_token", creds.refreshToken);
+      olReaderRunning=true;
+      const btn=document.getElementById("olFetchBtn");
+      btn.disabled=true;
+      btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Membaca...';
+      olSetApiStatus("loading","Menghubungkan");
 
-        if(!isConsumerMsa){
-          params.append("scope", "https://graph.microsoft.com/.default offline_access");
+      const all=[];
+      const errors=[];
+      let partialCount=0;
+
+      try{
+        for(let i=0;i<accounts.length;i++){
+          const account=accounts[i];
+          document.getElementById("olActiveAccountName").textContent=account.email;
+          document.getElementById("olApiStatus").textContent=`${i+1}/${accounts.length}`;
+
+          try{
+            const result=await olReadOne(account);
+            all.push(...result.messages);
+            if(result.partial) partialCount++;
+          }catch(err){
+            errors.push(`${account.email}: ${err.message}`);
+          }
         }
 
-        const tokenRes = await proxiedFetch(tokenUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: params.toString()
+        all.sort((a,b)=>Date.parse(b.time||"")-Date.parse(a.time||""));
+
+        const fresh=all.filter(m=>{
+          const key=`${m.email}|${m.id}`;
+          return m.otp && !olSeen.has(key);
         });
 
-        const tokenData = await tokenRes.json().catch(()=>({}));
-        if(!tokenRes.ok || !tokenData.access_token){
-          const desc = tokenData.error_description || tokenData.error || `HTTP ${tokenRes.status}`;
-          throw new Error(`Gagal Login: ${desc}`);
+        olCurrentMessages=all;
+        document.getElementById("olMsgCount").textContent=all.length;
+        renderOutlookTable(all);
+
+        if(olHasRead && fresh.length && document.getElementById("olNotify").checked){
+          olNotifyOtp(fresh);
         }
 
-        const accessToken = tokenData.access_token;
-        toast("Membaca inbox dari Microsoft Graph...");
+        all.forEach(m=>olSeen.add(`${m.email}|${m.id}`));
+        olHasRead=true;
 
-        // Step 2: Ambil Daftar Email
-        const graphUrl = "https://graph.microsoft.com/v1.0/me/messages?$top=20&$orderby=receivedDateTime%20desc&$select=id,subject,from,receivedDateTime,bodyPreview";
-        const mailRes = await proxiedFetch(graphUrl, {
-          headers: { "Authorization": `Bearer ${accessToken}` }
-        });
+        olSetApiStatus(errors.length?"err":"ok",errors.length?"Sebagian gagal":"Terhubung");
 
-        const mailData = await mailRes.json().catch(()=>({}));
-        if(!mailRes.ok){
-          throw new Error(mailData.error?.message || "Gagal mengambil pesan dari Graph API");
+        let msg=`${all.length} email terbaca`;
+        if(partialCount) msg+=` • ${partialCount} akun sebagian`;
+        if(errors.length) msg+=` • ${errors.length} akun gagal`;
+        toast(msg,errors.length?"error":"ok");
+
+        if(errors.length){
+          document.getElementById("olApiEndpoint").textContent=errors.join(" • ").slice(0,120);
+        }else{
+          document.getElementById("olApiEndpoint").textContent="Inbox + Junk";
         }
+      }finally{
+        olReaderRunning=false;
+        btn.disabled=false;
+        btn.innerHTML='<i class="fa-solid fa-bolt"></i> Baca Inbox';
+      }
+    }
 
-        olCurrentMessages = mailData.value || [];
-        document.getElementById("olMsgCount").textContent = olCurrentMessages.length;
-        renderOutlookTable(olCurrentMessages);
-        olSetApiStatus("ok", "Terhubung");
-        toast(`Selesai! ${olCurrentMessages.length} pesan terbaca.`);
-      } catch (err) {
-        olSetApiStatus("err", "Gagal");
-        document.getElementById("olTableBody").innerHTML = `
-          <tr>
-            <td colspan="3">
-              <div class="olx-empty olx-error">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <b>${escapeHtml(err.message)}</b>
-                <span>Pastikan <em>refresh token</em> masih aktif dan opsi <em>Proxy CORS</em> menyala. Kalau proxy sedang down, coba lagi beberapa saat.</span>
-              </div>
-            </td>
-          </tr>
-        `;
-        toast(err.message, "error");
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-bolt"></i> Baca Inbox`;
+    function olNotifyOtp(messages){
+      const codes=messages.slice(0,5).map(m=>`${m.email}: ${m.otp}`).join("\n");
+      if("Notification" in window && Notification.permission==="granted"){
+        new Notification("OTP baru masuk",{body:codes});
+      }else{
+        toast(`${messages.length} OTP baru terdeteksi`,"ok");
       }
     }
 
     function renderOutlookTable(messages){
-      const tbody = document.getElementById("olTableBody");
-      tbody.innerHTML = "";
+      const tbody=document.getElementById("olTableBody");
+      tbody.replaceChildren();
 
       if(!messages.length){
-        tbody.innerHTML = `<tr><td colspan="3"><div class="olx-empty"><i class="fa-solid fa-inbox"></i><b>Kotak masuk kosong</b><span>Tidak ada pesan yang cocok untuk ditampilkan.</span></div></td></tr>`;
+        const tr=document.createElement("tr");
+        tr.innerHTML='<td colspan="4"><div class="olx-empty"><i class="fa-solid fa-inbox"></i><b>Tidak ada email</b><span>Inbox/Junk tidak mengembalikan pesan.</span></div></td>';
+        tbody.appendChild(tr);
         return;
       }
 
-      messages.forEach(msg => {
-        const sender = olSenderName(msg);
-        const addr = olSenderAddr(msg);
+      messages.forEach(msg=>{
+        const sender=msg.name||msg.from||"Unknown";
+        const initials=(sender.trim()[0]||"?").toUpperCase();
+        const hue=Math.abs(hashStr(sender))%360;
+        const date=msg.time?new Date(msg.time):null;
+        const dateStr=date&&!Number.isNaN(date.getTime())
+          ? date.toLocaleDateString("id-ID",{day:"numeric",month:"short"})+" · "+date.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})
+          :"—";
 
-        const initials = (sender.trim()[0] || "?").toUpperCase();
-        const hue = Math.abs(hashStr(sender)) % 360;
+        const tr=document.createElement("tr");
+        const otp=msg.otp||"";
 
-        const d = new Date(msg.receivedDateTime);
-        const dateStr = d.toLocaleDateString("id-ID", { day:"numeric", month:"short" }) + " · " + d.toLocaleTimeString("id-ID", { hour:"2-digit", minute:"2-digit" });
-
-        // OTP: pakai hasil backend (msg.otp) bila ada, kalau tidak ekstrak sendiri.
-        const otp = msg.otp || extractCodeFromText((msg.subject || "") + " " + (msg.bodyPreview || ""));
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
+        tr.innerHTML=`
           <td class="tdSender">
             <div class="olx-sender">
               <span class="olx-avatar" style="--h:${hue}">${escapeHtml(initials)}</span>
               <span class="olx-sender-tx">
                 <b>${escapeHtml(sender)}</b>
-                ${addr ? `<i>${escapeHtml(addr)}</i>` : ""}
+                <i>${escapeHtml(msg.from||msg.email||"")}</i>
+                <small class="tag">${escapeHtml(msg.email||"")} • ${msg.folder==="junkemail"?"Junk":"Inbox"}</small>
               </span>
             </div>
           </td>
           <td>
-            <div class="tdSubject">${escapeHtml(msg.subject || "(Tanpa Subjek)")}</div>
-            <div class="tdPreview">${escapeHtml(msg.bodyPreview || "")}</div>
-            ${otp ? `<div class="otpBadgeInline" onclick="navigator.clipboard.writeText('${otp}').then(()=>toast('Kode OTP ${otp} disalin!'))" title="Klik untuk salin"><i class="fa-solid fa-shield-halved"></i> <span>${otp}</span> <em>Salin</em></div>` : ''}
+            <div class="tdSubject">${escapeHtml(msg.subject||"(Tanpa Subjek)")}</div>
+            <div class="tdPreview">${escapeHtml((msg.preview||msg.content||"").slice(0,360))}</div>
+            <button class="btn secondary olx-mini" style="margin-top:7px" data-view-id="${escapeHtml(msg.id||"")}">Lihat</button>
           </td>
+          <td>${otp
+            ? `<button class="otpBadgeInline" data-copy-otp="${escapeHtml(otp)}"><i class="fa-solid fa-shield-halved"></i><span>${escapeHtml(otp)}</span><em>Salin</em></button>`
+            : "—"}</td>
           <td class="tdDate">${dateStr}</td>
         `;
+
+        const view=tr.querySelector("[data-view-id]");
+        if(view){
+          view.onclick=()=>{
+            const title=msg.subject||"(Tanpa Subjek)";
+            const body=msg.content||msg.preview||"(Kosong)";
+            if(typeof showModal==="function"){
+              showModal(title,body);
+            }else{
+              alert(body);
+            }
+          };
+        }
+
+        const copy=tr.querySelector("[data-copy-otp]");
+        if(copy){
+          copy.onclick=async()=>{
+            const code=copy.getAttribute("data-copy-otp");
+            try{
+              await navigator.clipboard.writeText(code);
+              toast(`OTP ${code} disalin`,"ok");
+            }catch{
+              toast("Clipboard gagal diakses","error");
+            }
+          };
+        }
+
         tbody.appendChild(tr);
       });
     }
 
-    function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=(h<<5)-h+s.charCodeAt(i); h|=0; } return h; }
-    function olSetApiStatus(state, text){
-      const dot = document.getElementById("olApiDot");
-      const badge = document.getElementById("olApiStatus");
-      if(dot) dot.setAttribute("data-state", state);
-      if(badge) badge.textContent = text;
+    function hashStr(s){
+      let h=0;
+      for(let i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;}
+      return h;
     }
 
     function olFilterTable(){
-      const q = (document.getElementById("olSearchInput").value || "").toLowerCase();
-      const filtered = olCurrentMessages.filter(m => {
-        const subj = (m.subject || "").toLowerCase();
-        const prev = (m.bodyPreview || "").toLowerCase();
-        const send = (olSenderName(m) + " " + olSenderAddr(m)).toLowerCase();
-        return subj.includes(q) || prev.includes(q) || send.includes(q);
-      });
-      renderOutlookTable(filtered);
+      const q=(document.getElementById("olSearchInput").value||"").trim().toLowerCase();
+      if(!q){
+        renderOutlookTable(olCurrentMessages);
+        return;
+      }
+      renderOutlookTable(olCurrentMessages.filter(m=>{
+        const text=[
+          m.email,m.from,m.name,m.subject,m.preview,m.content,m.otp,m.folder
+        ].join(" ").toLowerCase();
+        return text.includes(q);
+      }));
     }
 
     function olExportData(type){
       if(!olCurrentMessages.length){
-        toast("Tidak ada data untuk diekspor", "error");
+        toast("Tidak ada data untuk diekspor","error");
         return;
       }
 
-      if(type === "json"){
-        downloadText("outlook-inbox.json", JSON.stringify(olCurrentMessages, null, 2));
-      } else {
-        const header = ["Tanggal","Pengirim","Email Pengirim","Subjek","Preview"];
-        const rows = olCurrentMessages.map(m => [
-          `"${m.receivedDateTime}"`,
-          `"${olSenderName(m).replace(/"/g, '""')}"`,
-          `"${olSenderAddr(m).replace(/"/g, '""')}"`,
-          `"${(m.subject || '').replace(/"/g, '""')}"`,
-          `"${(m.bodyPreview || '').replace(/"/g, '""')}"`
-        ]);
-        const csvContent = [header.join(","), ...rows.map(r => r.join(","))].join("\n");
-        downloadText("outlook-inbox.csv", csvContent);
+      if(type==="json"){
+        downloadText("vanzshop-inbox-otp.json",JSON.stringify(olCurrentMessages,null,2));
+      }else{
+        const header=["Account","Folder","Time","From","Subject","OTP","Preview"];
+        const rows=olCurrentMessages.map(m=>[
+          m.email,m.folder,m.time,m.from,m.subject,m.otp,m.preview
+        ].map(v=>`"${String(v||"").replace(/"/g,'""')}"`).join(","));
+        downloadText("vanzshop-inbox-otp.csv",[header.join(","),...rows].join("\n"));
       }
-      toast(`Export ${type.toUpperCase()} selesai!`);
+      toast(`Export ${type.toUpperCase()} selesai`,"ok");
     }
 
     function olClearReader(){
-      document.getElementById("olCombo").value = "";
-      document.getElementById("olSearchInput").value = "";
-      document.getElementById("olDetectedEmail").textContent = "1 Akun";
-      document.getElementById("olActiveAccountName").textContent = "Belum ada akun";
-      document.getElementById("olMsgCount").textContent = "0";
-      olCurrentMessages = [];
-      olSetApiStatus("idle", "Siap");
-      document.getElementById("olTableBody").innerHTML = `
-        <tr>
-          <td colspan="3">
-            <div class="olx-empty">
-              <i class="fa-solid fa-envelope-open-text"></i>
-              <b>Belum ada pesan</b>
-              <span>Tempel token di atas lalu klik <em>Baca Inbox</em> untuk menarik email terbaru.</span>
-            </div>
-          </td>
-        </tr>
-      `;
-      toast("Reader dibersihkan");
+      clearInterval(olAutoTimer);
+      olAutoTimer=null;
+      document.getElementById("olAuto").checked=false;
+      document.getElementById("olCombo").value="";
+      document.getElementById("olSearchInput").value="";
+      document.getElementById("olDetectedEmail").textContent="0 Akun";
+      document.getElementById("olActiveAccountName").textContent="Belum ada akun";
+      document.getElementById("olMsgCount").textContent="0";
+      document.getElementById("olApiEndpoint").textContent="/api/inbox";
+      document.getElementById("olApiStatus").textContent="Siap";
+      olSetApiStatus("idle","Siap");
+      olCurrentMessages=[];
+      olHasRead=false;
+      olSeen.clear();
+      document.getElementById("olTableBody").innerHTML=`
+        <tr><td colspan="4"><div class="olx-empty">
+          <i class="fa-solid fa-shield-halved"></i>
+          <b>Inbox OTP Reader siap</b>
+          <span>Masukkan data OAuth lalu klik <em>Baca Inbox</em>.</span>
+        </div></td></tr>`;
+      toast("Reader dibersihkan","ok");
     }
 
-    function escapeHtml(str){
-      return String(str||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    function olConfigureAuto(){
+      clearInterval(olAutoTimer);
+      olAutoTimer=null;
+      if(document.getElementById("olAuto").checked){
+        olFetchInbox();
+        olAutoTimer=setInterval(()=>{
+          if(!olReaderRunning) olFetchInbox();
+        },Number(document.getElementById("olInterval").value));
+      }
     }
 
-    window.setOutlookAuthMode = setOutlookAuthMode;
-    window.olFetchInbox = olFetchInbox;
-    window.olFilterTable = olFilterTable;
-    window.olExportData = olExportData;
-    window.olClearReader = olClearReader;
+    document.getElementById("olCombo").addEventListener("input",olUpdateAccountCount);
+    document.getElementById("olAuto").addEventListener("change",olConfigureAuto);
+    document.getElementById("olInterval").addEventListener("change",olConfigureAuto);
+    document.getElementById("olNotify").addEventListener("change",async()=>{
+      if(document.getElementById("olNotify").checked && "Notification" in window && Notification.permission==="default"){
+        await Notification.requestPermission();
+      }
+    });
+
+    window.olFetchInbox=olFetchInbox;
+    window.olFilterTable=olFilterTable;
+    window.olExportData=olExportData;
+    window.olClearReader=olClearReader;
 
     // ===== Email Generator =====
     let egOut = [];
